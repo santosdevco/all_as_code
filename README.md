@@ -6,76 +6,38 @@
 ### Nivel 1+2: Contexto y Contenedores
 Este diagrama se genera **en tiempo real**. Si cambiamos la tecnología, cambiamos el texto.
 
-=== "📊 Diagrama"
+```mermaid
+graph TB
+    %% Nivel 1: Personas
+    User((Cliente))
+    Admin((Administrador))
 
-    ```mermaid
-    graph TB
-        %% Nivel 1: Personas
-        User((Cliente))
-        Admin((Administrador))
+    %% Nivel 2: Sistemas (Contenedores)
+    subgraph "Nube AWS (Nuestro Sistema)"
+        SPA[Web App Single Page<br/>React]
+        API[API Gateway<br/>Node.js]
+        DB[(Base de Datos<br/>PostgreSQL)]
+    end
 
-        %% Nivel 2: Sistemas (Contenedores)
-        subgraph "Nube AWS (Nuestro Sistema)"
-            SPA[Web App Single Page<br/>React]
-            API[API Gateway<br/>Node.js]
-            DB[(Base de Datos<br/>PostgreSQL)]
-        end
+    %% Sistemas Externos
+    Bank[Pasarela de Pagos<br/>Stripe/PayPal]
+    Email[Servicio de Correo<br/>SendGrid]
 
-        %% Sistemas Externos
-        Bank[Pasarela de Pagos<br/>Stripe/PayPal]
-        Email[Servicio de Correo<br/>SendGrid]
+    %% Relaciones
+    User -->|HTTPS| SPA
+    Admin -->|HTTPS| SPA
+    SPA -->|JSON/REST| API
+    API -->|SQL| DB
+    API -->|API Call| Bank
+    API -->|SMTP| Email
 
-        %% Relaciones
-        User -->|HTTPS| SPA
-        Admin -->|HTTPS| SPA
-        SPA -->|JSON/REST| API
-        API -->|SQL| DB
-        API -->|API Call| Bank
-        API -->|SMTP| Email
+    %% Estilos
+    classDef system fill:#1f618d,stroke:#fff,color:#fff;
+    classDef external fill:#999,stroke:#333,stroke-dasharray: 5 5;
+    class SPA,API,DB system;
+    class Bank,Email external;
+```
 
-        %% Estilos
-        classDef system fill:#1f618d,stroke:#fff,color:#fff;
-        classDef external fill:#999,stroke:#333,stroke-dasharray: 5 5;
-        class SPA,API,DB system;
-        class Bank,Email external;
-    ```
-
-=== "📋 Código Mermaid"
-
-    Copia este código para usarlo en [Mermaid Live](https://mermaid.live):
-
-    ```text
-    graph TB
-        %% Nivel 1: Personas
-        User((Cliente))
-        Admin((Administrador))
-
-        %% Nivel 2: Sistemas (Contenedores)
-        subgraph "Nube AWS (Nuestro Sistema)"
-            SPA[Web App Single Page<br/>React]
-            API[API Gateway<br/>Node.js]
-            DB[(Base de Datos<br/>PostgreSQL)]
-        end
-
-        %% Sistemas Externos
-        Bank[Pasarela de Pagos<br/>Stripe/PayPal]
-        Email[Servicio de Correo<br/>SendGrid]
-
-        %% Relaciones
-        User -->|HTTPS| SPA
-        Admin -->|HTTPS| SPA
-        SPA -->|JSON/REST| API
-        API -->|SQL| DB
-        API -->|API Call| Bank
-        API -->|SMTP| Email
-
-        %% Estilos
-        classDef system fill:#1f618d,stroke:#fff,color:#fff;
-        classDef external fill:#999,stroke:#333,stroke-dasharray: 5 5;
-        class SPA,API,DB system;
-        class Bank,Email external;
-    ```
-    
 ## 🎯 Descripción
 
 Material de capacitación sobre **MkDocs + Mermaid** para documentar arquitectura de software.
