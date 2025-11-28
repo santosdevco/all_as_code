@@ -14,7 +14,7 @@
 
 | Tipo de Diagrama | Propósito | Audiencia | Caso de Uso |
 |-----------------|-----------|-----------|-------------|
-| **C4 Model** (Contexto/Contenedores) | Visión general del sistema | CEO, Gerentes, Stakeholders | "¿Qué hace el sistema y qué tecnologías usa?" |
+| **C4 Model** (Contexto/Contenedores) | Visión general del sistema | CEO, Gerentes | "¿Qué hace el sistema y qué tecnologías usa?" |
 | **Diagramas de Secuencia** | Flujo temporal de operaciones | Desarrolladores, Arquitectos | "¿Por qué esto es lento?" |
 | **Diagramas de Flujo de Datos (DFD)** | Movimiento de información | Seguridad, Compliance, Auditores | "¿Dónde viajan datos sensibles?" |
 | **Diagramas de Componentes** | Estructura interna del código | Desarrolladores | "¿Cómo está organizado internamente?" |

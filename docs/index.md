@@ -108,6 +108,7 @@ Convierte archivos **Markdown** (`.md`) en un **sitio web completo** con:
 4. Haces cambios → Se actualiza automáticamente (live reload)
 
 **MkDocs monta tus Markdown en un servidor** donde puedes:
+
 - Ver la documentación como sitio web profesional
 - Navegar entre secciones fácilmente
 - Buscar contenido al instante
@@ -115,6 +116,7 @@ Convierte archivos **Markdown** (`.md`) en un **sitio web completo** con:
 - Compartir con el equipo (deploy a producción)
 
 **¿Por qué es genial?**
+
 - ✅ **Fácil**: Si sabes escribir un README, ya sabes usar MkDocs
 - ✅ **Rápido**: De cero a sitio completo en 5 minutos
 - ✅ **Temas bonitos**: Material Design incluido
@@ -173,6 +175,7 @@ Y obtienes esto (diagrama visual):
     ```
 
 **¿Por qué es genial?**
+
 - ✅ **Versionable**: El diagrama es código, va a Git
 - ✅ **Actualizable**: Cambias el texto, cambia el diagrama
 - ✅ **Estandarizado**: Misma sintaxis en todos lados
@@ -203,7 +206,7 @@ La IA ha democratizado estas herramientas. Ya no necesitas ser experto en sintax
 ✅ En **discusiones** del equipo  
 
 **Ejemplo real:**
-```markdown
+
 # Mi Proyecto
 
 ## Arquitectura
