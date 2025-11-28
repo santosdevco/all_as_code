@@ -1,0 +1,161 @@
+/* Estilos personalizados para la capacitación */
+
+/* Portada hero section - Diseño moderno diagonal */
+.hero-banner {
+    position: relative;
+    min-height: 450px;
+    padding: 3rem 2rem;
+    background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 50%, #4c1d95 100%);
+    margin: 2rem 0;
+    color: white;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    overflow: hidden;
+}
+
+/* Triángulo diagonal con opacidad */
+.hero-banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.3) 0%, rgba(167, 139, 250, 0.2) 100%);
+    clip-path: polygon(100% 0, 0 0, 100% 100%);
+    z-index: 0;
+}
+
+/* Contenido sobre el triángulo */
+.hero-banner > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* Título principal centrado */
+.hero-banner h1 {
+    font-size: 2.8rem;
+    margin: 2rem 0 1rem 0;
+    color: white !important;
+    font-weight: 700;
+    text-align: center;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.hero-banner p {
+    color: #e0e7ff !important;
+    margin: 1rem 0;
+    text-align: center;
+}
+
+.hero-banner strong {
+    color: white !important;
+}
+
+/* Autor en esquina superior derecha */
+.hero-author {
+    position: absolute;
+    top: 1.5rem;
+    right: 2rem;
+    text-align: right;
+    z-index: 2;
+}
+
+.hero-author p {
+    margin: 0.3rem 0;
+    font-size: 0.95rem;
+    color: #e0e7ff !important;
+}
+
+.hero-author strong {
+    font-size: 1.1rem;
+    color: white !important;
+    display: block;
+    margin-bottom: 0.2rem;
+}
+
+/* Mejoras para tabs de código */
+.tabbed-set {
+    margin: 1.5rem 0;
+}
+
+.tabbed-labels > label {
+    font-weight: 600;
+}
+
+/* Mejoras para admonitions */
+.admonition {
+    border-left: 4px solid;
+    margin: 1.5rem 0;
+}
+
+.admonition.tip {
+    border-left-color: #00bfa5;
+}
+
+.admonition.info {
+    border-left-color: #2196f3;
+}
+
+.admonition.danger {
+    border-left-color: #f44336;
+}
+
+.admonition.success {
+    border-left-color: #4caf50;
+}
+
+/* Mejoras para code blocks */
+.highlight pre {
+    border-radius: 8px;
+}
+
+/* Mejoras para tablas */
+table {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Animación sutil para el hero */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero-banner {
+    animation: fadeInUp 0.8s ease-out;
+}
+
+/* Mejoras para diagramas mermaid */
+.mermaid {
+    text-align: center;
+    margin: 2rem 0;
+}
+
+/* Mejoras para navegación */
+.md-nav__item--active > .md-nav__link {
+    font-weight: 700;
+}
+
+/* Responsive para móviles */
+@media (max-width: 768px) {
+    .hero-banner {
+        min-height: 350px;
+        padding: 2rem 1rem;
+    }
+    
+    .hero-banner h1 {
+        font-size: 1.8rem;
+    }
+    
+    .hero-author {
+        position: static;
+        text-align: center;
+        margin-top: 2rem;
+    }
+}

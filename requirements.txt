@@ -1,0 +1,4 @@
+mkdocs>=1.5
+mkdocs-mermaid2-plugin>=1.2.1
+Pygments>=2.16.0
+mkdocs-material
