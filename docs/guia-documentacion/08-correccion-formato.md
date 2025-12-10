@@ -5,6 +5,7 @@
 Esta guía te ayuda a corregir los dos errores más comunes en documentación generada por IA:
 
 1. **Falta de saltos de línea antes de listas**
+
 2. **Falta de comillas en labels de diagramas Mermaid**
 
 ---
@@ -20,8 +21,11 @@ Markdown requiere una línea en blanco antes de una lista para renderizarla corr
 ❌ **Se ve así** (texto plano, no lista):
 ```
 Las tecnologías incluyen:
+
 - Node.js
+
 - PostgreSQL
+
 - Redis
 ```
 
@@ -32,7 +36,9 @@ Las tecnologías incluyen:
 Las tecnologías incluyen:
 
 - Node.js
+
 - PostgreSQL
+
 - Redis
 ```
 
@@ -61,8 +67,11 @@ Mermaid interpreta espacios y caracteres especiales como delimitadores de sintax
 ### Cómo Identificarlo
 
 El diagrama Mermaid:
+
 - No se renderiza
+
 - Muestra error de sintaxis
+
 - Aparece en blanco
 
 ### Ejemplos Comunes de Errores
@@ -72,7 +81,7 @@ El diagrama Mermaid:
 ❌ **INCORRECTO**:
 ```mermaid
 graph TB
-    A[Web App] --> B[API Gateway]
+    A["Web App"] --> B["API Gateway"]
 ```
 
 ✅ **CORRECTO**:
@@ -88,7 +97,7 @@ graph TB
 ❌ **INCORRECTO**:
 ```mermaid
 graph TB
-    WebApp[Web Application<br/>React + TypeScript]
+    WebApp["Web Application<br/>React + TypeScript"]
 ```
 
 ✅ **CORRECTO**:
@@ -104,7 +113,7 @@ graph TB
 ❌ **INCORRECTO**:
 ```mermaid
 graph TB
-    DB[(Base de Datos)]
+    DB["(Base de Datos)"]
 ```
 
 ✅ **CORRECTO**:
@@ -138,15 +147,21 @@ sequenceDiagram
 **Si el label contiene alguno de estos, DEBE tener comillas dobles:**
 
 - ✅ Espacios: `"Web App"`
+
 - ✅ Acentos: `"Gestión de Usuarios"`
+
 - ✅ Símbolos: `"API-Gateway"`
+
 - ✅ Números con texto: `"Node.js 18"`
+
 - ✅ Saltos de línea: `"App<br/>React"`
+
 - ✅ Paréntesis en el contenido: `"Servicio (Beta)"`
 
 **No necesitan comillas:**
 
 - ❌ IDs de nodos: `A`, `B`, `Controller`, `DB`
+
 - ❌ Flechas con texto simple: `-->|OK|`
 
 ---
@@ -156,10 +171,15 @@ sequenceDiagram
 ### Checklist de Revisión
 
 1. **Abre cada archivo `.md`**
+
 2. **Busca listas** (líneas que empiezan con `-`, `*`, `1.`)
+
 3. **Verifica** que haya una línea en blanco antes
+
 4. **Busca bloques** ` ```mermaid `
+
 5. **Revisa cada label** dentro de `[ ]` o `( )`
+
 6. **Si tiene espacios/acentos**, agrega comillas dobles
 
 ---
@@ -227,16 +247,19 @@ chmod +x check-format.sh
 ## Stack Tecnológico
 
 El proyecto utiliza las siguientes tecnologías:
+
 - Node.js 18
+
 - PostgreSQL 15
+
 - Redis 7
 
 ## Arquitectura
 
 ```mermaid
 graph TB
-    A[Web App] --> B[API Gateway]
-    B --> C[(Base de Datos)]
+    A["Web App"] --> B["API Gateway"]
+    B --> C["(Base de Datos)"]
 ```
 ```
 
@@ -248,7 +271,9 @@ graph TB
 El proyecto utiliza las siguientes tecnologías:
 
 - Node.js 18
+
 - PostgreSQL 15
+
 - Redis 7
 
 ## Arquitectura
@@ -272,12 +297,12 @@ graph TB
 ```mermaid
 graph TB
     subgraph Sistema Principal
-        Web[Web Application<br/>React]
-        API[API Backend<br/>Node.js]
-        DB[(PostgreSQL<br/>Main Database)]
+        Web["Web Application<br/>React"]
+        API["API Backend<br/>Node.js"]
+        DB["(PostgreSQL<br/>Main Database)"]
     end
     
-    Usuario[👤 Usuario] --> Web
+    Usuario["👤 Usuario"] --> Web
     Web --> API
     API --> DB
 ```
@@ -303,8 +328,11 @@ graph TB
 ```
 
 **Cambios**:
+
 1. Agregamos comillas a `"Sistema Principal"` (subgraph con espacios)
+
 2. Agregamos comillas a todos los labels con `<br/>`
+
 3. Agregamos comillas a label con emoji y espacio
 
 ---
@@ -339,6 +367,7 @@ Si trabajas frecuentemente con un agente IA (ChatGPT, Claude), puedes "entrenarl
 Antes de continuar, recuerda estas reglas para todo lo que generes:
 
 1. MARKDOWN: Siempre deja una línea en blanco antes de listas (-, *, 1.)
+
 2. MERMAID: Siempre usa comillas dobles en labels con espacios o <br/>
 
 Ejemplos:
@@ -347,6 +376,7 @@ Ejemplos:
 Tecnologías:
 
 - Node.js
+
 - React
 ```
 
@@ -366,7 +396,9 @@ Después de que confirme, continuará aplicando estas reglas.
 ## 📚 Referencias
 
 - **Markdown Spec**: https://spec.commonmark.org/
+
 - **Mermaid Docs**: https://mermaid.js.org/
+
 - **MkDocs Material**: https://squidfunk.github.io/mkdocs-material/
 
 ---
@@ -374,9 +406,13 @@ Después de que confirme, continuará aplicando estas reglas.
 ## 🚀 Próximos Pasos
 
 1. **Lee esta guía completa**
+
 2. **Revisa tu documentación existente** con el checklist
+
 3. **Corrige los errores encontrados**
+
 4. **Usa los prompts actualizados** para nuevos proyectos
+
 5. **Valida siempre** antes de hacer commit
 
 ---

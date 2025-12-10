@@ -77,6 +77,7 @@ nav:
 
   - Guía de Documentación:
       - 📖 Introducción: guia-documentacion/00-intro.md
+      - 🚀 Inicio Rápido: guia-documentacion/10-inicio-rapido.md
       - 📝 Formato y Convenciones: guia-documentacion/01-formato.md
       - 🎭 Niveles de Abstracción: guia-documentacion/02-niveles-abstraccion.md
       - 📊 Catálogo de Diagramas: guia-documentacion/03-diagramas.md
@@ -85,6 +86,7 @@ nav:
       - 🔄 Workflow de Integración: guia-documentacion/06-workflow.md
       - 📚 Glosario: guia-documentacion/07-glosario.md
       - 🔧 Corrección de Formato: guia-documentacion/08-correccion-formato.md
+      - 📋 Análisis de Requerimientos: guia-documentacion/09-requerimientos.md
 
 extra:
   version:

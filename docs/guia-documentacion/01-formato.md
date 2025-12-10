@@ -34,15 +34,8 @@ Contenido...
 
 ```mermaid
 graph LR
-    A[Componente A] --> B[Componente B]
+    A["Componente A"] --> B["Componente B"]
 ```
-
----
-
-## 📚 Referencias
-
-- [Enlace 1](#)
-- [Enlace 2](#)
 
 ---
 
@@ -61,7 +54,9 @@ graph LR
 ```
 
 - Usar **emoji relevante** al inicio
+
 - Usar `🔷` como emoji por defecto si no hay uno más específico
+
 - Solo **un título H1** por documento
 
 ### Nivel 2: Secciones Principales
@@ -70,6 +65,7 @@ graph LR
 ```
 
 - Usar emoji que represente la sección
+
 - Separar secciones con `---`
 
 ### Nivel 3: Subsecciones
@@ -78,6 +74,7 @@ graph LR
 ```
 
 - Sin emoji
+
 - Usar para detalles dentro de una sección
 
 ### Nivel 4: Detalles Específicos
@@ -86,6 +83,7 @@ graph LR
 ```
 
 - Usar con moderación
+
 - Solo cuando sea necesario mayor granularidad
 
 ---
@@ -122,8 +120,11 @@ Usa estos emojis de forma consistente:
 Todos los diagramas deben:
 
 1. **Incluir título descriptivo** antes del diagrama
+
 2. **Usar colores consistentes** según el tipo de elemento
+
 3. **Incluir leyenda** cuando sea necesario
+
 4. **Ser autosuficientes** (entendibles sin contexto adicional)
 
 ### Plantilla de Diagrama
@@ -150,9 +151,13 @@ graph TB
 ```
 
 **Interpretación:**
+
 - **Azul**: Componentes de entrada
+
 - **Verde**: Procesamiento
+
 - **Naranja**: Decisiones
+
 - **Rojo/Morado**: Resultados
 
 ```
@@ -419,14 +424,23 @@ Usar con moderación, solo cuando sea necesario separar visualmente.
 Antes de considerar un documento completo, verifica:
 
 - [ ] Tiene un **título H1** con emoji
+
 - [ ] Las secciones principales usan **H2** con emojis apropiados
+
 - [ ] Los diagramas tienen **título y descripción**
+
 - [ ] Los diagramas usan la **paleta de colores estándar**
+
 - [ ] Se usan **admonitions** para información importante
+
 - [ ] Los bloques de código tienen **lenguaje especificado**
+
 - [ ] Las tablas están **bien formateadas**
+
 - [ ] Hay **separadores horizontales** entre secciones
+
 - [ ] Incluye **fecha de última actualización** al final
+
 - [ ] Los enlaces internos **funcionan correctamente**
 
 ---

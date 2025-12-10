@@ -10,13 +10,13 @@ Explicar el proceso completo desde la generación de documentación hasta su int
 
 ```mermaid
 flowchart TB
-    Start([Nuevo Proyecto a Documentar]) --> Step1[1. Preparación]
-    Step1 --> Step2[2. Generación con IA]
-    Step2 --> Step3[3. Revisión Humana]
-    Step3 --> Step4[4. Integración Local]
-    Step4 --> Step5[5. Integración al Hub]
-    Step5 --> Step6[6. Publicación]
-    Step6 --> End([Documentación Disponible])
+    Start(["Nuevo Proyecto a Documentar"]) --> Step1["1. Preparación"]
+    Step1 --> Step2["2. Generación con IA"]
+    Step2 --> Step3["3. Revisión Humana"]
+    Step3 --> Step4["4. Integración Local"]
+    Step4 --> Step5["5. Integración al Hub"]
+    Step5 --> Step6["6. Publicación"]
+    Step6 --> End(["Documentación Disponible"])
     
     Step3 -->|Requiere ajustes| Step2
     
@@ -33,9 +33,13 @@ flowchart TB
 ### Checklist Pre-Generación
 
 - [ ] **Acceso al repositorio** del proyecto
+
 - [ ] **README.md** actualizado (si existe)
+
 - [ ] **Contacto con Product Owner** para información de negocio (opcional pero recomendado)
+
 - [ ] **Contacto con Tech Lead** para validación técnica
+
 - [ ] **Identificar nombre del proyecto** para la carpeta de documentación
 
 ### Información a Recopilar
@@ -44,11 +48,17 @@ flowchart TB
 ## Datos del Proyecto
 
 - **Nombre del Proyecto**: [...]
+
 - **Repositorio**: [URL]
+
 - **Product Owner**: [Nombre y contacto]
+
 - **Tech Lead**: [Nombre y contacto]
+
 - **Objetivo de Negocio**: [Breve descripción]
+
 - **Usuarios Principales**: [Tipos de usuarios]
+
 - **Métricas Clave** (si se conocen): [...]
 ```
 
@@ -65,8 +75,11 @@ flowchart TB
 ```
 
 **Acción:** 
+
 1. Ejecuta el [Prompt 01](/guia-documentacion/05-prompts/#prompt-01-análisis-inicial-del-proyecto)
+
 2. Guarda el output en `análisis-inicial.md` temporalmente
+
 3. **REVISA** el output - valida que el agente entendió correctamente el proyecto
 
 ---
@@ -76,31 +89,34 @@ flowchart TB
 Ejecuta los prompts en orden:
 
 ```bash
-# Prompt 02: Vista Ejecutiva
-# Output: 01-vista-ejecutiva.md
+# Prompt 02: Requerimientos
+# Output: 01-requerimientos.md
 
-# Prompt 03: Arquitectura C4
-# Output: 02-arquitectura/01-contexto.md
-#         02-arquitectura/02-contenedores.md
-#         02-arquitectura/03-componentes.md
+# Prompt 03: Vista Ejecutiva
+# Output: 02-vista-ejecutiva.md
 
-# Prompt 04: Documentación Técnica
-# Output: 03-tecnico/01-stack-tecnologico.md
-#         03-tecnico/02-modelo-datos.md
-#         03-tecnico/03-apis.md
-#         03-tecnico/04-integraciones.md
+# Prompt 04: Arquitectura C4
+# Output: 03-arquitectura/01-contexto.md
+#         03-arquitectura/02-contenedores.md
+#         03-arquitectura/03-componentes.md
 
-# Prompt 05: Procesos de Negocio
-# Output: 04-procesos-negocio/01-casos-uso.md
-#         04-procesos-negocio/02-flujos-funcionales.md
+# Prompt 05: Documentación Técnica
+# Output: 04-tecnico/01-stack-tecnologico.md
+#         04-tecnico/02-modelo-datos.md
+#         04-tecnico/03-apis.md
+#         04-tecnico/04-integraciones.md
 
-# Prompt 06: Infraestructura
-# Output: 05-infraestructura/01-deployment.md
-#         05-infraestructura/02-ci-cd.md
-#         05-infraestructura/03-monitoreo.md
+# Prompt 06: Procesos de Negocio
+# Output: 05-procesos-negocio/01-casos-uso.md
+#         05-procesos-negocio/02-flujos-funcionales.md
 
-# Prompt 07: ADRs
-# Output: 02-arquitectura/04-decisiones.md
+# Prompt 07: Infraestructura
+# Output: 06-infraestructura/01-deployment.md
+#         06-infraestructura/02-ci-cd.md
+#         06-infraestructura/03-monitoreo.md
+
+# Prompt 08: ADRs
+# Output: 03-arquitectura/04-decisiones.md
 ```
 
 **Estructura generada:**
@@ -108,25 +124,26 @@ Ejecuta los prompts en orden:
 ```
 proyecto-xyz/
 ├── 00-intro.md
-├── 01-vista-ejecutiva.md
-├── 02-arquitectura/
+├── 01-requerimientos.md
+├── 02-vista-ejecutiva.md
+├── 03-arquitectura/
 │   ├── 01-contexto.md
 │   ├── 02-contenedores.md
 │   ├── 03-componentes.md
 │   └── 04-decisiones.md
-├── 03-tecnico/
+├── 04-tecnico/
 │   ├── 01-stack-tecnologico.md
 │   ├── 02-modelo-datos.md
 │   ├── 03-apis.md
 │   └── 04-integraciones.md
-├── 04-procesos-negocio/
+├── 05-procesos-negocio/
 │   ├── 01-casos-uso.md
 │   └── 02-flujos-funcionales.md
-├── 05-infraestructura/
+├── 06-infraestructura/
 │   ├── 01-deployment.md
 │   ├── 02-ci-cd.md
 │   └── 03-monitoreo.md
-└── 06-apendices/
+└── 07-apendices/
     ├── 01-glosario.md
     ├── 02-referencias.md
     └── 03-changelog.md
@@ -141,16 +158,23 @@ proyecto-xyz/
 #### Revisión General
 
 - [ ] **Todos los archivos generados** están presentes
+
 - [ ] **Formato markdown** es correcto (sin errores de sintaxis)
+
 - [ ] **Emojis en títulos** según convención
+
 - [ ] **Fechas actualizadas** en todos los archivos
+
 - [ ] **No hay placeholders** sin completar (buscar `[...]`, `REQUIERE DATO`)
 
 #### Revisión de Diagramas Mermaid
 
 - [ ] **Todos los diagramas renderizan** correctamente
+
 - [ ] **Colores consistentes** según la paleta estándar
+
 - [ ] **Sintaxis correcta** (sin errores de Mermaid)
+
 - [ ] **Legibilidad** - no están demasiado saturados
 
 **Cómo verificar:**
@@ -171,15 +195,21 @@ mkdocs serve
 **Validación con Tech Lead:**
 
 - [ ] **Stack tecnológico** correcto y completo
+
 - [ ] **Versiones** de tecnologías son precisas
+
 - [ ] **Modelo de datos** coincide con el esquema real
+
 - [ ] **APIs documentadas** son todas las que existen
+
 - [ ] **Decisiones arquitectónicas (ADRs)** tienen sentido
 
 **Validación con Product Owner:**
 
 - [ ] **Vista ejecutiva** refleja objetivos de negocio reales
+
 - [ ] **Casos de uso** son correctos y completos
+
 - [ ] **Métricas/KPIs** son las correctas
 
 #### Correcciones Comunes
@@ -188,20 +218,29 @@ mkdocs serve
 # ❌ Problemas Frecuentes
 
 ## 1. Diagramas Mermaid no renderizan
+
 - Verificar sintaxis en https://mermaid.live/
+
 - Revisar que los IDs no tengan espacios
+
 - Verificar que los estilos usen colores válidos
 
 ## 2. Información marcada como "REQUIERE DATO"
+
 - Completar con información real del equipo
+
 - Si no se conoce, dejar como "Por definir"
 
 ## 3. Ejemplos de API ficticios
+
 - Reemplazar con ejemplos reales del código
+
 - Usar herramientas como Postman para validar
 
 ## 4. Enlaces rotos
+
 - Verificar que todos los enlaces internos funcionen
+
 - Usar rutas relativas: ./archivo.md
 ```
 
@@ -278,27 +317,28 @@ markdown_extensions:
 
 nav:
   - Inicio: proyecto-xyz/00-intro.md
-  - Vista Ejecutiva: proyecto-xyz/01-vista-ejecutiva.md
+  - Requerimientos: proyecto-xyz/01-requerimientos.md
+  - Vista Ejecutiva: proyecto-xyz/02-vista-ejecutiva.md
   - Arquitectura:
-      - Contexto: proyecto-xyz/02-arquitectura/01-contexto.md
-      - Contenedores: proyecto-xyz/02-arquitectura/02-contenedores.md
-      - Componentes: proyecto-xyz/02-arquitectura/03-componentes.md
-      - Decisiones (ADRs): proyecto-xyz/02-arquitectura/04-decisiones.md
+      - Contexto: proyecto-xyz/03-arquitectura/01-contexto.md
+      - Contenedores: proyecto-xyz/03-arquitectura/02-contenedores.md
+      - Componentes: proyecto-xyz/03-arquitectura/03-componentes.md
+      - Decisiones (ADRs): proyecto-xyz/03-arquitectura/04-decisiones.md
   - Documentación Técnica:
-      - Stack Tecnológico: proyecto-xyz/03-tecnico/01-stack-tecnologico.md
-      - Modelo de Datos: proyecto-xyz/03-tecnico/02-modelo-datos.md
-      - APIs: proyecto-xyz/03-tecnico/03-apis.md
-      - Integraciones: proyecto-xyz/03-tecnico/04-integraciones.md
+      - Stack Tecnológico: proyecto-xyz/04-tecnico/01-stack-tecnologico.md
+      - Modelo de Datos: proyecto-xyz/04-tecnico/02-modelo-datos.md
+      - APIs: proyecto-xyz/04-tecnico/03-apis.md
+      - Integraciones: proyecto-xyz/04-tecnico/04-integraciones.md
   - Procesos de Negocio:
-      - Casos de Uso: proyecto-xyz/04-procesos-negocio/01-casos-uso.md
-      - Flujos Funcionales: proyecto-xyz/04-procesos-negocio/02-flujos-funcionales.md
+      - Casos de Uso: proyecto-xyz/05-procesos-negocio/01-casos-uso.md
+      - Flujos Funcionales: proyecto-xyz/05-procesos-negocio/02-flujos-funcionales.md
   - Infraestructura:
-      - Deployment: proyecto-xyz/05-infraestructura/01-deployment.md
-      - CI/CD: proyecto-xyz/05-infraestructura/02-ci-cd.md
-      - Monitoreo: proyecto-xyz/05-infraestructura/03-monitoreo.md
+      - Deployment: proyecto-xyz/06-infraestructura/01-deployment.md
+      - CI/CD: proyecto-xyz/06-infraestructura/02-ci-cd.md
+      - Monitoreo: proyecto-xyz/06-infraestructura/03-monitoreo.md
   - Apéndices:
-      - Glosario: proyecto-xyz/06-apendices/01-glosario.md
-      - Referencias: proyecto-xyz/06-apendices/02-referencias.md
+      - Glosario: proyecto-xyz/07-apendices/01-glosario.md
+      - Referencias: proyecto-xyz/07-apendices/02-referencias.md
       - Changelog: proyecto-xyz/06-apendices/03-changelog.md
 
 extra_css:
@@ -319,9 +359,13 @@ mkdocs serve
 ```
 
 **Validar:**
+
 - ✅ Todos los enlaces funcionan
+
 - ✅ Todos los diagramas renderizan
+
 - ✅ Navegación fluida
+
 - ✅ Búsqueda funciona correctamente
 
 ---
@@ -360,28 +404,29 @@ nav:
   # ✨ AGREGAR NUEVO PROYECTO AQUÍ
   - [Nombre del Proyecto]:
       - Inicio: proyecto-xyz/00-intro.md
-      - Vista Ejecutiva: proyecto-xyz/01-vista-ejecutiva.md
+      - Requerimientos: proyecto-xyz/01-requerimientos.md
+      - Vista Ejecutiva: proyecto-xyz/02-vista-ejecutiva.md
       - Arquitectura:
-          - Contexto: proyecto-xyz/02-arquitectura/01-contexto.md
-          - Contenedores: proyecto-xyz/02-arquitectura/02-contenedores.md
-          - Componentes: proyecto-xyz/02-arquitectura/03-componentes.md
-          - Decisiones: proyecto-xyz/02-arquitectura/04-decisiones.md
+          - Contexto: proyecto-xyz/03-arquitectura/01-contexto.md
+          - Contenedores: proyecto-xyz/03-arquitectura/02-contenedores.md
+          - Componentes: proyecto-xyz/03-arquitectura/03-componentes.md
+          - Decisiones: proyecto-xyz/03-arquitectura/04-decisiones.md
       - Técnico:
-          - Stack: proyecto-xyz/03-tecnico/01-stack-tecnologico.md
-          - Modelo de Datos: proyecto-xyz/03-tecnico/02-modelo-datos.md
-          - APIs: proyecto-xyz/03-tecnico/03-apis.md
-          - Integraciones: proyecto-xyz/03-tecnico/04-integraciones.md
+          - Stack: proyecto-xyz/04-tecnico/01-stack-tecnologico.md
+          - Modelo de Datos: proyecto-xyz/04-tecnico/02-modelo-datos.md
+          - APIs: proyecto-xyz/04-tecnico/03-apis.md
+          - Integraciones: proyecto-xyz/04-tecnico/04-integraciones.md
       - Procesos:
-          - Casos de Uso: proyecto-xyz/04-procesos-negocio/01-casos-uso.md
-          - Flujos: proyecto-xyz/04-procesos-negocio/02-flujos-funcionales.md
+          - Casos de Uso: proyecto-xyz/05-procesos-negocio/01-casos-uso.md
+          - Flujos: proyecto-xyz/05-procesos-negocio/02-flujos-funcionales.md
       - Infraestructura:
-          - Deployment: proyecto-xyz/05-infraestructura/01-deployment.md
-          - CI/CD: proyecto-xyz/05-infraestructura/02-ci-cd.md
-          - Monitoreo: proyecto-xyz/05-infraestructura/03-monitoreo.md
+          - Deployment: proyecto-xyz/06-infraestructura/01-deployment.md
+          - CI/CD: proyecto-xyz/06-infraestructura/02-ci-cd.md
+          - Monitoreo: proyecto-xyz/06-infraestructura/03-monitoreo.md
       - Apéndices:
-          - Glosario: proyecto-xyz/06-apendices/01-glosario.md
-          - Referencias: proyecto-xyz/06-apendices/02-referencias.md
-          - Changelog: proyecto-xyz/06-apendices/03-changelog.md
+          - Glosario: proyecto-xyz/07-apendices/01-glosario.md
+          - Referencias: proyecto-xyz/07-apendices/02-referencias.md
+          - Changelog: proyecto-xyz/07-apendices/03-changelog.md
 ```
 
 ### Paso 5.3: Actualizar index.md del Hub
@@ -445,13 +490,13 @@ mkdocs build
 
 ```mermaid
 flowchart LR
-    Change[Cambio en el Código] --> Detect{¿Tipo de cambio?}
-    Detect -->|Nueva API| UpdateAPI[Actualizar 03-tecnico/03-apis.md]
-    Detect -->|Cambio Arquitectura| UpdateArch[Re-ejecutar Prompt 03]
-    Detect -->|Nueva Infra| UpdateInfra[Actualizar 05-infraestructura/]
-    Detect -->|Nuevo Caso de Uso| UpdateUC[Actualizar 04-procesos-negocio/]
+    Change["Cambio en el Código"] --> Detect{¿Tipo de cambio?}
+    Detect -->|Nueva API| UpdateAPI["Actualizar 03-tecnico/03-apis.md"]
+    Detect -->|Cambio Arquitectura| UpdateArch["Re-ejecutar Prompt 03"]
+    Detect -->|Nueva Infra| UpdateInfra["Actualizar 05-infraestructura/"]
+    Detect -->|Nuevo Caso de Uso| UpdateUC["Actualizar 04-procesos-negocio/"]
     
-    UpdateAPI --> Rebuild[mkdocs build]
+    UpdateAPI --> Rebuild["mkdocs build"]
     UpdateArch --> Rebuild
     UpdateInfra --> Rebuild
     UpdateUC --> Rebuild
@@ -516,16 +561,27 @@ echo "✅ Documentación actualizada y desplegada"
 Antes de considerar la integración completa:
 
 - [ ] **Documentación generada** con todos los prompts
+
 - [ ] **Revisión humana** completada y validada
+
 - [ ] **Diagramas validados** - todos renderizan correctamente
+
 - [ ] **Prueba local exitosa** - `mkdocs serve` funciona
+
 - [ ] **Carpeta docs/** copiada al Hub Central
+
 - [ ] **mkdocs.yml actualizado** con navegación del nuevo proyecto
+
 - [ ] **index.md actualizado** con entrada en tabla de proyectos
+
 - [ ] **Build exitoso** - `mkdocs build` sin errores
+
 - [ ] **Commit y push** realizados
+
 - [ ] **Deploy exitoso** - sitio actualizado
+
 - [ ] **Verificación en producción** - URLs funcionan
+
 - [ ] **Notificación al equipo** - comunicar disponibilidad de docs
 
 ---
@@ -537,15 +593,21 @@ Antes de considerar la integración completa:
 ### Para Generar Tu Primera Documentación
 
 1. Selecciona un proyecto piloto pequeño
+
 2. Ejecuta los [Prompts IA](/guia-documentacion/05-prompts/) secuencialmente
+
 3. Sigue este workflow paso a paso
+
 4. Itera y mejora según aprendizajes
 
 ### Para Escalar a Múltiples Proyectos
 
 1. Automatiza con scripts el workflow
+
 2. Crea un checklist para cada proyecto
+
 3. Asigna responsables por proyecto
+
 4. Establece calendario de actualizaciones
 
 ---

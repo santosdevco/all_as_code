@@ -12,14 +12,14 @@ Conocer todos los tipos de diagramas disponibles en Mermaid y **cuándo usar cad
 flowchart TD
     Start{¿Qué quieres<br/>mostrar?}
     
-    Start -->|Sistemas y contexto| C4Context[Diagrama C4 Contexto]
-    Start -->|Aplicaciones y DBs| C4Container[Diagrama C4 Contenedores]
-    Start -->|Clases y módulos| C4Component[Diagrama C4 Componentes]
-    Start -->|Interacciones en tiempo| Sequence[Diagrama de Secuencia]
-    Start -->|Proceso con decisiones| Flowchart[Diagrama de Flujo]
-    Start -->|Ciclo de vida| State[Diagrama de Estados]
-    Start -->|Modelo de datos| ERD[Diagrama ER]
-    Start -->|Infraestructura| Deployment[Diagrama de Deployment]
+    Start -->|Sistemas y contexto| C4Context["Diagrama C4 Contexto"]
+    Start -->|Aplicaciones y DBs| C4Container["Diagrama C4 Contenedores"]
+    Start -->|Clases y módulos| C4Component["Diagrama C4 Componentes"]
+    Start -->|Interacciones en tiempo| Sequence["Diagrama de Secuencia"]
+    Start -->|Proceso con decisiones| Flowchart["Diagrama de Flujo"]
+    Start -->|Ciclo de vida| State["Diagrama de Estados"]
+    Start -->|Modelo de datos| ERD["Diagrama ER"]
+    Start -->|Infraestructura| Deployment["Diagrama de Deployment"]
     
     style C4Context fill:#e91e63,color:#fff
     style C4Container fill:#9c27b0,color:#fff
@@ -36,9 +36,13 @@ flowchart TD
 ## 1️⃣ Diagrama C4 - Nivel 1: Contexto
 
 ### 📋 Cuándo Usar
+
 - Vista macro del sistema
+
 - Mostrar usuarios y sistemas externos
+
 - Presentaciones ejecutivas
+
 - Onboarding de nuevos miembros
 
 ### 👥 Audiencia
@@ -48,17 +52,17 @@ Ejecutivos, Product Owners, Stakeholders de negocio
 
 ```mermaid
 graph TB
-    Cliente[👤 Cliente Final]
-    Admin[👤 Administrador]
-    Proveedor[👤 Proveedor]
+    Cliente["👤 Cliente Final"]
+    Admin["👤 Administrador"]
+    Proveedor["👤 Proveedor"]
     
     subgraph "Nuestros Sistemas"
-        Ecommerce[🏢 Plataforma E-commerce]
+        Ecommerce["🏢 Plataforma E-commerce"]
     end
     
-    PaymentGW[💳 Pasarela de Pago<br/>Stripe]
-    ShippingAPI[📦 API de Envíos<br/>FedEx]
-    EmailService[📧 Servicio Email<br/>SendGrid]
+    PaymentGW["💳 Pasarela de Pago<br/>Stripe"]
+    ShippingAPI["📦 API de Envíos<br/>FedEx"]
+    EmailService["📧 Servicio Email<br/>SendGrid"]
     
     Cliente -->|Compra productos| Ecommerce
     Admin -->|Gestiona catálogo| Ecommerce
@@ -75,9 +79,13 @@ graph TB
 ```
 
 ### 💡 Mejores Prácticas
+
 - Usar **una sola caja** para tu sistema
+
 - Sistemas externos con **línea punteada**
+
 - Máximo **5-7 elementos** para claridad
+
 - Enfocarse en **qué hace el sistema**, no **cómo**
 
 ---
@@ -85,9 +93,13 @@ graph TB
 ## 2️⃣ Diagrama C4 - Nivel 2: Contenedores
 
 ### 📋 Cuándo Usar
+
 - Mostrar aplicaciones y bases de datos
+
 - Explicar arquitectura de alto nivel
+
 - Decisiones de stack tecnológico
+
 - Discusiones de arquitectura
 
 ### 👥 Audiencia
@@ -98,19 +110,19 @@ Arquitectos, Tech Leads, Engineering Managers
 ```mermaid
 graph TB
     subgraph "Plataforma E-commerce"
-        WebApp[Web Application<br/>React 18<br/>Port: 3000]
-        MobileApp[Mobile App<br/>React Native<br/>iOS + Android]
-        APIGateway[API Gateway<br/>Node.js + Express<br/>Port: 8080]
-        AuthService[Auth Service<br/>Node.js<br/>Port: 8081]
-        ProductService[Product Service<br/>Node.js<br/>Port: 8082]
-        OrderService[Order Service<br/>Node.js<br/>Port: 8083]
+        WebApp["Web Application<br/>React 18<br/>Port: 3000"]
+        MobileApp["Mobile App<br/>React Native<br/>iOS + Android"]
+        APIGateway["API Gateway<br/>Node.js + Express<br/>Port: 8080"]
+        AuthService["Auth Service<br/>Node.js<br/>Port: 8081"]
+        ProductService["Product Service<br/>Node.js<br/>Port: 8082"]
+        OrderService["Order Service<br/>Node.js<br/>Port: 8083"]
         
-        MainDB[(Main Database<br/>PostgreSQL 15)]
-        Cache[(Cache<br/>Redis 7)]
-        Queue[(Message Queue<br/>RabbitMQ)]
+        MainDB["(Main Database<br/>PostgreSQL 15)"]
+        Cache["(Cache<br/>Redis 7)"]
+        Queue["(Message Queue<br/>RabbitMQ)"]
     end
     
-    Cliente[👤 Cliente] -->|HTTPS| WebApp
+    Cliente["👤 Cliente"] -->|HTTPS| WebApp
     Cliente -->|HTTPS| MobileApp
     
     WebApp -->|JSON/REST| APIGateway
@@ -129,8 +141,8 @@ graph TB
     OrderService --> MainDB
     OrderService --> Queue
     
-    Queue --> EmailWorker[Email Worker<br/>Node.js]
-    EmailWorker --> SendGrid[📧 SendGrid API]
+    Queue --> EmailWorker["Email Worker<br/>Node.js"]
+    EmailWorker --> SendGrid["📧 SendGrid API"]
     
     style WebApp fill:#42a5f5,color:#fff
     style MobileApp fill:#42a5f5,color:#fff
@@ -144,9 +156,13 @@ graph TB
 ```
 
 ### 💡 Mejores Prácticas
+
 - Incluir **tecnología y versión** en cada contenedor
+
 - Diferenciar **frontend, backend, datos**
+
 - Mostrar **puertos** cuando sea relevante
+
 - Usar colores **consistentes por tipo**
 
 ---
@@ -154,9 +170,13 @@ graph TB
 ## 3️⃣ Diagrama C4 - Nivel 3: Componentes
 
 ### 📋 Cuándo Usar
+
 - Detallar estructura interna de un servicio
+
 - Explicar patrones de diseño
+
 - Onboarding de desarrolladores
+
 - Code reviews arquitectónicos
 
 ### 👥 Audiencia
@@ -167,26 +187,26 @@ Desarrolladores, Arquitectos técnicos
 ```mermaid
 graph TB
     subgraph "Order Service - Componentes"
-        Controller[Order Controller<br/>REST Endpoints]
-        Validator[Request Validator<br/>Joi schemas]
+        Controller["Order Controller<br/>REST Endpoints"]
+        Validator["Request Validator<br/>Joi schemas"]
         
         subgraph "Business Logic"
-            OrderManager[Order Manager]
-            PricingEngine[Pricing Engine]
-            InventoryChecker[Inventory Checker]
+            OrderManager["Order Manager"]
+            PricingEngine["Pricing Engine"]
+            InventoryChecker["Inventory Checker"]
         end
         
         subgraph "External Clients"
-            PaymentClient[Payment Client]
-            EmailClient[Email Client]
-            ShippingClient[Shipping Client]
+            PaymentClient["Payment Client"]
+            EmailClient["Email Client"]
+            ShippingClient["Shipping Client"]
         end
         
-        Repository[Order Repository<br/>Data Access Layer]
-        EventPublisher[Event Publisher<br/>Domain Events]
+        Repository["Order Repository<br/>Data Access Layer"]
+        EventPublisher["Event Publisher<br/>Domain Events"]
     end
     
-    APIGateway[API Gateway] --> Controller
+    APIGateway["API Gateway"] --> Controller
     
     Controller --> Validator
     Validator --> OrderManager
@@ -202,7 +222,7 @@ graph TB
     Repository --> DB[(PostgreSQL)]
     EventPublisher --> Queue[(RabbitMQ)]
     
-    PaymentClient --> Stripe[Stripe API]
+    PaymentClient --> Stripe["Stripe API"]
     
     style Controller fill:#42a5f5,color:#fff
     style Validator fill:#66bb6a,color:#fff
@@ -212,9 +232,13 @@ graph TB
 ```
 
 ### 💡 Mejores Prácticas
+
 - Mostrar **responsabilidades claras** de cada componente
+
 - Agrupar por **capas** (Controller, Service, Repository)
+
 - No mostrar **métodos individuales** (muy detallado)
+
 - Enfocarse en **flujo de datos**
 
 ---
@@ -222,9 +246,13 @@ graph TB
 ## 4️⃣ Diagrama de Secuencia
 
 ### 📋 Cuándo Usar
+
 - Mostrar interacciones entre componentes **en el tiempo**
+
 - Flujos de autenticación/autorización
+
 - Procesos de negocio paso a paso
+
 - Debugging de flujos complejos
 
 ### 👥 Audiencia
@@ -273,10 +301,15 @@ sequenceDiagram
 ```
 
 ### 💡 Mejores Prácticas
+
 - Usar **actores** para usuarios humanos
+
 - Flechas **sólidas** para llamadas síncronas
+
 - Flechas **punteadas** para respuestas
+
 - Incluir **notas** para aclaraciones
+
 - Mostrar **errores** con color diferente
 
 ---
@@ -284,9 +317,13 @@ sequenceDiagram
 ## 5️⃣ Diagrama de Flujo
 
 ### 📋 Cuándo Usar
+
 - Procesos con **decisiones condicionales**
+
 - Algoritmos de negocio
+
 - Flujos de aprobación
+
 - Troubleshooting guides
 
 ### 👥 Audiencia
@@ -296,22 +333,22 @@ Analistas de negocio, Desarrolladores, QA
 
 ```mermaid
 flowchart TD
-    Start([Usuario solicita<br/>devolución]) --> Check1{¿Dentro de<br/>30 días?}
+    Start(["Usuario solicita<br/>devolución"]) --> Check1{¿Dentro de<br/>30 días?}
     
-    Check1 -->|No| Reject1[❌ Rechazar solicitud]
+    Check1 -->|No| Reject1["❌ Rechazar solicitud"]
     Check1 -->|Sí| Check2{¿Producto<br/>sellado?}
     
     Check2 -->|No| Check3{¿Producto<br/>defectuoso?}
-    Check2 -->|Sí| Approve[✅ Aprobar devolución]
+    Check2 -->|Sí| Approve["✅ Aprobar devolución"]
     
-    Check3 -->|No| Reject2[❌ Rechazar solicitud]
+    Check3 -->|No| Reject2["❌ Rechazar solicitud"]
     Check3 -->|Sí| Approve
     
-    Approve --> Refund[Procesar reembolso]
-    Refund --> Notify[Notificar al cliente]
+    Approve --> Refund["Procesar reembolso"]
+    Refund --> Notify["Notificar al cliente"]
     Notify --> End([Fin])
     
-    Reject1 --> NotifyReject[Notificar rechazo]
+    Reject1 --> NotifyReject["Notificar rechazo"]
     Reject2 --> NotifyReject
     NotifyReject --> End
     
@@ -326,9 +363,13 @@ flowchart TD
 ```
 
 ### 💡 Mejores Prácticas
+
 - Usar **rombos** para decisiones
+
 - **Inicio/Fin** con formas redondeadas
+
 - Colores **verde para éxito**, **rojo para error**
+
 - Mantener el flujo de **arriba hacia abajo** o **izquierda a derecha**
 
 ---
@@ -336,9 +377,13 @@ flowchart TD
 ## 6️⃣ Diagrama de Estados
 
 ### 📋 Cuándo Usar
+
 - Ciclo de vida de entidades
+
 - Máquinas de estado
+
 - Workflow de aprobaciones
+
 - Estados de pedidos/tickets
 
 ### 👥 Audiencia
@@ -385,9 +430,13 @@ stateDiagram-v2
 ```
 
 ### 💡 Mejores Prácticas
+
 - Mostrar **todas las transiciones posibles**
+
 - Incluir **condiciones** en las flechas
+
 - Usar **notas** para SLAs y timeouts
+
 - Indicar **estado inicial** con `[*]`
 
 ---
@@ -395,9 +444,13 @@ stateDiagram-v2
 ## 7️⃣ Diagrama Entidad-Relación (ERD)
 
 ### 📋 Cuándo Usar
+
 - Diseño de base de datos
+
 - Modelo de dominio
+
 - Análisis de requisitos de datos
+
 - Migraciones de esquema
 
 ### 👥 Audiencia
@@ -475,10 +528,15 @@ erDiagram
 ```
 
 ### 💡 Mejores Prácticas
+
 - Marcar **PK** (Primary Key) y **FK** (Foreign Key)
+
 - Marcar **UK** (Unique Key)
+
 - Indicar **tipo de datos** y **constraints**
+
 - Usar cardinalidad: `||--o{` (uno a muchos), `||--||` (uno a uno)
+
 - Incluir **índices importantes** como comentarios
 
 ---
@@ -486,9 +544,13 @@ erDiagram
 ## 8️⃣ Diagrama de Deployment/Infraestructura
 
 ### 📋 Cuándo Usar
+
 - Arquitectura de infraestructura
+
 - Planes de disaster recovery
+
 - Explicar topología de red
+
 - Documentación de DevOps
 
 ### 👥 Audiencia
@@ -499,7 +561,7 @@ DevOps, SRE, Arquitectos de infraestructura
 ```mermaid
 graph TB
     subgraph "Internet"
-        Users[👥 Usuarios]
+        Users["👥 Usuarios"]
     end
     
     subgraph "AWS Cloud"
@@ -508,33 +570,33 @@ graph TB
         end
         
         subgraph "CloudFront CDN"
-            CDN[CloudFront Distribution]
+            CDN["CloudFront Distribution"]
         end
         
         subgraph "VPC 10.0.0.0/16"
             subgraph "Public Subnet 10.0.1.0/24"
-                ALB[Application Load Balancer]
-                NAT[NAT Gateway]
+                ALB["Application Load Balancer"]
+                NAT["NAT Gateway"]
             end
             
             subgraph "Private Subnet - App<br/>10.0.10.0/24"
-                ASG[Auto Scaling Group]
-                ECS1[ECS Task 1<br/>Web + API]
-                ECS2[ECS Task 2<br/>Web + API]
-                ECS3[ECS Task 3<br/>Web + API]
+                ASG["Auto Scaling Group"]
+                ECS1["ECS Task 1<br/>Web + API"]
+                ECS2["ECS Task 2<br/>Web + API"]
+                ECS3["ECS Task 3<br/>Web + API"]
             end
             
             subgraph "Private Subnet - Data<br/>10.0.20.0/24"
-                RDSPrimary[(RDS Primary<br/>PostgreSQL)]
-                RDSReplica[(RDS Replica<br/>Read-only)]
-                ElastiCache[(ElastiCache<br/>Redis Cluster)]
+                RDSPrimary["(RDS Primary<br/>PostgreSQL)"]
+                RDSReplica["(RDS Replica<br/>Read-only)"]
+                ElastiCache["(ElastiCache<br/>Redis Cluster)"]
             end
         end
         
-        S3Static[S3 Bucket<br/>Static Assets]
-        S3Backup[S3 Bucket<br/>DB Backups]
+        S3Static["S3 Bucket<br/>Static Assets"]
+        S3Backup["S3 Bucket<br/>DB Backups"]
         
-        CloudWatch[CloudWatch<br/>Logs + Metrics]
+        CloudWatch["CloudWatch<br/>Logs + Metrics"]
     end
     
     Users --> DNS
@@ -577,10 +639,15 @@ graph TB
 ```
 
 ### 💡 Mejores Prácticas
+
 - Mostrar **CIDR blocks** de subnets
+
 - Diferenciar **Public vs Private subnets**
+
 - Indicar **replicación** con línea punteada
+
 - Incluir **servicios de monitoreo**
+
 - Marcar **alta disponibilidad** claramente
 
 ---
@@ -588,9 +655,13 @@ graph TB
 ## 9️⃣ Diagrama de Gantt
 
 ### 📋 Cuándo Usar
+
 - Planificación de proyectos
+
 - Roadmaps de producto
+
 - Timelines de migración
+
 - Planes de implementación
 
 ### 👥 Audiencia
@@ -623,9 +694,13 @@ gantt
 ```
 
 ### 💡 Mejores Prácticas
+
 - Marcar hitos con `:milestone`
+
 - Usar `:done`, `:active`, `:crit` para estado
+
 - Agrupar en **secciones lógicas**
+
 - Mostrar **dependencias** con fechas superpuestas
 
 ---
@@ -633,9 +708,13 @@ gantt
 ## 🔟 Diagrama de Pastel (Pie Chart)
 
 ### 📋 Cuándo Usar
+
 - Distribución de recursos
+
 - Composición de usuarios
+
 - Breakdown de costos
+
 - Análisis de métricas
 
 ### 👥 Audiencia
@@ -654,9 +733,13 @@ pie title Distribución de Tráfico por Fuente
 ```
 
 ### 💡 Mejores Prácticas
+
 - Máximo **5-7 segmentos** para legibilidad
+
 - Ordenar de **mayor a menor**
+
 - Usar **colores distintos** para cada segmento
+
 - Incluir **porcentajes** en el título
 
 ---

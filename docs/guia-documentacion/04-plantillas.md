@@ -58,12 +58,19 @@ Proporcionar plantillas reutilizables para cada tipo de documento, listas para c
 
 Esta documentación está organizada por audiencia y nivel de detalle:
 
-- 📊 **[Vista Ejecutiva](01-vista-ejecutiva.md)** - Para gerentes y stakeholders de negocio
-- 🏗️ **[Arquitectura](02-arquitectura/)** - Diagramas C4 y decisiones arquitectónicas
-- 👨‍💻 **[Documentación Técnica](03-tecnico/)** - APIs, modelo de datos, stack tecnológico
-- 🔄 **[Procesos de Negocio](04-procesos-negocio/)** - Casos de uso y flujos funcionales
-- 🚀 **[Infraestructura](05-infraestructura/)** - Deployment, CI/CD, monitoreo
-- 📚 **[Apéndices](06-apendices/)** - Glosario, referencias, changelog
+- 📋 **[Requerimientos](01-requerimientos.md)** - Requisitos funcionales y no funcionales del proyecto
+
+- 📊 **[Vista Ejecutiva](02-vista-ejecutiva.md)** - Para gerentes y stakeholders de negocio
+
+- 🏗️ **[Arquitectura](03-arquitectura/)** - Diagramas C4 y decisiones arquitectónicas
+
+- 👨‍💻 **[Documentación Técnica](04-tecnico/)** - APIs, modelo de datos, stack tecnológico
+
+- 🔄 **[Procesos de Negocio](05-procesos-negocio/)** - Casos de uso y flujos funcionales
+
+- 🚀 **[Infraestructura](06-infraestructura/)** - Deployment, CI/CD, monitoreo
+
+- 📚 **[Apéndices](07-apendices/)** - Glosario, referencias, changelog
 
 ---
 
@@ -72,20 +79,27 @@ Esta documentación está organizada por audiencia y nivel de detalle:
 ### Para Desarrolladores Nuevos
 
 1. Lee la [Vista Ejecutiva](01-vista-ejecutiva.md) para entender el contexto
+
 2. Revisa el [Diagrama de Contenedores](02-arquitectura/02-contenedores.md) para conocer la arquitectura
+
 3. Consulta el [Stack Tecnológico](03-tecnico/01-stack-tecnologico.md) y [APIs](03-tecnico/03-apis.md)
+
 4. Clona el repositorio y sigue el README para configuración local
 
 ### Para Arquitectos
 
 1. Revisa todos los [diagramas C4](02-arquitectura/)
+
 2. Lee las [Decisiones de Arquitectura (ADRs)](02-arquitectura/04-decisiones.md)
+
 3. Consulta las [Integraciones](03-tecnico/04-integraciones.md)
 
 ### Para Product Owners
 
 1. Lee la [Vista Ejecutiva](01-vista-ejecutiva.md)
+
 2. Revisa [Casos de Uso](04-procesos-negocio/01-casos-uso.md)
+
 3. Consulta [Flujos Funcionales](04-procesos-negocio/02-flujos-funcionales.md)
 
 ---
@@ -93,9 +107,236 @@ Esta documentación está organizada por audiencia y nivel de detalle:
 ## 📞 Contacto
 
 - **Slack**: #[nombre-del-canal]
+
 - **Email del Equipo**: [email]
+
 - **Documentación Técnica**: [Confluence/Notion/etc]
+
 - **Board de Tareas**: [Jira/Linear/etc]
+
+---
+
+<div style="text-align: center; margin-top: 50px;">
+    <small>Última actualización: YYYY-MM-DD</small>
+</div>
+```
+
+---
+
+## 📋 Plantilla: Requerimientos
+
+```markdown
+# 📋 Requerimientos: [Nombre del Proyecto]
+
+## 🎯 Propósito
+
+Este documento define todos los requisitos funcionales y no funcionales del proyecto [Nombre del Proyecto].
+
+---
+
+## 📊 Resumen de Requerimientos
+
+| Categoría | Total | Completados | Pendientes |
+|-----------|-------|-------------|------------|
+| Requisitos Funcionales | [#] | [#] | [#] |
+| Requisitos No Funcionales | [#] | [#] | [#] |
+
+---
+
+## 🔷 Requisitos Funcionales
+
+### RF-001: [Nombre del Requisito]
+
+**Como** [tipo de usuario]
+**Quiero** [realizar una acción]
+**Para** [obtener un beneficio]
+
+**Criterios de Aceptación:**
+
+- [ ] Criterio 1
+
+- [ ] Criterio 2
+
+- [ ] Criterio 3
+
+**Prioridad:** Alta / Media / Baja
+**Módulo:** [Nombre del módulo]
+**Estimación:** [X] puntos
+**Estado:** 📝 Planificado / 🚧 En desarrollo / ✅ Completado
+
+---
+
+### RF-002: [Nombre del Requisito]
+
+[Repetir estructura...]
+
+---
+
+## ⚙️ Requisitos No Funcionales
+
+### Respuestas al Cuestionario
+
+#### 🚀 Rendimiento
+
+- **Tiempo de respuesta:** < [XXX]ms
+
+- **Usuarios concurrentes esperados:** [#]
+
+- **Throughput:** [#] TPS
+
+- **Crecimiento de datos:** [descripción]
+
+#### 🔒 Seguridad
+
+- **Nivel de seguridad:** [Básico/Medio/Alto/Crítico]
+
+- **Datos sensibles:** [listado]
+
+- **Cumplimiento normativo:** [GDPR/PCI-DSS/HIPAA/etc]
+
+- **Autenticación:** [método]
+
+#### 📈 Escalabilidad
+
+- **Escalado horizontal:** [Sí/No]
+
+- **Crecimiento esperado:** [descripción]
+
+- **Regiones geográficas:** [listado]
+
+#### ⏱️ Disponibilidad
+
+- **SLA requerido:** [99.X%]
+
+- **Operación:** [24/7 / Horario laboral]
+
+- **RPO:** [tiempo]
+
+- **RTO:** [tiempo]
+
+#### 🔧 Mantenibilidad
+
+- **Nivel de documentación:** [Básica/Estándar/Extensiva]
+
+- **Observabilidad:** [nivel]
+
+- **Versionado de API:** [Sí/No]
+
+#### 👥 Usabilidad
+
+- **Dispositivos:** [Desktop/Mobile/Tablet/Todos]
+
+- **Accesibilidad:** [WCAG nivel]
+
+- **Navegadores:** [listado]
+
+- **Multiidioma:** [Sí/No - idiomas]
+
+#### 🌐 Integración
+
+- **Sistemas externos:** [listado]
+
+- **APIs para terceros:** [Sí/No]
+
+#### 💰 Costo
+
+- **Presupuesto mensual:** $[XXX]
+
+- **Hosting:** [Cloud/On-premise/Híbrido]
+
+---
+
+### Especificación Detallada de RNF
+
+### RNF-001: Rendimiento
+
+- Tiempo de respuesta promedio: < [XXX]ms
+
+- Tiempo de respuesta P95: < [XXX]ms
+
+- Throughput mínimo: [#] TPS
+
+- Usuarios concurrentes: [#]
+
+### RNF-002: Escalabilidad
+
+- [Especificación detallada]
+
+### RNF-003: Disponibilidad
+
+- SLA: [XX.X%] uptime
+
+- Operación: [24/7]
+
+- RPO: [tiempo]
+
+- RTO: [tiempo]
+
+### RNF-004: Seguridad
+
+- Autenticación: [método]
+
+- Encriptación: [especificación]
+
+- Auditoría: [nivel]
+
+- Cumplimiento: [normativas]
+
+---
+
+## 🔗 Matriz de Trazabilidad
+
+| ID Requisito | Tipo | Componente | Test ID | Estado |
+|--------------|------|------------|---------|--------|
+| RF-001 | Funcional | [Componente] | TS-001 | ✅ / 🚧 / 📝 |
+| RF-002 | Funcional | [Componente] | TS-002 | ✅ / 🚧 / 📝 |
+| RNF-001 | No Funcional | [Infraestructura] | TN-001 | ✅ / 🚧 / 📝 |
+
+---
+
+## 🎯 Priorización (MoSCoW)
+
+### Must Have 🔴
+
+- RF-001: [Nombre]
+
+- RF-002: [Nombre]
+
+- RNF-001: [Nombre]
+
+### Should Have 🟡
+
+- RF-003: [Nombre]
+
+- RF-004: [Nombre]
+
+### Could Have 🟢
+
+- RF-005: [Nombre]
+
+### Won't Have ⚪
+
+- RF-006: [Nombre] - [Razón de exclusión]
+
+---
+
+## ✅ Estado de Completitud
+
+- [ ] Requisitos funcionales documentados
+
+- [ ] Cuestionario de RNF completado
+
+- [ ] RNF cuantificados
+
+- [ ] Matriz de trazabilidad creada
+
+- [ ] Priorización aplicada
+
+- [ ] Stakeholders han aprobado
+
+- [ ] Riesgos evaluados
+
+- [ ] Estimaciones realizadas
 
 ---
 
@@ -114,9 +355,13 @@ Esta documentación está organizada por audiencia y nivel de detalle:
 ## 🎯 Resumen Ejecutivo
 
 [3-4 párrafos explicando:
+
 1. Qué problema de negocio resuelve este sistema
+
 2. Cómo lo resuelve (alto nivel, sin tecnicismos)
+
 3. Qué valor aporta a la organización
+
 4. Métricas de éxito]
 
 ---
@@ -126,7 +371,9 @@ Esta documentación está organizada por audiencia y nivel de detalle:
 ### Objetivos Estratégicos
 
 - **Objetivo 1**: [Descripción]
+
 - **Objetivo 2**: [Descripción]
+
 - **Objetivo 3**: [Descripción]
 
 ### Métricas de Éxito (KPIs)
@@ -152,8 +399,11 @@ Esta documentación está organizada por audiencia y nivel de detalle:
 ### Desglose de Beneficios
 
 - **Ahorro en costos operativos**: $[XXX] por [concepto]
+
 - **Aumento en productividad**: [XX]% en [área]
+
 - **Reducción de errores**: [XX]% en [proceso]
+
 - **Nuevos ingresos**: $[XXX] por [nuevo canal/servicio]
 
 ---
@@ -165,12 +415,17 @@ Esta documentación está organizada por audiencia y nivel de detalle:
 **Perfil:** [Breve descripción del usuario]
 
 **Casos de Uso:**
+
 1. [Caso de uso 1]
+
 2. [Caso de uso 2]
+
 3. [Caso de uso 3]
 
 **Beneficios:**
+
 - [Beneficio 1]
+
 - [Beneficio 2]
 
 ### Usuario Tipo 2: [Nombre del Rol]
@@ -206,6 +461,7 @@ graph TB
 ### Dependencias Críticas
 
 - **[Sistema/Servicio 1]**: [Por qué es crítico y qué pasa si falla]
+
 - **[Sistema/Servicio 2]**: [Por qué es crítico y qué pasa si falla]
 
 ---
@@ -215,6 +471,7 @@ graph TB
 ### Completado ✅
 
 - [Hito 1] - [Fecha]
+
 - [Hito 2] - [Fecha]
 
 ### En Progreso 🚧
@@ -224,6 +481,7 @@ graph TB
 ### Planificado 📝
 
 - [Q1 2026] [Feature/Mejora]
+
 - [Q2 2026] [Feature/Mejora]
 
 ---
@@ -291,11 +549,15 @@ Hemos decidido [DECISIÓN ESPECÍFICA].
 **Descripción:** [Breve descripción]
 
 **Pros:**
+
 - ✅ [Pro 1]
+
 - ✅ [Pro 2]
 
 **Contras:**
+
 - ❌ [Contra 1]
+
 - ❌ [Contra 2]
 
 **Razón de rechazo:** [Por qué no elegimos esta]
@@ -311,11 +573,13 @@ Hemos decidido [DECISIÓN ESPECÍFICA].
 #### Positivas ✅
 
 - [Consecuencia positiva 1]
+
 - [Consecuencia positiva 2]
 
 #### Negativas ⚠️
 
 - [Consecuencia negativa o trade-off 1]
+
 - [Consecuencia negativa o trade-off 2]
 
 #### Neutral ℹ️
@@ -327,11 +591,15 @@ Hemos decidido [DECISIÓN ESPECÍFICA].
 ### Validación
 
 **Criterios de Éxito:**
+
 - [ ] [Criterio 1]
+
 - [ ] [Criterio 2]
 
 **Métricas a Monitorear:**
+
 - [Métrica 1]: Target [valor]
+
 - [Métrica 2]: Target [valor]
 
 ---
@@ -339,7 +607,9 @@ Hemos decidido [DECISIÓN ESPECÍFICA].
 ### Referencias
 
 - [Enlace a documentación relevante]
+
 - [Enlace a spike/POC realizado]
+
 - [Artículo o paper que influyó]
 
 ---
@@ -481,7 +751,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 **Validación:**
 
 - `name`: String, requerido, 3-100 caracteres
+
 - `status`: Enum ["active", "inactive"], requerido
+
 - `metadata`: Object, opcional
 
 **Respuesta 201:**
@@ -498,6 +770,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 **Errores:**
 
 - `400` - Validación fallida
+
 - `409` - Conflicto (ej: nombre duplicado)
 
 ---
@@ -519,6 +792,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 **Errores:**
 
 - `404` - Recurso no encontrado
+
 - `409` - No se puede eliminar (ej: tiene dependencias)
 
 ---
@@ -576,9 +850,13 @@ curl -X GET https://api.example.com/v1/orders/<ORDER_ID> \
 ## 🚀 Cómo Usar Estas Plantillas
 
 1. **Copia la plantilla** correspondiente
+
 2. **Reemplaza** los placeholders `[...]` con información real
+
 3. **Elimina** secciones que no apliquen
+
 4. **Personaliza** según necesidades específicas
+
 5. **Valida** con el checklist de formato
 
 ---

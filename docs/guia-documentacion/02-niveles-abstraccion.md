@@ -21,8 +21,11 @@ Entender cómo estructurar la información según la audiencia, evitando el erro
 ```
 
 **Problema:** 
+
 - El CEO quiere ver ROI, no tablas de base de datos
+
 - El desarrollador necesita APIs, no objetivos estratégicos
+
 - Nadie encuentra lo que necesita rápidamente
 
 ---
@@ -73,16 +76,25 @@ graph TB
 ## 📊 Nivel 1: Vista Ejecutiva
 
 ### 👔 Audiencia
+
 - CEO, CTO, VP Engineering
+
 - Product Owners
+
 - Gerentes de proyecto
+
 - Stakeholders de negocio
 
 ### 🎯 Qué Necesitan Saber
+
 - **Propósito del sistema**: ¿Qué problema resuelve?
+
 - **Valor de negocio**: ¿Por qué invertimos en esto?
+
 - **Usuarios principales**: ¿Quién lo usa?
+
 - **Métricas de éxito**: ¿Cómo medimos el impacto?
+
 - **Riesgos y dependencias**: ¿Qué nos puede bloquear?
 
 ### 📄 Contenido
@@ -107,7 +119,9 @@ permitiendo a los clientes realizar compras 24/7 sin intervención humana.
 ## 👥 Usuarios Principales
 
 - **Clientes**: 10,000 usuarios registrados
+
 - **Administradores**: 5 personas del equipo de ventas
+
 - **Soporte**: 3 agentes de atención al cliente
 
 ## 📊 Vista General del Sistema
@@ -123,16 +137,25 @@ permitiendo a los clientes realizar compras 24/7 sin intervención humana.
 ## 🏗️ Nivel 2: Arquitectura de Alto Nivel
 
 ### 👥 Audiencia
+
 - Arquitectos de software
+
 - Tech Leads
+
 - Engineering Managers
+
 - Arquitectos empresariales
 
 ### 🎯 Qué Necesitan Saber
+
 - **Estructura general**: ¿Cómo está organizado el sistema?
+
 - **Tecnologías principales**: ¿Qué stack usamos?
+
 - **Decisiones arquitectónicas**: ¿Por qué elegimos X sobre Y?
+
 - **Patrones utilizados**: ¿Microservicios? Monolito? Serverless?
+
 - **Integraciones**: ¿Con qué sistemas externos interactúa?
 
 ### 📄 Contenido
@@ -141,16 +164,16 @@ permitiendo a los clientes realizar compras 24/7 sin intervención humana.
 
 ```mermaid
 graph TB
-    Cliente[👤 Cliente]
-    Admin[👤 Administrador]
+    Cliente["👤 Cliente"]
+    Admin["👤 Administrador"]
     
     subgraph "Nuestro Sistema"
-        SistemaVentas[🏢 Sistema de Ventas Online]
+        SistemaVentas["🏢 Sistema de Ventas Online"]
     end
     
-    PagoExt[💳 Stripe<br/>Sistema de Pagos]
-    EmailExt[📧 SendGrid<br/>Email Service]
-    InventarioExt[📦 ERP Legacy<br/>Sistema de Inventario]
+    PagoExt["💳 Stripe<br/>Sistema de Pagos"]
+    EmailExt["📧 SendGrid<br/>Email Service"]
+    InventarioExt["📦 ERP Legacy<br/>Sistema de Inventario"]
     
     Cliente -->|Realiza pedidos| SistemaVentas
     Admin -->|Gestiona productos| SistemaVentas
@@ -172,16 +195,16 @@ graph TB
 ```mermaid
 graph TB
     subgraph "Sistema de Ventas Online"
-        WebApp[Web Application<br/>React + TypeScript]
-        APIGateway[API Gateway<br/>Node.js + Express]
-        AuthService[Auth Service<br/>Node.js]
-        OrderService[Order Service<br/>Node.js]
+        WebApp["Web Application<br/>React + TypeScript"]
+        APIGateway["API Gateway<br/>Node.js + Express"]
+        AuthService["Auth Service<br/>Node.js"]
+        OrderService["Order Service<br/>Node.js"]
         
-        MainDB[(PostgreSQL<br/>Órdenes y Productos)]
-        Cache[(Redis<br/>Sesiones y Cache)]
+        MainDB["(PostgreSQL<br/>Órdenes y Productos)"]
+        Cache["(Redis<br/>Sesiones y Cache)"]
     end
     
-    Cliente[👤 Cliente] -->|HTTPS| WebApp
+    Cliente["👤 Cliente"] -->|HTTPS| WebApp
     WebApp -->|JSON/REST| APIGateway
     APIGateway --> AuthService
     APIGateway --> OrderService
@@ -190,7 +213,7 @@ graph TB
     AuthService --> Cache
     OrderService --> MainDB
     
-    OrderService -->|API| StripeAPI[💳 Stripe API]
+    OrderService -->|API| StripeAPI["💳 Stripe API"]
     
     style WebApp fill:#42a5f5,color:#fff
     style APIGateway fill:#66bb6a,color:#fff
@@ -205,7 +228,9 @@ graph TB
 **ADR-001: Microservicios vs Monolito**
 
 - **Decisión**: Arquitectura de microservicios modulares
+
 - **Contexto**: Necesidad de escalar componentes independientemente
+
 - **Consecuencias**: 
   - ✅ Escalabilidad granular
   - ✅ Deploy independiente
@@ -215,8 +240,11 @@ graph TB
 **ADR-002: PostgreSQL como Base de Datos Principal**
 
 - **Decisión**: PostgreSQL sobre MySQL
+
 - **Contexto**: Necesidad de transacciones ACID y soporte JSON
+
 - **Alternativas consideradas**: MySQL, MongoDB
+
 - **Consecuencias**: 
   - ✅ Transacciones robustas
   - ✅ Soporte JSON nativo
@@ -230,16 +258,25 @@ graph TB
 ## 👨‍💻 Nivel 3: Documentación Técnica
 
 ### 👥 Audiencia
+
 - Desarrolladores backend
+
 - Desarrolladores frontend
+
 - QA Engineers
+
 - Nuevos miembros del equipo
 
 ### 🎯 Qué Necesitan Saber
+
 - **Estructura de componentes**: ¿Cómo está organizado el código?
+
 - **APIs y contratos**: ¿Qué endpoints existen?
+
 - **Modelo de datos**: ¿Cómo se estructuran las tablas?
+
 - **Flujos de lógica**: ¿Cómo funciona cada feature?
+
 - **Cómo contribuir**: ¿Cómo hago cambios?
 
 ### 📄 Contenido
@@ -249,23 +286,23 @@ graph TB
 ```mermaid
 graph TB
     subgraph "Order Service"
-        Controller[Order Controller]
-        Validator[Order Validator]
-        BusinessLogic[Order Business Logic]
-        PaymentClient[Payment Client]
-        EmailClient[Email Client]
-        Repository[Order Repository]
+        Controller["Order Controller"]
+        Validator["Order Validator"]
+        BusinessLogic["Order Business Logic"]
+        PaymentClient["Payment Client"]
+        EmailClient["Email Client"]
+        Repository["Order Repository"]
     end
     
-    API[API Gateway] --> Controller
+    API["API Gateway"] --> Controller
     Controller --> Validator
     Validator --> BusinessLogic
     BusinessLogic --> PaymentClient
     BusinessLogic --> EmailClient
     BusinessLogic --> Repository
     
-    PaymentClient --> Stripe[Stripe API]
-    EmailClient --> SendGrid[SendGrid API]
+    PaymentClient --> Stripe["Stripe API"]
+    EmailClient --> SendGrid["SendGrid API"]
     Repository --> DB[(PostgreSQL)]
     
     style Controller fill:#42a5f5,color:#fff
@@ -387,16 +424,25 @@ sequenceDiagram
 ## 🔧 Nivel 4: Infraestructura y Operaciones
 
 ### 👥 Audiencia
+
 - DevOps Engineers
+
 - SRE (Site Reliability Engineers)
+
 - Sysadmins
+
 - Security Engineers
 
 ### 🎯 Qué Necesitan Saber
+
 - **Arquitectura de deployment**: ¿Dónde y cómo se despliega?
+
 - **CI/CD Pipeline**: ¿Cómo llega el código a producción?
+
 - **Monitoreo y alertas**: ¿Cómo sabemos si algo falla?
+
 - **Estrategia de backups**: ¿Cómo recuperamos datos?
+
 - **Escalabilidad**: ¿Cómo crece el sistema?
 
 ### 📄 Contenido
@@ -408,26 +454,26 @@ graph TB
     subgraph "AWS Cloud"
         subgraph "VPC"
             subgraph "Public Subnet"
-                ALB[Application Load Balancer]
-                NAT[NAT Gateway]
+                ALB["Application Load Balancer"]
+                NAT["NAT Gateway"]
             end
             
             subgraph "Private Subnet - App"
-                ECS1[ECS Fargate<br/>Web App]
-                ECS2[ECS Fargate<br/>API Services]
+                ECS1["ECS Fargate<br/>Web App"]
+                ECS2["ECS Fargate<br/>API Services"]
             end
             
             subgraph "Private Subnet - Data"
-                RDS[(RDS PostgreSQL<br/>Multi-AZ)]
-                ElastiCache[(ElastiCache<br/>Redis)]
+                RDS["(RDS PostgreSQL<br/>Multi-AZ)"]
+                ElastiCache["(ElastiCache<br/>Redis)"]
             end
         end
         
-        S3[S3<br/>Static Assets]
-        CloudFront[CloudFront CDN]
+        S3["S3<br/>Static Assets"]
+        CloudFront["CloudFront CDN"]
     end
     
-    Users[👥 Usuarios] --> CloudFront
+    Users["👥 Usuarios"] --> CloudFront
     CloudFront --> S3
     CloudFront --> ALB
     ALB --> ECS1
@@ -447,19 +493,19 @@ graph TB
 
 ```mermaid
 graph LR
-    Dev[👨‍💻 Developer] -->|git push| GitHub[GitHub]
-    GitHub -->|webhook| Actions[GitHub Actions]
+    Dev["👨‍💻 Developer"] -->|git push| GitHub[GitHub]
+    GitHub -->|webhook| Actions["GitHub Actions"]
     
-    Actions --> Test[Run Tests]
-    Test --> Build[Build Docker Image]
-    Build --> Scan[Security Scan]
-    Scan --> Push[Push to ECR]
+    Actions --> Test["Run Tests"]
+    Test --> Build["Build Docker Image"]
+    Build --> Scan["Security Scan"]
+    Scan --> Push["Push to ECR"]
     
-    Push --> DeployStg[Deploy to Staging]
-    DeployStg --> E2E[E2E Tests]
+    Push --> DeployStg["Deploy to Staging"]
+    DeployStg --> E2E["E2E Tests"]
     E2E --> Approve{Manual Approval}
-    Approve -->|✅| DeployProd[Deploy to Production]
-    Approve -->|❌| Rollback[No Deploy]
+    Approve -->|✅| DeployProd["Deploy to Production"]
+    Approve -->|❌| Rollback["No Deploy"]
     
     style Test fill:#4caf50,color:#fff
     style Build fill:#2196f3,color:#fff
@@ -470,15 +516,23 @@ graph LR
 #### Monitoreo
 
 **Métricas Clave:**
+
 - **Disponibilidad**: Target 99.9% uptime
+
 - **Latencia**: P95 < 500ms, P99 < 1s
+
 - **Tasa de error**: < 0.1%
+
 - **Throughput**: 1000 req/min en promedio
 
 **Alertas Configuradas:**
+
 - Error rate > 1% por 5 minutos → PagerDuty
+
 - Latencia P99 > 2s por 10 minutos → Slack
+
 - CPU > 80% por 15 minutos → Email
+
 - Database connections > 90% → PagerDuty
 
 ### ⏱️ Tiempo de Lectura Esperado
@@ -509,23 +563,35 @@ El sistema reduce costos operativos en 30% al automatizar el proceso de ventas.
 ### 2. 🎭 Usa el Lenguaje de la Audiencia
 
 **Para Ejecutivos:**
+
 - ROI, KPIs, métricas de negocio
+
 - Riesgos y mitigaciones
+
 - Timelines y costos
 
 **Para Arquitectos:**
+
 - Patrones, trade-offs, decisiones
+
 - Escalabilidad, performance
+
 - Integraciones y dependencias
 
 **Para Desarrolladores:**
+
 - APIs, endpoints, contratos
+
 - Modelos de datos, esquemas
+
 - Ejemplos de código
 
 **Para DevOps:**
+
 - Infraestructura como código
+
 - Pipelines, deployments
+
 - Métricas y alertas
 
 ---
@@ -562,31 +628,51 @@ El sistema utiliza microservicios para garantizar escalabilidad.
 Al documentar un proyecto, verifica que cada nivel:
 
 **Nivel Ejecutivo:**
+
 - [ ] Explica el **propósito de negocio** claramente
+
 - [ ] Muestra **métricas de éxito** medibles
+
 - [ ] Usa **lenguaje no técnico**
+
 - [ ] Incluye **diagrama C4 L1** solamente
+
 - [ ] Se lee en **menos de 5 minutos**
 
 **Nivel Arquitectura:**
+
 - [ ] Muestra **estructura general** del sistema
+
 - [ ] Documenta **decisiones arquitectónicas** (ADRs)
+
 - [ ] Incluye **diagramas C4 L1 y L2**
+
 - [ ] Explica **integraciones** con sistemas externos
+
 - [ ] Justifica **elecciones tecnológicas**
 
 **Nivel Técnico:**
+
 - [ ] Documenta **todas las APIs** con ejemplos
+
 - [ ] Incluye **modelo de datos completo**
+
 - [ ] Muestra **flujos de lógica** con diagramas de secuencia
+
 - [ ] Proporciona **diagramas C4 L3** de componentes clave
+
 - [ ] Tiene **ejemplos de código** relevantes
 
 **Nivel Operacional:**
+
 - [ ] Documenta **arquitectura de deployment**
+
 - [ ] Explica **pipeline CI/CD**
+
 - [ ] Define **métricas y alertas**
+
 - [ ] Incluye **procedimientos de rollback**
+
 - [ ] Documenta **estrategia de backups**
 
 ---
