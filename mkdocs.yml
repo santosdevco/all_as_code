@@ -64,13 +64,27 @@ markdown_extensions:
   - tables
   - toc:
       permalink: true
+
 nav:
-  - '🏠 Inicio': index.md
-  - '1️⃣ Tipos de Diagramas': 01_abstraccion.md
-  - '2️⃣ Rendimiento (Secuencia)': 02_rendimiento.md
-  - '3️⃣ Seguridad (DFD)': 03_seguridad.md
-  - '4️⃣ Conclusiones': 04_conclusiones.md
-  - '🚀 Tutorial MkDocs + Mermaid': 05_tutorial_mkdocs.md
+  - Inicio: index.md
+  - Tutorial de Diagramas y Documentación:
+    - '🏠 Inicio': all-as-code/index.md
+    - '1️⃣ Tipos de Diagramas': all-as-code/01_abstraccion.md
+    - '2️⃣ Rendimiento (Secuencia)': all-as-code/02_rendimiento.md
+    - '3️⃣ Seguridad (DFD)': all-as-code/03_seguridad.md
+    - '4️⃣ Conclusiones': all-as-code/04_conclusiones.md
+    - '🚀 Tutorial MkDocs + Mermaid': all-as-code/05_tutorial_mkdocs.md
+
+  - Guía de Documentación:
+      - 📖 Introducción: guia-documentacion/00-intro.md
+      - 📝 Formato y Convenciones: guia-documentacion/01-formato.md
+      - 🎭 Niveles de Abstracción: guia-documentacion/02-niveles-abstraccion.md
+      - 📊 Catálogo de Diagramas: guia-documentacion/03-diagramas.md
+      - 📋 Plantillas Reutilizables: guia-documentacion/04-plantillas.md
+      - 🤖 Prompts para Agentes IA: guia-documentacion/05-prompts.md
+      - 🔄 Workflow de Integración: guia-documentacion/06-workflow.md
+      - 📚 Glosario: guia-documentacion/07-glosario.md
+      - 🔧 Corrección de Formato: guia-documentacion/08-correccion-formato.md
 
 extra:
   version:
