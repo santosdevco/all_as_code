@@ -1,0 +1,266 @@
+{
+  "07": {
+    "title": "Cuestionario de Deployment e Infraestructura",
+    "description": "Completa este formulario para generar un prompt personalizado que documente la infraestructura y procesos de deployment del proyecto.",
+    "warning": {
+      "title": "Necesitas información del equipo de DevOps",
+      "message": "Algunas preguntas requieren conocimiento específico sobre cómo se despliega en producción. Si tienes dudas:",
+      "items": [
+        "Pregunta al DevOps/SRE del equipo",
+        "Revisa la documentación de infraestructura (si existe)",
+        "Marca \"No sé / A investigar\" y el prompt generará un placeholder"
+      ]
+    },
+    "sections": [
+      {
+        "icon": "📦",
+        "title": "1. Información General del Proyecto",
+        "questions": [
+          {
+            "id": "projectName",
+            "type": "text",
+            "label": "Nombre del Proyecto:",
+            "placeholder": "Ej: E-commerce Backend API",
+            "required": true,
+            "help": "El nombre que aparecerá en la documentación"
+          }
+        ]
+      },
+      {
+        "icon": "🐳",
+        "title": "2. Contenedorización (Docker)",
+        "questions": [
+          {
+            "id": "hasDockerfile",
+            "type": "radio",
+            "label": "¿El proyecto tiene Dockerfile?",
+            "options": [
+              {"value": "si", "label": "Sí"},
+              {"value": "no", "label": "No"}
+            ],
+            "default": "si"
+          },
+          {
+            "id": "dockerDev",
+            "type": "radio",
+            "label": "¿Se usa Docker en desarrollo (local)?",
+            "options": [
+              {"value": "si", "label": "Sí"},
+              {"value": "no", "label": "No"},
+              {"value": "nolose", "label": "No sé"}
+            ],
+            "default": "si"
+          },
+          {
+            "id": "dockerProd",
+            "type": "radio",
+            "label": "¿Se usa Docker en producción?",
+            "options": [
+              {"value": "si", "label": "Sí"},
+              {"value": "no", "label": "No"},
+              {"value": "nolose", "label": "No sé / A investigar"}
+            ],
+            "default": "nolose",
+            "help": "⚠️ Pregunta al DevOps si Docker se usa en producción o si es solo para desarrollo"
+          },
+          {
+            "id": "hasCompose",
+            "type": "radio",
+            "label": "¿Existe docker-compose.yml?",
+            "options": [
+              {"value": "si", "label": "Sí"},
+              {"value": "no", "label": "No"}
+            ],
+            "default": "si"
+          }
+        ]
+      },
+      {
+        "icon": "☸️",
+        "title": "3. Orquestación y Plataforma",
+        "questions": [
+          {
+            "id": "deployPlatform",
+            "type": "select",
+            "label": "¿Dónde se despliega en PRODUCCIÓN?",
+            "options": [
+              {"value": "nolose", "label": "No sé / A investigar"},
+              {"value": "kubernetes", "label": "Kubernetes (EKS, GKE, AKS, etc.)"},
+              {"value": "ecs", "label": "AWS ECS/Fargate"},
+              {"value": "ec2", "label": "AWS EC2 (máquinas virtuales)"},
+              {"value": "heroku", "label": "Heroku"},
+              {"value": "vercel", "label": "Vercel"},
+              {"value": "netlify", "label": "Netlify"},
+              {"value": "digitalocean", "label": "DigitalOcean"},
+              {"value": "azure", "label": "Azure App Service"},
+              {"value": "gcp", "label": "Google Cloud Run / App Engine"},
+              {"value": "onpremise", "label": "On-Premise (servidor propio)"},
+              {"value": "otro", "label": "Otro"}
+            ],
+            "default": "nolose",
+            "showOther": true,
+            "otherPlaceholder": "Ej: Railway, Render, etc.",
+            "help": "⚠️ Pregunta al DevOps en qué plataforma corre la aplicación en producción"
+          },
+          {
+            "id": "hasK8s",
+            "type": "radio",
+            "label": "¿Hay archivos de Kubernetes (k8s)?",
+            "options": [
+              {"value": "si", "label": "Sí"},
+              {"value": "no", "label": "No"},
+              {"value": "nolose", "label": "No revisé"}
+            ],
+            "default": "no",
+            "help": "Busca carpetas como: k8s/, kubernetes/, manifests/, charts/"
+          }
+        ]
+      },
+      {
+        "icon": "🔄",
+        "title": "4. CI/CD (Integración y Despliegue Continuo)",
+        "questions": [
+          {
+            "id": "cicdTool",
+            "type": "select",
+            "label": "¿Qué herramienta de CI/CD se usa?",
+            "options": [
+              {"value": "nolose", "label": "No sé / A investigar"},
+              {"value": "github-actions", "label": "GitHub Actions"},
+              {"value": "gitlab-ci", "label": "GitLab CI"},
+              {"value": "jenkins", "label": "Jenkins"},
+              {"value": "circleci", "label": "CircleCI"},
+              {"value": "travis", "label": "Travis CI"},
+              {"value": "azure-devops", "label": "Azure DevOps"},
+              {"value": "bitbucket", "label": "Bitbucket Pipelines"},
+              {"value": "ninguno", "label": "Ninguno (deployment manual)"},
+              {"value": "otro", "label": "Otro"}
+            ],
+            "default": "nolose",
+            "showOther": true,
+            "otherPlaceholder": "Ej: TeamCity, Bamboo, etc.",
+            "help": "Busca: .github/workflows/, .gitlab-ci.yml, Jenkinsfile, .circleci/, etc."
+          },
+          {
+            "id": "autoDeploy",
+            "type": "radio",
+            "label": "¿Se despliega automáticamente al hacer push/merge?",
+            "options": [
+              {"value": "si", "label": "Sí"},
+              {"value": "no", "label": "No"},
+              {"value": "nolose", "label": "No sé"}
+            ],
+            "default": "nolose",
+            "help": "⚠️ Pregunta al DevOps si el deploy es automático o manual"
+          }
+        ]
+      },
+      {
+        "icon": "🌍",
+        "title": "5. Ambientes Disponibles",
+        "questions": [
+          {
+            "id": "environments",
+            "type": "checkbox",
+            "label": "¿Qué ambientes existen? (Marca todos los que apliquen)",
+            "options": [
+              {"value": "local", "label": "Local (desarrollo en máquina del dev)", "checked": true},
+              {"value": "dev", "label": "Development (servidor compartido de dev)"},
+              {"value": "qa", "label": "QA/Testing"},
+              {"value": "staging", "label": "Staging (pre-producción)"},
+              {"value": "prod", "label": "Producción", "checked": true}
+            ]
+          }
+        ]
+      },
+      {
+        "icon": "📊",
+        "title": "6. Monitoreo y Observabilidad",
+        "questions": [
+          {
+            "id": "monitoring",
+            "type": "checkbox",
+            "label": "¿Qué herramientas de monitoreo se usan? (Marca todas las que apliquen)",
+            "options": [
+              {"value": "none", "label": "Ninguna / No sé", "checked": true},
+              {"value": "cloudwatch", "label": "AWS CloudWatch"},
+              {"value": "datadog", "label": "Datadog"},
+              {"value": "newrelic", "label": "New Relic"},
+              {"value": "prometheus", "label": "Prometheus + Grafana"},
+              {"value": "elastic", "label": "Elastic Stack (ELK)"},
+              {"value": "sentry", "label": "Sentry (errores)"},
+              {"value": "otro", "label": "Otro"}
+            ],
+            "showOther": true,
+            "otherPlaceholder": "Ej: Splunk, AppDynamics, etc."
+          }
+        ]
+      },
+      {
+        "icon": "🗄️",
+        "title": "7. Base de Datos y Backups",
+        "questions": [
+          {
+            "id": "hasBackups",
+            "type": "radio",
+            "label": "¿Hay backups automáticos de la base de datos?",
+            "options": [
+              {"value": "si", "label": "Sí"},
+              {"value": "no", "label": "No"},
+              {"value": "nolose", "label": "No sé"}
+            ],
+            "default": "nolose",
+            "help": "⚠️ Pregunta al DevOps sobre la estrategia de backups"
+          },
+          {
+            "id": "migrationTool",
+            "type": "select",
+            "label": "¿Cómo se gestionan las migraciones de BD?",
+            "options": [
+              {"value": "nolose", "label": "No sé / A investigar"},
+              {"value": "prisma", "label": "Prisma Migrate"},
+              {"value": "typeorm", "label": "TypeORM Migrations"},
+              {"value": "sequelize", "label": "Sequelize Migrations"},
+              {"value": "flyway", "label": "Flyway"},
+              {"value": "liquibase", "label": "Liquibase"},
+              {"value": "alembic", "label": "Alembic (Python)"},
+              {"value": "manual", "label": "SQL scripts manuales"},
+              {"value": "ninguno", "label": "No hay migraciones"},
+              {"value": "otro", "label": "Otro"}
+            ],
+            "default": "nolose"
+          }
+        ]
+      },
+      {
+        "icon": "📈",
+        "title": "8. Escalabilidad y Alta Disponibilidad",
+        "questions": [
+          {
+            "id": "scales",
+            "type": "radio",
+            "label": "¿La aplicación escala horizontalmente (múltiples instancias)?",
+            "options": [
+              {"value": "si", "label": "Sí"},
+              {"value": "no", "label": "No (solo 1 instancia)"},
+              {"value": "nolose", "label": "No sé"}
+            ],
+            "default": "nolose"
+          },
+          {
+            "id": "hasLB",
+            "type": "radio",
+            "label": "¿Hay load balancer?",
+            "options": [
+              {"value": "si", "label": "Sí"},
+              {"value": "no", "label": "No"},
+              {"value": "nolose", "label": "No sé"}
+            ],
+            "default": "nolose"
+          }
+        ]
+      }
+    ],
+    "template": "# ROL\nEres un DevOps Engineer/SRE documentando la infraestructura y procesos operacionales.\n\n# CONTEXTO\nDocumentar la infraestructura y estrategia de deployment del proyecto: {{projectName}}\n\n# INFORMACIÓN DEL CUESTIONARIO\n\n## Docker y Contenedorización\n- ¿Tiene Dockerfile?: {{hasDockerfile}}\n- ¿Se usa Docker en desarrollo?: {{dockerDev}}\n- ¿Se usa Docker en producción?: {{dockerProd}}\n- ¿Tiene docker-compose.yml?: {{hasCompose}}\n\n## Plataforma de Deployment\n- Plataforma en PRODUCCIÓN: {{deployPlatform}}\n- ¿Tiene archivos Kubernetes?: {{hasK8s}}\n\n## CI/CD\n- Herramienta de CI/CD: {{cicdTool}}\n- ¿Deploy automático?: {{autoDeploy}}\n\n## Ambientes\nAmbientes disponibles: {{environments}}\n\n## Monitoreo\nHerramientas de monitoreo: {{monitoring}}\n\n## Base de Datos\n- ¿Backups automáticos?: {{hasBackups}}\n- Gestión de migraciones: {{migrationTool}}\n\n## Escalabilidad\n- ¿Escala horizontalmente?: {{scales}}\n- ¿Tiene load balancer?: {{hasLB}}\n\n# INPUT\n[PEGAR OUTPUT DEL PROMPT 01]\n\n# ARCHIVOS A ANALIZAR\n\n- Dockerfile, docker-compose.yml\n- Archivos de CI/CD (.github/workflows/, .gitlab-ci.yml, Jenkinsfile, etc.)\n- Archivos de infraestructura como código (terraform/, cloudformation/, k8s/, manifests/)\n- Scripts de deployment\n\n# TAREA\nGenera 3 archivos de documentación de infraestructura basándote en el análisis del código y la información proporcionada.\n\n## ARCHIVO 1: ai_docs/06-infraestructura/01-deployment.md\n\n[Documenta la arquitectura de deployment con diagramas Mermaid y explicaciones detalladas]\n\n## ARCHIVO 2: ai_docs/06-infraestructura/02-ci-cd.md\n\n[Documenta el pipeline de CI/CD con flowcharts y detalles de cada stage]\n\n## ARCHIVO 3: ai_docs/06-infraestructura/03-monitoreo.md\n\n[Documenta estrategia de monitoreo, métricas, logs y alertas]\n\n# REGLAS CRÍTICAS\n\n1. Si algo está marcado como \"No sé / A investigar\": Genera un placeholder y marca como [REQUIERE VALIDACIÓN POR DEVOPS]\n2. Analiza archivos reales del proyecto\n3. Genera diagramas Mermaid basados en la info proporcionada\n4. Sé específico - documenta LO QUE EXISTE\n5. Marca incertidumbres con ⚠️ y [REQUIERE VALIDACIÓN]\n\n# ARCHIVOS DE SALIDA\n\n1. ai_docs/06-infraestructura/01-deployment.md\n2. ai_docs/06-infraestructura/02-ci-cd.md\n3. ai_docs/06-infraestructura/03-monitoreo.md\n\n⚠️ IMPORTANTE:\n- Crea la carpeta ai_docs/06-infraestructura/ si no existe\n- Genera los 3 archivos en esa carpeta\n- Guarda cada archivo automáticamente\n\n# OUTPUT\nLos 3 archivos markdown completos."
+  }
+}

@@ -41,6 +41,12 @@ plugins:
       version: 11.12.0
       arguments:
         theme: default
+  - swagger-ui-tag:
+      background: White
+      docExpansion: none
+      filter: ""
+      syntaxHighlightTheme: monokai
+      tryItOutEnabled: true
 
 markdown_extensions:
   - pymdownx.highlight:
@@ -82,11 +88,22 @@ nav:
       - 🎭 Niveles de Abstracción: guia-documentacion/02-niveles-abstraccion.md
       - 📊 Catálogo de Diagramas: guia-documentacion/03-diagramas.md
       - 📋 Plantillas Reutilizables: guia-documentacion/04-plantillas.md
-      - 🤖 Prompts para Agentes IA: guia-documentacion/05-prompts.md
       - 🔄 Workflow de Integración: guia-documentacion/06-workflow.md
       - 📚 Glosario: guia-documentacion/07-glosario.md
       - 🔧 Corrección de Formato: guia-documentacion/08-correccion-formato.md
       - 📋 Análisis de Requerimientos: guia-documentacion/09-requerimientos.md
+      - 🔌 Integración Swagger UI: guia-documentacion/11-integracion-swagger.md
+  
+  - 🤖 Sistema de Documentación con IA:
+      - 📖 Introducción al Sistema: prompts/introduccion.md
+      - 🚀 Deployment e Infraestructura:
+          - 🎯 Generar Docs: prompts/deployment/deployment.md
+          - Paso 1 - Análisis: prompts/deployment/01-analisis.md
+          - Paso 2 - Salida: prompts/deployment/02-salida.md
+  
+  - 🎮 Demos:
+      - 📦 Instalación Swagger: ejemplos/instalacion-swagger.md
+      - Swagger UI Interactivo: ejemplos/swagger-demo.md
 
 extra:
   version:
@@ -94,4 +111,11 @@ extra:
     default: 1.5.0
 
 extra_css:
-  - stylesheets/extra.css 
+  - stylesheets/extra.css
+  - javascripts/prompt-builder.css
+
+extra_javascript:
+  - https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js
+  - https://cdn.jsdelivr.net/npm/handlebars@4.7.8/dist/handlebars.min.js
+  - javascripts/prompt-helpers.js
+  - javascripts/prompt-builder-clean.js 

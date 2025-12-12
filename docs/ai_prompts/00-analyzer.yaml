@@ -1,0 +1,338 @@
+title: "🔍 Análisis Inicial del Proyecto"
+description: "Este prompt analiza el código y genera un cuestionario YAML personalizado con solo las preguntas necesarias."
+
+# ============================================
+# PROMPT DE FASE 1: ANÁLISIS INICIAL
+# ============================================
+# Este prompt se ejecuta PRIMERO para:
+# 1. Analizar el código del proyecto
+# 2. Identificar qué información se puede extraer automáticamente
+# 3. Generar un archivo YAML con:
+#    - Preguntas solo sobre lo que NO se encontró
+#    - Template pre-llenado con la información encontrada
+# ============================================
+
+template: |
+  # ROL
+  Eres un Senior Software Architect y DevOps Expert que analiza proyectos para generar cuestionarios dinámicos.
+
+  # CONTEXTO
+  Vas a analizar el proyecto para identificar:
+  - ✅ Qué información PUEDES extraer del código
+  - ❌ Qué información NO puedes determinar con certeza
+  
+  Tu objetivo es generar un archivo YAML que contenga SOLO las preguntas necesarias.
+
+  # TAREA
+
+  ## PASO 1: Analizar el Proyecto Completo
+
+  Examina minuciosamente:
+
+  ### 🐳 Contenedorización
+  - [ ] ¿Hay Dockerfile? → Analiza: imagen base, puertos, ENV vars, comandos
+  - [ ] ¿Hay docker-compose.yml? → Analiza: servicios, volúmenes, networks, ports
+  - [ ] ¿Se usa Docker en múltiples ambientes? → Busca: Dockerfile.dev, Dockerfile.prod
+  
+  ### ☁️ Cloud Provider
+  - [ ] ¿Hay archivos de AWS? → Busca: cloudformation/, terraform/ con provider aws
+  - [ ] ¿Hay archivos de IBM Cloud? → Busca: ibmcloud.yml, manifest.yml, .bluemix/
+  - [ ] ¿Hay archivos de GCP? → Busca: app.yaml, cloudbuild.yaml, terraform/ con provider google
+  - [ ] ¿Hay archivos de Azure? → Busca: bicep/, terraform/ con provider azurerm
+  
+  ### ☸️ Orquestación
+  - [ ] ¿Kubernetes? → Busca: k8s/, kubernetes/, manifests/, charts/, deployment.yaml
+  - [ ] ¿Helm Charts? → Busca: charts/, Chart.yaml, values.yaml
+  - [ ] ¿Kustomize? → Busca: kustomization.yaml
+  
+  ### 🔄 CI/CD
+  - [ ] GitHub Actions → .github/workflows/*.yml
+  - [ ] GitLab CI → .gitlab-ci.yml
+  - [ ] Jenkins → Jenkinsfile
+  - [ ] CircleCI → .circleci/config.yml
+  - [ ] Travis → .travis.yml
+  - [ ] Azure DevOps → azure-pipelines.yml
+  - [ ] IBM Toolchain → .bluemix/toolchain.yml
+  
+  ### 📊 Monitoreo
+  - [ ] Prometheus → Busca: prometheus.yml, ServiceMonitor
+  - [ ] Grafana → Busca: dashboards/, grafana/
+  - [ ] Datadog → Busca: datadog.yaml, DD_API_KEY
+  - [ ] New Relic → Busca: newrelic.yml, NEW_RELIC_LICENSE_KEY
+  - [ ] CloudWatch → Busca: referencias a AWS CloudWatch en código
+  - [ ] Sentry → Busca: sentry.properties, SENTRY_DSN
+  
+  ### 🗄️ Base de Datos
+  - [ ] Tipo de BD → Analiza: package.json, requirements.txt, pom.xml
+  - [ ] ORM/ODM → Busca: prisma/, TypeORM, sequelize, mongoose, sqlalchemy
+  - [ ] Migraciones → Busca: migrations/, alembic/, flyway/
+  - [ ] Conexión → Analiza variables de entorno, config files
+  
+  ### 🌍 Ambientes
+  - [ ] .env files → .env.example, .env.development, .env.production
+  - [ ] Config files → config/development.js, config/production.js
+  - [ ] Secrets → busca referencias a secrets managers (AWS Secrets, IBM Key Protect)
+
+  ## PASO 2: Clasificar la Información
+
+  Para cada aspecto, clasifica como:
+
+  ### ✅ ENCONTRADO (certeza alta)
+  - Hay evidencia clara en el código
+  - Puedes extraer valores concretos
+  - **NO generar pregunta** - Incluir directamente en el template
+  
+  ### ⚠️ PARCIAL (certeza media)
+  - Hay indicios pero faltan detalles
+  - Generar pregunta con opciones limitadas
+  - Pre-llenar con lo que encontraste
+  
+  ### ❌ NO ENCONTRADO (certeza baja)
+  - No hay evidencia en el código
+  - Requiere conocimiento del equipo
+  - **Generar pregunta completa**
+
+  ## PASO 3: Generar el Archivo YAML
+
+  Genera: `ai_prompts/07-generated.yaml`
+
+  ### Estructura del YAML:
+
+  ```yaml
+  # ============================================
+  # CUESTIONARIO GENERADO AUTOMÁTICAMENTE
+  # Fecha: {{fecha_actual}}
+  # Proyecto: {{nombre_proyecto}}
+  # ============================================
+  # 
+  # Este archivo fue generado analizando el código.
+  # Solo contiene preguntas sobre información NO encontrada.
+  # 
+  # ✅ ENCONTRADO - Ya incluido en el template
+  # ❌ NO ENCONTRADO - Requiere respuesta manual
+  # ============================================
+
+  title: "Cuestionario de {{nombre_proyecto}}"
+  description: "Completa la información faltante para generar documentación completa."
+
+  # Información ya extraída del código (NO requiere preguntas)
+  auto_extracted:
+    project_name: "{{nombre_del_proyecto}}"
+    
+    # Docker
+    has_dockerfile: {{true/false}}
+    dockerfile_base_image: "{{imagen_base o null}}"
+    dockerfile_ports: [{{puertos o []}]
+    has_compose: {{true/false}}
+    compose_services: [{{servicios o []}]
+    
+    # Cloud Provider (detectado)
+    cloud_providers_detected:
+      - aws: {{true/false}}
+      - ibm: {{true/false}}
+      - gcp: {{true/false}}
+      - azure: {{true/false}}
+    
+    # CI/CD (detectado)
+    cicd_tool_detected: "{{github-actions/gitlab-ci/jenkins/null}}"
+    cicd_file_found: "{{ruta del archivo o null}}"
+    
+    # Base de Datos
+    database_type: "{{postgresql/mysql/mongodb/null}}"
+    orm_detected: "{{prisma/typeorm/sequelize/null}}"
+    
+    # Monitoreo
+    monitoring_tools_detected: [{{lista o []}]
+
+  # SOLO preguntas sobre lo NO encontrado
+  sections:
+    # Solo incluir secciones con preguntas necesarias
+    
+    {{#if no_se_encontro_cloud_provider}}
+    - icon: "☁️"
+      title: "Cloud Provider"
+      description: "No se detectó cloud provider en el código"
+      questions:
+        - id: cloudProvider
+          type: checkbox
+          label: "¿Qué cloud providers usa el proyecto?"
+          options:
+            - value: aws
+              label: "AWS"
+            - value: ibm
+              label: "IBM Cloud"
+            - value: gcp
+              label: "GCP"
+            - value: azure
+              label: "Azure"
+            - value: onpremise
+              label: "On-Premise"
+    {{/if}}
+    
+    {{#if no_se_encontro_deployment_platform}}
+    - icon: "🚀"
+      title: "Plataforma de Deployment"
+      questions:
+        - id: deployPlatform
+          type: select
+          label: "¿Dónde se despliega en producción?"
+          options:
+            # Opciones basadas en cloud_providers_detected
+            {{#if cloud_providers_detected.aws}}
+            - value: eks
+              label: "AWS EKS"
+            - value: ecs
+              label: "AWS ECS"
+            - value: ec2
+              label: "AWS EC2"
+            {{/if}}
+            {{#if cloud_providers_detected.ibm}}
+            - value: ibm-kubernetes
+              label: "IBM Kubernetes Service"
+            - value: ibm-code-engine
+              label: "IBM Code Engine"
+            {{/if}}
+            # ... etc
+    {{/if}}
+    
+    # ... más secciones solo si son necesarias
+
+  # Template pre-llenado con información encontrada
+  template: |
+    # ROL
+    Eres un DevOps Engineer documentando infraestructura.
+
+    # CONTEXTO
+    Proyecto: {{auto_extracted.project_name}}
+
+    # INFORMACIÓN EXTRAÍDA AUTOMÁTICAMENTE
+
+    ## ✅ Docker
+    {{#if auto_extracted.has_dockerfile}}
+    - Dockerfile encontrado: SÍ
+    - Imagen base: {{auto_extracted.dockerfile_base_image}}
+    - Puertos expuestos: {{auto_extracted.dockerfile_ports}}
+    {{else}}
+    - Dockerfile encontrado: NO
+    {{/if}}
+
+    {{#if auto_extracted.has_compose}}
+    - Docker Compose: SÍ
+    - Servicios: {{auto_extracted.compose_services}}
+    {{else}}
+    - Docker Compose: NO
+    {{/if}}
+
+    ## ✅ Cloud Provider
+    {{#if auto_extracted.cloud_providers_detected.aws}}
+    - AWS: SÍ (archivos detectados)
+    {{/if}}
+    {{#if auto_extracted.cloud_providers_detected.ibm}}
+    - IBM Cloud: SÍ (archivos detectados)
+    {{/if}}
+    {{#if auto_extracted.cloud_providers_detected.gcp}}
+    - GCP: SÍ (archivos detectados)
+    {{/if}}
+
+    ## ✅ CI/CD
+    {{#if auto_extracted.cicd_tool_detected}}
+    - Herramienta: {{auto_extracted.cicd_tool_detected}}
+    - Archivo: {{auto_extracted.cicd_file_found}}
+    [ANALIZAR EL ARCHIVO CI/CD Y DOCUMENTAR STAGES]
+    {{else}}
+    - CI/CD: NO DETECTADO
+    [REQUIERE VALIDACIÓN]
+    {{/if}}
+
+    ## ✅ Base de Datos
+    {{#if auto_extracted.database_type}}
+    - Tipo: {{auto_extracted.database_type}}
+    {{/if}}
+    {{#if auto_extracted.orm_detected}}
+    - ORM: {{auto_extracted.orm_detected}}
+    {{/if}}
+
+    ## ✅ Monitoreo
+    {{#if auto_extracted.monitoring_tools_detected}}
+    Herramientas detectadas:
+    {{#each auto_extracted.monitoring_tools_detected}}
+    - {{this}}
+    {{/each}}
+    {{else}}
+    - Monitoreo: NO DETECTADO
+    [REQUIERE VALIDACIÓN]
+    {{/if}}
+
+    # ❌ INFORMACIÓN FALTANTE (del cuestionario)
+
+    {{#cada respuesta del cuestionario}}
+    - {{pregunta}}: {{respuesta}}
+    {{/cada}}
+
+    # TAREA
+
+    Genera 3 archivos de documentación:
+
+    ## 1. ai_docs/06-infraestructura/01-deployment.md
+
+    Usa TODA la información extraída automáticamente más las respuestas del cuestionario.
+
+    [Template completo con toda la info encontrada + respuestas]
+
+    ## 2. ai_docs/06-infraestructura/02-ci-cd.md
+
+    {{#if auto_extracted.cicd_file_found}}
+    Analiza el archivo {{auto_extracted.cicd_file_found}} y documenta:
+    - Stages del pipeline
+    - Triggers
+    - Variables de entorno
+    - Secrets
+    - Deployment automático/manual
+    {{else}}
+    Documenta que no hay CI/CD configurado.
+    Recomienda implementar {{respuesta_herramienta_cicd_deseada}}.
+    {{/if}}
+
+    ## 3. ai_docs/06-infraestructura/03-monitoreo.md
+
+    [Template con info de monitoreo encontrada + respuestas]
+
+    # ARCHIVOS DE SALIDA
+
+    1. ai_docs/06-infraestructura/01-deployment.md
+    2. ai_docs/06-infraestructura/02-ci-cd.md
+    3. ai_docs/06-infraestructura/03-monitoreo.md
+  ```
+
+  ## EJEMPLO DE OUTPUT
+
+  Si encontraste:
+  - ✅ Dockerfile con Node.js
+  - ✅ GitHub Actions
+  - ✅ PostgreSQL en docker-compose
+  - ❌ NO encontraste cloud provider
+  - ❌ NO encontraste plataforma de deployment
+
+  Entonces genera YAML con SOLO 2 preguntas:
+  1. ¿Qué cloud provider?
+  2. ¿Qué plataforma de deployment?
+
+  Y el template ya incluye:
+  - Info de Docker
+  - Info de GitHub Actions
+  - Info de PostgreSQL
+
+  # REGLAS CRÍTICAS
+
+  1. **Minimiza las preguntas** - Solo pregunta lo que NO puedes determinar
+  2. **Analiza TODO el repositorio** - Revisa todos los archivos relevantes
+  3. **Genera template rico** - Incluye toda la info que encontraste
+  4. **Marca incertidumbres** - Si no estás 100% seguro, genera pregunta
+  5. **Usa condicionales** - Preguntas anidadas basadas en respuestas anteriores
+
+  # OUTPUT
+
+  El archivo `ai_prompts/07-generated.yaml` con:
+  - Lista de información auto-extraída
+  - Solo preguntas necesarias
+  - Template pre-llenado con info encontrada

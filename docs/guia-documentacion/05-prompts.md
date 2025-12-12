@@ -6,6 +6,46 @@ Proporcionar prompts listos para usar con GitHub Copilot (modo agente) que gener
 
 ---
 
+## 📊 Listado de Prompts Disponibles
+
+!!! info "Total: 10 Prompts (9 Obligatorios + 1 Opcional)"
+
+**PROMPTS OBLIGATORIOS** (ejecutar en orden para TODOS los proyectos):
+
+| # | Nombre | Archivos Generados | Tiempo |
+|---|--------|-------------------|--------|
+| 01 | Análisis Inicial | `ai_docs/00-analisis-inicial.md` | 5-10 min |
+| 02 | Vista Ejecutiva | `ai_docs/02-vista-ejecutiva.md` | 10-15 min |
+| 03 | Arquitectura C4 | `ai_docs/03-arquitectura/*.md` (4 archivos) | 15-20 min |
+| 04 | Stack Tecnológico | `ai_docs/04-tecnico/01-stack-tecnologico.md` | 10-15 min |
+| 05 | Modelo de Datos | `ai_docs/04-tecnico/02-modelo-datos.md` | 10-15 min |
+| 06 | Casos de Uso | `ai_docs/05-procesos-negocio/*.md` (2 archivos) | 15-20 min |
+| 07 | Deployment | `ai_docs/06-infraestructura/*.md` (3 archivos) | 15-20 min |
+| 08 | Decisiones Técnicas | `ai_docs/03-arquitectura/04-decisiones.md` | 10-15 min |
+| 09 | Archivos de Repositorio | `README.md`, `CONTRIBUTING.md`, etc. | 10-15 min |
+
+**PROMPTS OPCIONALES** (ejecutar solo si aplica):
+
+| # | Nombre | Cuándo Usar | Archivos Generados | Tiempo |
+|---|--------|-------------|-------------------|--------|
+| 10 | API REST (OpenAPI/Swagger) | ✅ Solo si tu proyecto **ES una API REST** con endpoints HTTP | `openapi.yaml`, `swagger-ui.html`, `ai_docs/08-api-reference.md` | 10-15 min |
+
+!!! warning "📍 Prompt 10 - Solo para APIs REST"
+    **Ejecuta el Prompt 10 ÚNICAMENTE si:**
+    
+    ✅ Tu proyecto expone endpoints HTTP (GET, POST, PUT, DELETE, etc.)
+    ✅ Quieres documentación interactiva tipo Swagger UI
+    ✅ Otros equipos necesitan consumir tu API
+    
+    **NO ejecutes el Prompt 10 si:**
+    
+    ❌ Es una aplicación web frontend sin API backend propia
+    ❌ Es un script, CLI o herramienta de línea de comandos
+    ❌ Es una biblioteca/librería/package
+    ❌ No tiene endpoints HTTP
+
+---
+
 ## 🚀 CÓMO USAR ESTA GUÍA - Paso a Paso
 
 ### Flujo de Trabajo Simple
@@ -218,7 +258,7 @@ flowchart LR
 ## 🔍 Prompt 01: Análisis Inicial del Proyecto
 
 ### Objetivo
-Que el agente entienda el proyecto, su propósito, tecnologías y estructura antes de generar documentación.
+Que el agente entienda el proyecto, su propósito, tecnologías y estructura antes de generar documentación. **IMPORTANTE:** Este análisis se guardará en `ai_docs/00-analisis-inicial.md` para referencia futura.
 
 ### 📝 Información que Necesitas Antes de Ejecutar
 
@@ -234,7 +274,7 @@ Antes de copiar este prompt, asegúrate de:
 
 Busca y reemplaza en el prompt:
 
-1. `[COMPLETA: Ruta del repositorio]` → Ej: "@workspace" o "/home/usuario/proyectos/mi-api"
+1. `[COMPLETA: Nombre del proyecto]` → Ej: "E-commerce API" o inferir del repositorio
 
 ### 📋 Prompt (Copiar después de completar el campo)
 
@@ -243,15 +283,22 @@ Busca y reemplaza en el prompt:
 Eres un Arquitecto de Software Senior con 15+ años de experiencia analizando proyectos para crear documentación técnica de arquitectura. Tu especialidad es entender sistemas complejos rápidamente y comunicarlos de forma clara.
 
 # CONTEXTO
-Vas a analizar un proyecto de software para generar documentación estandarizada siguiendo el formato de la organización. Este es el primer paso: entender el proyecto.
+Vas a analizar un proyecto de software para generar documentación estandarizada siguiendo el formato de la organización. Este es el primer paso: entender el proyecto completamente.
 
 # PROYECTO
-Repositorio: [COMPLETA: Ruta del repositorio]
+Nombre del proyecto: [COMPLETA: Nombre del proyecto]
 
 IMPORTANTE: Usa @workspace para analizar todos los archivos del proyecto actual.
 
 # TAREA
-Analiza el proyecto y genera un reporte ejecutivo de análisis con la siguiente estructura:
+Analiza el proyecto y genera el archivo `ai_docs/00-analisis-inicial.md` con un análisis completo del proyecto.
+
+Este análisis servirá como:
+- ✅ Documentación base para referencia futura
+- ✅ Validación de información para otros prompts
+- ✅ Fuente de verdad para entender el proyecto
+
+## ESTRUCTURA DEL ANÁLISIS:
 
 ## 1. Identificación del Proyecto
 
@@ -259,101 +306,232 @@ Analiza el proyecto y genera un reporte ejecutivo de análisis con la siguiente 
 
 - **Tipo de Proyecto**: [Web App / Mobile App / API / Microservicio / CLI Tool / Librería / etc.]
 
-- **Propósito Principal**: [En una frase, qué hace este sistema]
+- **Propósito Principal**: [Descripción en 2-3 párrafos de qué hace este sistema y por qué existe]
 
-## 2. Stack Tecnológico
+- **Dominio de Negocio**: [E-commerce, Fintech, Salud, Educación, etc.]
+
+## 2. Stack Tecnológico Completo
 
 ### Backend
 
-- **Lenguaje principal**: [Ej: Node.js, Python, Java, etc.]
-
-- **Framework**: [Ej: Express, FastAPI, Spring Boot, etc.]
-
-- **Base de datos**: [Ej: PostgreSQL, MongoDB, MySQL, etc.]
-
-- **ORM/ODM**: [Ej: Prisma, TypeORM, SQLAlchemy, etc.]
+- **Lenguaje principal**: [Ej: Node.js 18.x, Python 3.11, Java 17, etc.] + versión
+- **Framework**: [Ej: Express 4.18, FastAPI 0.109, Spring Boot 3.x, etc.] + versión
+- **Base de datos**: [Ej: PostgreSQL 15, MongoDB 6.0, MySQL 8.0, etc.] + versión
+- **ORM/ODM**: [Ej: Prisma 5.x, TypeORM, SQLAlchemy, etc.] + versión
 
 ### Frontend (si aplica)
 
-- **Framework**: [Ej: React, Vue, Angular, etc.]
-
-- **Lenguaje**: [JavaScript, TypeScript]
-
-- **Build Tool**: [Vite, Webpack, etc.]
+- **Framework**: [Ej: React 18.x, Vue 3.x, Angular 17, etc.] + versión
+- **Lenguaje**: [JavaScript, TypeScript 5.x]
+- **Build Tool**: [Vite 5.x, Webpack 5.x, etc.] + versión
+- **Estilos**: [Tailwind, CSS Modules, Styled Components, etc.]
 
 ### Infraestructura y DevOps
 
-- **Containerización**: [Docker, Podman, etc.]
-
-- **Orquestación**: [Docker Compose, Kubernetes, etc.]
-
+- **Containerización**: [Docker 24.x, Podman, etc.]
+- **Orquestación**: [Docker Compose, Kubernetes 1.28, etc.]
 - **CI/CD**: [GitHub Actions, GitLab CI, Jenkins, etc.]
-
-- **Cloud Provider**: [AWS, GCP, Azure, On-Premise]
+- **Cloud Provider**: [AWS, GCP, Azure, On-Premise] + servicios específicos
 
 ### Otras Tecnologías Relevantes
 
-- [Cache: Redis, Memcached]
+- **Cache**: [Redis 7.x, Memcached, etc.]
+- **Message Queue**: [RabbitMQ, Kafka, SQS, etc.]
+- **Monitoring**: [Prometheus, Datadog, New Relic, etc.]
+- **Logging**: [Winston, Pino, ELK Stack, etc.]
+- **Testing**: [Jest, Pytest, JUnit, etc.]
 
-- [Message Queue: RabbitMQ, Kafka]
+## 3. Análisis de Dependencias (NUEVO)
 
-- [Monitoring: Prometheus, Datadog]
+### Dependencias de Producción
 
-- etc.
+Analiza el archivo de dependencias (package.json, requirements.txt, pom.xml, go.mod, etc.) y genera una tabla:
 
-## 3. Estructura del Proyecto
+| Dependencia | Versión Actual | Última Versión | Estado | Propósito |
+|-------------|----------------|----------------|--------|-----------|
+| express | 4.18.2 | 4.18.2 | ✅ Actualizado | Framework web |
+| prisma | 5.7.0 | 5.8.1 | ⚠️ Disponible 5.8.1 | ORM |
+| lodash | 4.17.20 | 4.17.21 | ⚠️ Desactualizado | Utilidades |
 
-Analiza la estructura de carpetas y describe:
+**Análisis:**
+- Total de dependencias de producción: [número]
+- Dependencias actualizadas: [número y %]
+- Dependencias con actualizaciones menores disponibles: [número]
+- Dependencias con actualizaciones mayores disponibles: [número]
+- ⚠️ Dependencias deprecadas (si las hay): [lista]
 
-- **Patrón de arquitectura**: [MVC, Clean Architecture, Hexagonal, Microservicios, Monolito Modular, etc.]
+### Dependencias de Desarrollo
 
-- **Organización de código**: [Descripción de carpetas principales]
+Lista las más importantes (no todas) con su propósito:
 
-- **Puntos de entrada**: [Archivos principales: index.js, main.py, etc.]
+- [Nombre]: [Versión] - [Para qué se usa]
 
-## 4. Integraciones Identificadas
+Ejemplo:
+- typescript: 5.3.3 - Tipado estático
+- jest: 29.7.0 - Testing
+- eslint: 8.56.0 - Linting
+
+### Vulnerabilidades Conocidas (si detectas)
+
+⚠️ Si identificas dependencias con vulnerabilidades conocidas o muy desactualizadas, menciónalas:
+
+- [Dependencia]: [Versión actual] → Problema: [descripción breve]
+
+## 4. Estructura del Proyecto
+
+### Patrón de Arquitectura
+
+[MVC, Clean Architecture, Hexagonal, Microservicios, Monolito Modular, etc.]
+
+### Árbol de Carpetas Principales
+
+/
+├── src/
+│   ├── controllers/    - Controladores de rutas (descripción)
+│   ├── services/       - Lógica de negocio (descripción)
+│   ├── models/         - Modelos de datos (descripción)
+│   ├── routes/         - Definición de rutas (descripción)
+│   └── utils/          - Utilidades compartidas (descripción)
+├── tests/              - Tests unitarios e integración
+├── config/             - Archivos de configuración
+└── docs/               - Documentación
+
+### Archivos de Configuración Relevantes
+
+Describe el propósito de cada archivo de configuración importante:
+
+- **package.json / requirements.txt**: [Qué define, scripts importantes]
+- **tsconfig.json**: [Configuración de TypeScript] (si aplica)
+- **webpack.config.js / vite.config.ts**: [Configuración de build] (si aplica)
+- **.env.example**: [Variables de entorno requeridas]
+- **Dockerfile**: [Imagen base, puertos, comandos]
+- **docker-compose.yml**: [Servicios definidos]
+- **.github/workflows** o **.gitlab-ci.yml**: [Pipelines de CI/CD]
+- **jest.config.js / pytest.ini**: [Configuración de tests]
+
+### Puntos de Entrada
+
+- **Archivo principal**: [index.js, main.py, App.java, etc.]
+- **Puerto por defecto**: [3000, 8080, etc.]
+- **Comando de inicio**: [npm start, python main.py, etc.]
+
+## 5. Integraciones Identificadas
 
 Lista sistemas externos con los que este proyecto se integra:
 
-- [Nombre del sistema/API externa]: [Propósito de la integración]
+| Sistema Externo | Protocolo | Propósito | Autenticación |
+|-----------------|-----------|-----------|---------------|
+| Stripe API | REST | Procesamiento de pagos | API Key |
+| SendGrid | REST | Envío de emails | API Key |
+| Auth0 | OAuth2 | Autenticación de usuarios | Client Secret |
 
-- [Ejemplo: Stripe API]: [Procesamiento de pagos]
+## 6. Modelo de Datos Preliminar
 
-## 5. Modelo de Datos Preliminar
+Identifica las entidades principales del dominio basándote en:
+- Modelos/Entities del código
+- Esquema de base de datos
+- Migraciones
 
-Identifica las entidades principales del dominio:
+| Entidad | Descripción | Atributos Principales |
+|---------|-------------|-----------------------|
+| User | Usuario del sistema | id, email, name, role |
+| Order | Pedido realizado | id, userId, total, status |
+| Product | Producto en catálogo | id, name, price, stock |
 
-- [Entidad 1]: [Breve descripción]
+## 7. Casos de Uso Evidentes
 
-- [Entidad 2]: [Breve descripción]
+Lista 5-10 casos de uso principales que identificas del código:
 
-## 6. Casos de Uso Evidentes
+1. **Registro de usuario**: Crear cuenta nueva con validación de email
+2. **Autenticación**: Login con JWT
+3. **Crear pedido**: Proceso completo desde carrito hasta pago
+4. **Gestión de productos**: CRUD de productos (admin)
+5. **Procesamiento de pagos**: Integración con Stripe
 
-Lista 3-5 casos de uso principales que identificas:
+## 8. Ejecución Local (análisis preliminar)
 
-1. [Caso de uso 1]
+### Prerequisitos
 
-2. [Caso de uso 2]
+Lista lo que se necesita instalar:
 
-3. [Caso de uso 3]
+- [Node.js 18+ / Python 3.11+ / Java 17+]
+- [Docker / PostgreSQL / etc.]
 
-## 7. Observaciones y Preguntas
+### Pasos de Instalación (inferidos)
 
-- [Cualquier cosa que no esté clara]
+# Clonar repositorio
+git clone [URL]
 
-- [Decisiones arquitectónicas que notes]
+# Instalar dependencias
+npm install  # o pip install -r requirements.txt, etc.
 
-- [Puntos que requieren clarificación]
+# Configurar variables de entorno
+cp .env.example .env
 
-# FORMATO DE SALIDA
+# Ejecutar migraciones (si aplica)
+npm run migrate
 
-- Usa Markdown estándar
+# Iniciar en desarrollo
+npm run dev
 
-- Sé específico y concreto
+## 9. Variables de Entorno Identificadas
 
-- Si algo no está claro, márcalo como [REQUIERE CLARIFICACIÓN]
+Analiza el código y archivos .env.example para listar todas las variables:
 
-- Prioriza hechos sobre suposiciones
+| Variable | Descripción | Requerido | Valor por Defecto |
+|----------|-------------|-----------|-------------------|
+| DATABASE_URL | URL de PostgreSQL | ✅ Sí | - |
+| JWT_SECRET | Secret para tokens | ✅ Sí | - |
+| PORT | Puerto del servidor | ❌ No | 3000 |
+| NODE_ENV | Ambiente | ❌ No | development |
+
+## 10. Accesos (si están documentados)
+
+Si encuentras URLs o accesos documentados:
+
+- **Producción**: [URL]
+- **Staging**: [URL]
+- **Desarrollo**: http://localhost:3000
+- **Documentación API**: [Swagger/OpenAPI URL]
+- **Monitoreo**: [Dashboard URL]
+
+## 11. Observaciones Críticas
+
+### Buenas Prácticas Detectadas
+
+- ✅ [Ejemplo: "Uso de TypeScript para type safety"]
+- ✅ [Ejemplo: "Tests con >80% de cobertura"]
+- ✅ [Ejemplo: "Variables de entorno bien documentadas"]
+
+### Áreas de Mejora / Deuda Técnica
+
+- ⚠️ [Ejemplo: "Dependencias desactualizadas"]
+- ⚠️ [Ejemplo: "Falta documentación de APIs"]
+- ⚠️ [Ejemplo: "Sin manejo de errores centralizado"]
+
+### Preguntas que Requieren Clarificación
+
+- ❓ [Ejemplo: "¿Cuál es el SLA de producción?"]
+- ❓ [Ejemplo: "¿Hay plan de migración a microservicios?"]
+
+## 12. Recomendaciones Iniciales
+
+Basándote en el análisis:
+
+1. **Seguridad**: [Recomendaciones de seguridad]
+2. **Performance**: [Optimizaciones sugeridas]
+3. **Mantenibilidad**: [Mejoras en código/estructura]
+4. **Documentación**: [Qué documentar con prioridad]
+
+# ARCHIVO DE SALIDA
+
+ai_docs/00-analisis-inicial.md
+
+⚠️ IMPORTANTE:
+- Crea el archivo EXACTAMENTE en la ruta: ai_docs/00-analisis-inicial.md
+- Si la carpeta ai_docs/ no existe, créala primero
+- Guarda el archivo automáticamente
+- Este archivo servirá como REFERENCIA para todos los demás prompts
 
 # REGLAS CRÍTICAS DE FORMATO
 
@@ -1353,7 +1531,151 @@ Los 2 archivos markdown completos.
 ### Objetivo
 Documentar deployment, CI/CD, monitoreo.
 
-### Prompt
+!!! success "✨ Sistema de 2 Fases - Nuevo!"
+    Este prompt ahora usa un **sistema inteligente de 2 fases**:
+    
+    **Fase 1**: Copilot **analiza tu código automáticamente** y genera un cuestionario personalizado  
+    **Fase 2**: Solo respondes **lo que falta** - el resto ya está pre-llenado del código
+    
+    📚 [Ver guía completa del Sistema de 2 Fases →](13-sistema-dos-fases.md)
+
+---
+
+### 🔍 FASE 1: Análisis Inicial (Genera Cuestionario Personalizado)
+
+<div style="text-align: center; margin: 30px 0;">
+    <button 
+        onclick="loadPromptForm('00')" 
+        style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); 
+               color: white; 
+               border: none; 
+               padding: 16px 32px; 
+               font-size: 18px; 
+               font-weight: bold; 
+               border-radius: 12px; 
+               cursor: pointer; 
+               box-shadow: 0 4px 15px rgba(17, 153, 142, 0.4);
+               transition: all 0.3s ease;
+               display: inline-flex;
+               align-items: center;
+               gap: 10px;">
+        <span style="font-size: 24px;">🔍</span>
+        1. Cargar Prompt de Análisis Inicial
+    </button>
+</div>
+
+<div id="prompt-00-container"></div>
+
+!!! info "¿Qué hace el Prompt de Análisis?"
+    1. **Analiza @workspace** completo
+    2. **Detecta automáticamente**:
+       - ✅ Dockerfile y docker-compose
+       - ✅ CI/CD (GitHub Actions, GitLab CI, Jenkins)
+       - ✅ Cloud Provider (AWS, IBM Cloud, GCP, Azure)
+       - ✅ Base de datos (PostgreSQL, MySQL, MongoDB)
+       - ✅ Monitoreo (Prometheus, Datadog, etc.)
+    3. **Genera archivo YAML** con:
+       - `auto_extracted`: Info encontrada en el código
+       - `sections`: SOLO preguntas sobre lo que NO encontró
+       - `template`: Pre-llenado con la info del código
+
+**Pasos:**
+
+1. Click en "🔍 1. Cargar Prompt de Análisis Inicial" arriba
+2. Copia el prompt generado
+3. Pégalo en Copilot: `@workspace [prompt]`
+4. Copilot responderá con un archivo YAML personalizado
+5. Guárdalo en: `docs/ai_prompts/07-generated.yaml`
+
+---
+
+### 📋 FASE 2: Completar Información Faltante
+
+Una vez que tengas el archivo `07-generated.yaml`:
+
+<div style="text-align: center; margin: 30px 0;">
+    <button 
+        onclick="loadPromptForm('07-generated')" 
+        style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+               color: white; 
+               border: none; 
+               padding: 16px 32px; 
+               font-size: 18px; 
+               font-weight: bold; 
+               border-radius: 12px; 
+               cursor: pointer; 
+               box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+               transition: all 0.3s ease;
+               display: inline-flex;
+               align-items: center;
+               gap: 10px;">
+        <span style="font-size: 24px;">📋</span>
+        2. Cargar Cuestionario Personalizado
+    </button>
+</div>
+
+<div id="prompt-07-generated-container"></div>
+
+!!! tip "💡 Ventajas del Sistema de 2 Fases"
+    **Antes**: 50+ preguntas genéricas → 15-20 minutos  
+    **Ahora**: Solo 2-10 preguntas (lo que falta) → 2-3 minutos
+    
+    **Información auto-extraída**:
+    - ✅ Docker: Detectado ✓ (node:18-alpine)
+    - ✅ CI/CD: github-actions (.github/workflows/deploy.yml)
+    - ✅ Base de Datos: postgresql (prisma)
+    - ❌ Cloud Provider: ? (requiere respuesta)
+    - ❌ Plataforma: ? (requiere respuesta)
+
+---
+
+### 💡 Cómo Usar el Cuestionario Generado
+
+1. **Revisa la información auto-extraída** (sección verde ✅)
+2. **Responde SOLO las preguntas faltantes** (lo que Copilot no pudo determinar)
+3. **Haz clic en "Generar Prompt"**
+4. **Copia el prompt** que combina:
+   - ✅ Info del código (auto-extraída)
+   - ❌ Tus respuestas (info faltante)
+5. **Pégalo en Copilot** para generar la documentación completa
+
+---
+
+### 🔄 Alternativa: Formulario Estático (Sin Análisis)
+
+Si prefieres el formulario tradicional (todas las preguntas):
+
+<div style="text-align: center; margin: 30px 0;">
+    <button 
+        onclick="loadPromptForm('07')" 
+        style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+               color: white; 
+               border: none; 
+               padding: 16px 32px; 
+               font-size: 18px; 
+               font-weight: bold; 
+               border-radius: 12px; 
+               cursor: pointer; 
+               box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+               transition: all 0.3s ease;
+               display: inline-flex;
+               align-items: center;
+               gap: 10px;">
+        <span style="font-size: 24px;">📋</span>
+        Formulario Completo (Tradicional)
+    </button>
+</div>
+
+<div id="prompt-07-container"></div>
+
+!!! warning "⚠️ Necesitas información del equipo de DevOps"
+    El formulario estático requiere responder TODAS las preguntas manualmente.
+    
+    **Recomendado**: Usa el Sistema de 2 Fases arriba para ahorrar tiempo.
+
+---
+
+### 📋 Prompt Manual (Si prefieres no usar el formulario)
 
 ```
 # ROL
@@ -1445,7 +1767,7 @@ Los 3 archivos markdown completos.
 Documentar decisiones de arquitectura importantes basándote en el análisis del código.
 
 ### Prompt
-
+```
 # ROL
 Eres un Arquitecto de Software Senior documentando decisiones arquitectónicas (Architecture Decision Records - ADRs).
 
@@ -1472,7 +1794,6 @@ Ejemplos de decisiones a documentar:
 
 - Uso de cache (ej: "Implementar Redis para cache")
 
-```markdown
 # 🏗️ Decisiones de Arquitectura (ADRs)
 
 ## 📋 Índice de Decisiones
@@ -1560,7 +1881,7 @@ El archivo markdown completo con todas las ADRs identificadas.
 
 **Tiempo estimado:** 8-10 minutos
 
-```markdown
+```
 # ROL
 Eres un Senior Developer preparando un repositorio completo y profesional.
 
@@ -1591,12 +1912,10 @@ Genera archivos complementarios del repositorio basándote en la documentación 
 - **Tecnologías**: Stack principal (extraído de ai_docs/04-tecnico/01-stack-tecnologico.md)
 - **Dependencias**: Principales librerías y versiones
 - **Estructura del Proyecto**: Árbol de carpetas con descripción
-  ```
   /src
     /controllers  - Lógica de negocio
     /models       - Modelos de datos
     ...
-  ```
 - **Ejecución Local**: Paso a paso (basado en ai_docs/06-infraestructura/01-deployment.md)
   - Prerequisitos
   - Instalación
@@ -1621,7 +1940,6 @@ Genera archivos complementarios del repositorio basándote en la documentación 
 **Si NO existe .gitignore**, genera uno apropiado para el stack tecnológico del proyecto.
 
 **Incluir siempre:**
-```
 # Build artifacts
 site/
 dist/
@@ -1651,9 +1969,7 @@ Thumbs.db
 # Logs
 *.log
 logs/
-```
 
-**Si ya existe .gitignore**, asegúrate de que incluya `site/` (MkDocs build).
 
 ### 3. CHANGELOG.md (raíz del proyecto)
 
@@ -1667,7 +1983,6 @@ logs/
 **Si ya existe CHANGELOG.md**, valida que esté al día con la última versión.
 
 Ejemplo:
-```markdown
 # Changelog
 
 All notable changes to this project will be documented in this file.
@@ -1690,7 +2005,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.0] - 2025-11-01
 ...
-```
 
 ### 4. .env.example (raíz del proyecto)
 
@@ -1704,7 +2018,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - NO incluir valores sensibles (usar placeholders)
 
 Ejemplo:
-```bash
 # Database Configuration
 DATABASE_URL=postgresql://user:password@localhost:5432/dbname
 DATABASE_POOL_SIZE=10
@@ -1729,7 +2042,6 @@ JWT_EXPIRATION=7d
 # Feature Flags
 ENABLE_ANALYTICS=true
 ENABLE_CACHE=false
-```
 
 **Si ya existe .env.example**, asegúrate de que esté completo y documentado.
 
@@ -1749,7 +2061,6 @@ ENABLE_CACHE=false
 - Contacto del equipo
 
 Ejemplo breve:
-```markdown
 # Contribuir a [Proyecto]
 
 ## 🐛 Reportar Bugs
@@ -1791,7 +2102,6 @@ Abre un issue en GitHub con:
 - [ ] Documentación actualizada
 - [ ] CHANGELOG.md actualizado
 - [ ] Sin conflictos con main
-```
 
 **Si ya existe CONTRIBUTING.md completo**, no regenerar.
 
@@ -1825,6 +2135,1067 @@ Los archivos markdown/texto correspondientes guardados en la raíz del proyecto.
 
 ---
 
+## 📝 Prompt 10: Generar Documentación de API (OpenAPI/Swagger) [OPCIONAL]
+
+!!! warning "⚠️ PROMPT OPCIONAL - Solo para APIs REST"
+    **Este prompt es OPCIONAL y solo debes ejecutarlo si:**
+    
+    ✅ Tu proyecto **ES una API REST** que expone endpoints HTTP
+    ✅ Necesitas documentación interactiva tipo Swagger UI
+    ✅ Otros equipos/clientes consumirán tu API
+    
+    **NO ejecutes este prompt si:**
+    
+    ❌ Tu proyecto es frontend sin API backend propia
+    ❌ Es un script, CLI o herramienta de consola
+    ❌ Es una librería/biblioteca/package
+    ❌ No tiene endpoints HTTP
+    
+    **Decisión rápida:** ¿Tu código tiene rutas como `/users`, `/api/products`, `POST /orders`? 
+    
+    - **SÍ** → Ejecuta este prompt
+    - **NO** → Salta al siguiente paso
+
+### Cuándo Usar Este Prompt
+
+```mermaid
+flowchart TD
+    A{¿Tu proyecto<br/>expone endpoints<br/>HTTP?} -->|SÍ| B[✅ Ejecuta<br/>Prompt 10]
+    A -->|NO| C[❌ Omite este<br/>prompt]
+    
+    B --> D[Genera:<br/>- openapi.yaml<br/>- swagger-ui.html<br/>- ai_docs/08-api-reference.md]
+    C --> E[Continúa con<br/>revisión final]
+    
+    style B fill:#4caf50,color:#fff
+    style C fill:#ff5722,color:#fff
+```
+
+### Ejemplos de Proyectos que SÍ Necesitan Este Prompt
+
+✅ **API REST de E-commerce** con endpoints:
+
+- `GET /products`
+- `POST /orders`
+- `PUT /users/{id}`
+
+✅ **Backend de aplicación móvil** con:
+
+- `POST /auth/login`
+- `GET /api/v1/feed`
+
+✅ **Microservicio** que expone:
+
+- `GET /health`
+- `POST /webhooks`
+
+### Ejemplos de Proyectos que NO Necesitan Este Prompt
+
+❌ **Aplicación React/Vue/Angular** sin backend propio
+❌ **Script Python** que procesa datos
+❌ **CLI en Node.js** para automatización
+❌ **Librería npm/pypi** sin servidor HTTP
+
+---
+
+**Propósito:** Generar documentación completa de API en formato OpenAPI 3.0 que se pueda renderizar en Swagger UI.
+
+**Modo:** `@workspace` (OBLIGATORIO)
+
+**Prerequisito:** Haber ejecutado Prompts 01-05 (especialmente Prompt 05 que tiene el análisis de APIs).
+
+**Tiempo estimado:** 10-15 minutos
+
+```
+# ROL
+Eres un API Architect Senior especializado en documentación de APIs con OpenAPI 3.0 y Swagger.
+
+# CONTEXTO
+Proyecto "[COMPLETAR: nombre del proyecto]"
+
+Ya existe documentación técnica en ai_docs/04-tecnico/03-apis.md con información básica de los endpoints.
+
+# TAREA
+Genera documentación completa de API en formato OpenAPI 3.0 que se pueda:
+- ✅ Renderizar en Swagger UI
+- ✅ Importar en Postman
+- ✅ Usar para generar código (SDK clients)
+- ✅ Integrar con herramientas de testing
+
+## INFORMACIÓN REQUERIDA:
+
+### Configuración General de la API
+
+- **Nombre de la API**: [COMPLETAR: ej. "E-commerce API"]
+- **Versión**: [COMPLETAR: ej. "1.0.0" o inferir de package.json]
+
+### Configuración de Servidores (Hosts)
+
+**⚠️ IMPORTANTE:** El OpenAPI generará un dropdown con todos los servidores disponibles.
+
+**COMPLETA LOS HOSTS DISPONIBLES:**
+
+- **Producción**: [COMPLETAR: ej. "https://api.example.com" o "a definir"]
+- **QA/Testing**: [COMPLETAR: ej. "https://api-qa.example.com" o "a definir"]
+- **Staging**: [COMPLETAR: ej. "https://api-staging.example.com" o "a definir"]
+- **Desarrollo**: [COMPLETAR: ej. "https://api-dev.example.com" o "a definir"]
+- **Local**: [COMPLETAR: ej. "http://localhost:3000" o "http://localhost:8080"]
+- **Otro (manual)**: [COMPLETAR: Si necesitas un host adicional, escríbelo aquí]
+
+**Path Base (si aplica)**: [COMPLETAR: ej. "/api/v1" o "/v2" o dejar vacío si no hay]
+
+### Autenticación
+
+- **Tipo**: [COMPLETAR: "Bearer Token (JWT)" / "API Key" / "OAuth2" / "Basic Auth" / "None"]
+- **Header de autenticación**: [COMPLETAR: ej. "Authorization" o "X-API-Key"]
+- **Formato del token**: [COMPLETAR: ej. "Bearer {token}" o "apikey {key}"]
+
+### Headers Globales (si aplica)
+
+Headers que se deben enviar en TODAS las requests:
+
+- [COMPLETAR: ej. "X-Client-Version: 1.0.0" o "ninguno"]
+- [COMPLETAR: ej. "X-Request-ID: {uuid}" o "ninguno"]
+- [COMPLETAR: ej. "Content-Type: application/json" - este es estándar]
+
+## ARCHIVOS A GENERAR:
+
+### 1. openapi.json (raíz del proyecto)
+
+**⚠️ NOMBRE FIJO:** El archivo DEBE llamarse `openapi.json` (NO `.yaml`, usar JSON)
+
+Genera el archivo completo OpenAPI 3.0 con:
+
+**Estructura:**
+
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "[Nombre de la API]",
+    "description": "[Descripción detallada]\n\n## Autenticación\n\n[Explicar cómo autenticarse]\n\n## Rate Limiting\n\n[Si aplica]\n\n## Versionado\n\n[Explicar estrategia]",
+    "version": "[versión]",
+    "contact": {
+      "name": "[Equipo responsable]",
+      "email": "[email de contacto]",
+      "url": "[URL del equipo]"
+    },
+    "license": {
+      "name": "[Licencia, ej. MIT]",
+      "url": "[URL de la licencia]"
+    }
+  },
+  "servers": [
+    {
+      "url": "[COMPLETAR: URL Producción + Path Base]",
+      "description": "🚀 Producción"
+    },
+    {
+      "url": "[COMPLETAR: URL QA + Path Base]",
+      "description": "🧪 QA/Testing"
+    },
+    {
+      "url": "[COMPLETAR: URL Staging + Path Base]",
+      "description": "🎭 Staging"
+    },
+    {
+      "url": "[COMPLETAR: URL Desarrollo + Path Base]",
+      "description": "🔧 Desarrollo"
+    },
+    {
+      "url": "[COMPLETAR: URL Local + Path Base]",
+      "description": "💻 Local"
+    }
+  ]
+
+,
+  "security": [
+    { "[Tipo de auth configurado]": [] }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Token JWT obtenido del endpoint /auth/login.\n\nEjemplo:\n\nAuthorization: Bearer eyJhbGci...\n"
+      },
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-API-Key",
+        "description": "API Key obtenida del dashboard.\n\nEjemplo:\n\nX-API-Key: sk_live_abc123\n"
+      },
+      "oauth2Auth": {
+        "type": "oauth2",
+        "flows": {
+          "authorizationCode": {
+            "authorizationUrl": "https://auth.example.com/oauth/authorize",
+            "tokenUrl": "https://auth.example.com/oauth/token",
+            "scopes": {
+            read:users: Leer información de usuarios
+            write:users: Modificar usuarios
+            read:orders: Leer pedidos
+            write:orders: Crear/modificar pedidos
+
+  # PARÁMETROS REUTILIZABLES
+  parameters:
+    # Headers dinámicos globales
+    ClientVersionHeader:
+      name: X-Client-Version
+      in: header
+      required: false
+      schema:
+        type: string
+        example: "1.0.0"
+      description: Versión del cliente que consume la API
+    
+    RequestIdHeader:
+      name: X-Request-ID
+      in: header
+      required: false
+      schema:
+        type: string
+        format: uuid
+        example: "550e8400-e29b-41d4-a716-446655440000"
+      description: ID único de la request para trazabilidad
+    
+    # Query params comunes
+    PageParam:
+      name: page
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Número de página (paginación)
+    
+    LimitParam:
+      name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+      description: Cantidad de items por página
+    
+    SortParam:
+      name: sort
+      in: query
+      required: false
+      schema:
+        type: string
+        example: "-createdAt"
+      description: |
+        Campo por el cual ordenar. 
+        Prefijo `-` para orden descendente.
+        Ejemplo: `createdAt` (ascendente) o `-createdAt` (descendente)
+
+  # SCHEMAS (MODELOS)
+  schemas:
+    # MODELOS DE DATOS
+    # Analiza el código y genera schemas para TODAS las entidades
+    
+    User:
+      type: object
+      required:
+        - id
+        - email
+        - name
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "550e8400-e29b-41d4-a716-446655440000"
+          description: ID único del usuario
+        email:
+          type: string
+          format: email
+          example: "usuario@example.com"
+          description: Email del usuario (único)
+        name:
+          type: string
+          minLength: 2
+          maxLength: 100
+          example: "Juan Pérez"
+          description: Nombre completo del usuario
+        role:
+          type: string
+          enum:
+            - admin
+            - user
+            - guest
+          example: "user"
+          description: Rol del usuario en el sistema
+        createdAt:
+          type: string
+          format: date-time
+          example: "2025-12-11T10:30:00Z"
+          description: Fecha de creación
+        updatedAt:
+          type: string
+          format: date-time
+          example: "2025-12-11T10:30:00Z"
+          description: Fecha de última actualización
+    
+    # REQUESTS (Input)
+    CreateUserRequest:
+      type: object
+      required:
+        - email
+        - password
+        - name
+      properties:
+        email:
+          type: string
+          format: email
+          example: "nuevo@example.com"
+        password:
+          type: string
+          format: password
+          minLength: 8
+          example: "SecurePass123!"
+          description: Contraseña (mínimo 8 caracteres)
+        name:
+          type: string
+          minLength: 2
+          maxLength: 100
+          example: "María García"
+    
+    UpdateUserRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 2
+          maxLength: 100
+          example: "María García López"
+        email:
+          type: string
+          format: email
+          example: "maria.garcia@example.com"
+    
+    # RESPONSES (Output)
+    UserResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          $ref: '#/components/schemas/User'
+        message:
+          type: string
+          example: "Usuario obtenido exitosamente"
+    
+    UsersListResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        message:
+          type: string
+          example: "Usuarios obtenidos exitosamente"
+    
+    # PAGINACIÓN
+    Pagination:
+      type: object
+      properties:
+        page:
+          type: integer
+          example: 1
+          description: Página actual
+        limit:
+          type: integer
+          example: 20
+          description: Items por página
+        total:
+          type: integer
+          example: 150
+          description: Total de items
+        totalPages:
+          type: integer
+          example: 8
+          description: Total de páginas
+    
+    # ERRORES
+    ErrorResponse:
+      type: object
+      required:
+        - success
+        - error
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: "VALIDATION_ERROR"
+              description: Código interno del error
+            message:
+              type: string
+              example: "El email es inválido"
+              description: Mensaje legible del error
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  field:
+                    type: string
+                    example: "email"
+                  message:
+                    type: string
+                    example: "Formato de email inválido"
+    
+    ValidationError:
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+        - type: object
+          properties:
+            error:
+              type: object
+              properties:
+                code:
+                  type: string
+                  example: "VALIDATION_ERROR"
+
+  # RESPUESTAS REUTILIZABLES
+  responses:
+    Unauthorized:
+      description: No autenticado - Token inválido o expirado
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            success: false
+            error:
+              code: "UNAUTHORIZED"
+              message: "Token inválido o expirado"
+    
+    Forbidden:
+      description: No autorizado - Permisos insuficientes
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            success: false
+            error:
+              code: "FORBIDDEN"
+              message: "No tienes permisos para realizar esta acción"
+    
+    NotFound:
+      description: Recurso no encontrado
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            success: false
+            error:
+              code: "NOT_FOUND"
+              message: "El recurso solicitado no existe"
+    
+    ValidationError:
+      description: Error de validación
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationError'
+          example:
+            success: false
+            error:
+              code: "VALIDATION_ERROR"
+              message: "Errores de validación"
+              details:
+                - field: "email"
+                  message: "Email inválido"
+                - field: "password"
+                  message: "Contraseña debe tener mínimo 8 caracteres"
+    
+    ServerError:
+      description: Error interno del servidor
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            success: false
+            error:
+              code: "INTERNAL_SERVER_ERROR"
+              message: "Ha ocurrido un error inesperado"
+
+# PATHS (ENDPOINTS)
+paths:
+  # AUTENTICACIÓN
+  /auth/login:
+    post:
+      tags:
+        - Autenticación
+      summary: Iniciar sesión
+      description: Autenticar usuario y obtener token JWT
+      operationId: login
+      security: []  # Este endpoint NO requiere autenticación
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: "usuario@example.com"
+                password:
+                  type: string
+                  format: password
+                  example: "MiPassword123!"
+      responses:
+        '200':
+          description: Login exitoso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      token:
+                        type: string
+                        example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                        description: Token JWT
+                      expiresIn:
+                        type: integer
+                        example: 3600
+                        description: Tiempo de expiración en segundos
+                      user:
+                        $ref: '#/components/schemas/User'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+  
+  # USUARIOS
+  /users:
+    get:
+      tags:
+        - Usuarios
+      summary: Listar usuarios
+      description: Obtener listado paginado de usuarios
+      operationId: listUsers
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/LimitParam'
+        - $ref: '#/components/parameters/SortParam'
+        - $ref: '#/components/parameters/ClientVersionHeader'
+        - $ref: '#/components/parameters/RequestIdHeader'
+        - name: role
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - admin
+              - user
+              - guest
+          description: Filtrar por rol
+        - name: search
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Buscar por nombre o email
+      responses:
+        '200':
+          description: Lista de usuarios
+          headers:
+            X-Request-ID:
+              schema:
+                type: string
+                format: uuid
+              description: ID de la request para trazabilidad
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+              description: Límite de requests por hora
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+              description: Requests restantes en la ventana actual
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/ServerError'
+    
+    post:
+      tags:
+        - Usuarios
+      summary: Crear usuario
+      description: Crear un nuevo usuario en el sistema
+      operationId: createUser
+      parameters:
+        - $ref: '#/components/parameters/ClientVersionHeader'
+        - $ref: '#/components/parameters/RequestIdHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserRequest'
+      responses:
+        '201':
+          description: Usuario creado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          description: Conflicto - Email ya existe
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/ServerError'
+  
+  /users/{userId}:
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+        description: ID del usuario
+    
+    get:
+      tags:
+        - Usuarios
+      summary: Obtener usuario por ID
+      description: Obtener información detallada de un usuario específico
+      operationId: getUserById
+      parameters:
+        - $ref: '#/components/parameters/ClientVersionHeader'
+        - $ref: '#/components/parameters/RequestIdHeader'
+      responses:
+        '200':
+          description: Usuario encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+    
+    put:
+      tags:
+        - Usuarios
+      summary: Actualizar usuario
+      description: Actualizar información de un usuario existente
+      operationId: updateUser
+      parameters:
+        - $ref: '#/components/parameters/ClientVersionHeader'
+        - $ref: '#/components/parameters/RequestIdHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserRequest'
+      responses:
+        '200':
+          description: Usuario actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+    
+    delete:
+      tags:
+        - Usuarios
+      summary: Eliminar usuario
+      description: Eliminar un usuario del sistema (soft delete)
+      operationId: deleteUser
+      parameters:
+        - $ref: '#/components/parameters/ClientVersionHeader'
+        - $ref: '#/components/parameters/RequestIdHeader'
+      responses:
+        '204':
+          description: Usuario eliminado exitosamente
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+# IMPORTANTE: Analiza el código y genera paths para TODOS los endpoints del proyecto
+# Sigue el patrón de los ejemplos de arriba
+
+tags:
+  - name: Autenticación
+    description: Endpoints de autenticación y autorización
+  - name: Usuarios
+    description: Gestión de usuarios
+  - name: [AGREGAR MÁS TAGS según los recursos del proyecto]
+
+
+### 2. ai_docs/08-api-reference.md (documentación markdown)
+
+**⚠️ IMPORTANTE:** Este archivo debe IMPORTAR automáticamente el `openapi.json` para que se renderice en el hub de documentación.
+
+Genera documentación complementaria en Markdown:
+
+# 📖 Referencia de API
+
+## 🎯 Documentación Interactiva (Swagger UI)
+
+!!! info "🚀 Selector de Servidor"
+    El Swagger UI de abajo incluye un **dropdown de servidores** donde puedes elegir:
+    
+    - 🚀 **Producción** - [URL de producción]
+    - 🧪 **QA/Testing** - [URL de QA]
+    - 🎭 **Staging** - [URL de staging]
+    - 🔧 **Desarrollo** - [URL de desarrollo]
+    - 💻 **Local** - [URL local]
+    
+    También puedes **escribir manualmente** cualquier URL personalizada en el campo "Server URL".
+
+<swagger-ui src="../openapi.json"/>
+
+!!! tip "💡 Cómo Usar el Swagger UI"
+    1. **Selecciona el servidor** en el dropdown superior (Producción, QA, Local, etc.)
+    2. Haz clic en **"Authorize"** (candado) para configurar tu token
+    3. **Expande un endpoint** y haz clic en "Try it out"
+    4. **Completa los parámetros** requeridos
+    5. Haz clic en **"Execute"** para probar la API en vivo
+    6. Puedes **cambiar de servidor** en cualquier momento sin recargar
+
+---
+
+## Información General
+
+- **Nombre**: [Nombre de la API]
+- **Versión**: [versión]
+- **Formato**: JSON
+- **Charset**: UTF-8
+
+### Servidores Disponibles
+
+| Ambiente | URL | Descripción |
+|----------|-----|-------------|
+| 🚀 Producción | [URL] | Ambiente productivo - datos reales |
+| 🧪 QA/Testing | [URL] | Ambiente de pruebas - datos de test |
+| 🎭 Staging | [URL] | Pre-producción - datos de staging |
+| 🔧 Desarrollo | [URL] | Ambiente de desarrollo |
+| 💻 Local | [URL] | Servidor local para desarrollo |
+
+## Autenticación
+
+[Explicación detallada de cómo autenticarse]
+
+### Ejemplo de Autenticación
+
+# 1. Obtener token
+curl -X POST [URL_BASE]/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "usuario@example.com",
+    "password": "MiPassword123!"
+  }'
+
+# Respuesta:
+{
+  "success": true,
+  "data": {
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "expiresIn": 3600
+  }
+}
+
+# 2. Usar el token en requests
+curl -X GET [URL_BASE]/users \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+
+
+## Rate Limiting
+
+[Explicar límites de rate]
+
+## Versionado
+
+[Explicar estrategia de versionado de la API]
+
+## Headers Globales
+
+Estos headers se recomiendan en todas las requests:
+
+| Header | Tipo | Requerido | Descripción |
+|--------|------|-----------|-------------|
+| `Authorization` | string | ✅ Sí (excepto /auth/*) | Token de autenticación |
+| `Content-Type` | string | ✅ Sí | `application/json` |
+| `X-Client-Version` | string | ❌ No | Versión del cliente |
+| `X-Request-ID` | string (UUID) | ❌ No | ID único para trazabilidad |
+
+## Códigos de Estado HTTP
+
+| Código | Significado | Cuándo se usa |
+|--------|-------------|---------------|
+| 200 | OK | Request exitosa (GET, PUT, PATCH) |
+| 201 | Created | Recurso creado exitosamente (POST) |
+| 204 | No Content | Recurso eliminado exitosamente (DELETE) |
+| 400 | Bad Request | Error de validación |
+| 401 | Unauthorized | Token inválido o expirado |
+| 403 | Forbidden | Permisos insuficientes |
+| 404 | Not Found | Recurso no encontrado |
+| 409 | Conflict | Conflicto (ej: email duplicado) |
+| 429 | Too Many Requests | Rate limit excedido |
+| 500 | Internal Server Error | Error del servidor |
+
+## Formato de Respuestas
+
+### Respuesta Exitosa
+
+{
+  "success": true,
+  "data": {
+    // Datos del recurso
+  },
+  "message": "Operación exitosa"
+}
+
+### Respuesta de Error
+
+{
+  "success": false,
+  "error": {
+    "code": "ERROR_CODE",
+    "message": "Mensaje legible del error",
+    "details": [
+      {
+        "field": "campo",
+        "message": "Descripción del error"
+      }
+    ]
+  }
+}
+
+## Paginación
+
+Endpoints que retornan listas usan paginación:
+
+### Query Parameters
+
+- `page` (integer): Número de página (default: 1)
+- `limit` (integer): Items por página (default: 20, max: 100)
+- `sort` (string): Campo de ordenamiento (prefijo `-` para descendente)
+
+### Respuesta con Paginación
+
+{
+  "success": true,
+  "data": [...],
+  "pagination": {
+    "page": 1,
+    "limit": 20,
+    "total": 150,
+    "totalPages": 8
+  }
+}
+
+## Filtrado y Búsqueda
+
+[Explicar cómo funcionan los filtros en los endpoints]
+
+## Ejemplos Completos
+
+### Crear Usuario
+
+curl -X POST https://api.example.com/v1/users \
+  -H "Authorization: Bearer {token}" \
+  -H "Content-Type: application/json" \
+  -H "X-Request-ID: 550e8400-e29b-41d4-a716-446655440000" \
+  -d '{
+    "email": "nuevo@example.com",
+    "password": "SecurePass123!",
+    "name": "María García"
+  }'
+
+### Listar Usuarios con Filtros
+
+curl -X GET "https://api.example.com/v1/users?page=1&limit=10&role=admin&sort=-createdAt" \
+  -H "Authorization: Bearer {token}"
+
+
+## Testing con Swagger UI
+
+Para probar la API interactivamente:
+
+1. Visita: `https://api.example.com/docs`
+2. Haz clic en "Authorize"
+3. Ingresa tu token JWT
+4. Explora y prueba los endpoints
+
+## Importar en Postman
+
+1. Descarga `openapi.yaml`
+2. Abre Postman → Import → Sube el archivo
+3. Se creará una colección completa con todos los endpoints
+
+## Generar SDKs
+
+Puedes generar clientes automáticamente usando [OpenAPI Generator](https://openapi-generator.tech/):
+
+# JavaScript/TypeScript
+openapi-generator-cli generate -i openapi.yaml -g typescript-axios -o ./sdk/typescript
+
+# Python
+openapi-generator-cli generate -i openapi.yaml -g python -o ./sdk/python
+
+# Java
+openapi-generator-cli generate -i openapi.yaml -g java -o ./sdk/java
+
+
+## Recursos Adicionales
+
+- [Especificación OpenAPI 3.0](https://swagger.io/specification/)
+- [Documentación completa del proyecto](../README.md)
+- [Guía de integración](./04-tecnico/04-integraciones.md)
+
+## INSTRUCCIONES ESPECIALES:
+
+1. **Analiza el código REAL del proyecto** (controllers, routes, services)
+2. **Extrae información de `ai_docs/04-tecnico/03-apis.md`** si existe
+3. **Genera schemas para TODAS las entidades** del modelo de datos
+4. **Incluye ejemplos reales** de requests y responses
+5. **Documenta TODOS los endpoints** que encuentres en el código
+6. **Headers dinámicos** deben estar en `components/parameters` para reutilizarse
+7. **Usa referencias ($ref)** para evitar duplicación
+8. **Genera FORMATO JSON** (NO YAML) - el archivo debe ser `openapi.json`
+9. **Configura TODOS los servidores** proporcionados (producción, QA, staging, dev, local)
+10. **Usa emojis** en las descripciones de servidores para mejor UX
+
+## CONFIGURACIÓN DE SERVIDORES - IMPORTANTE:
+
+**El array `servers` debe incluir TODOS los ambientes especificados:**
+
+"servers": [
+  {
+    "url": "[URL_PRODUCCION][PATH_BASE]",
+    "description": "🚀 Producción"
+  },
+  {
+    "url": "[URL_QA][PATH_BASE]",
+    "description": "🧪 QA/Testing"
+  },
+  {
+    "url": "[URL_STAGING][PATH_BASE]",
+    "description": "🎭 Staging"
+  },
+  {
+    "url": "[URL_DEV][PATH_BASE]",
+    "description": "🔧 Desarrollo"
+  },
+  {
+    "url": "[URL_LOCAL][PATH_BASE]",
+    "description": "💻 Local"
+  }
+]
+
+**⚠️ IMPORTANTE:** 
+- Si algún host se completó como "a definir", NO lo incluyas en el array
+- Concatena la URL base + Path Base (ej: `https://api.example.com` + `/api/v1` = `https://api.example.com/api/v1`)
+- El usuario podrá **elegir el servidor** desde un dropdown en Swagger UI
+- También podrá **escribir manualmente** cualquier URL personalizada
+
+## HEADERS DINÁMICOS - CONFIGURACIÓN:
+
+Para que Swagger UI permita configurar headers dinámicamente:
+
+{
+  "components": {
+    "parameters": {
+      "ClientVersionHeader": {
+        "name": "X-Client-Version",
+        "in": "header",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "example": "1.0.0"
+        },
+        "description": "Versión del cliente (configurable por request)"
+      }
+    }
+  }
+}
+
+## ARCHIVOS DE SALIDA:
+
+1. **openapi.json** (raíz del proyecto) ← FORMATO JSON
+2. **ai_docs/08-api-reference.md** ← Debe incluir `<swagger-ui src="../openapi.json"/>`
+
+⚠️ IMPORTANTE:
+- El archivo openapi.json DEBE ser válido según OpenAPI 3.0.3
+- Formato JSON (NO YAML)
+- Incluye TODOS los endpoints del proyecto
+- Headers dinámicos en components/parameters
+- Usa $ref para reutilización
+- Ejemplos realistas en cada endpoint
+- Códigos de error completos
+- Todos los servidores configurados en el array `servers`
+- El markdown debe importar el JSON con la etiqueta `<swagger-ui>`
+
+# OUTPUT
+Los archivos generados automáticamente.
+```
+
+---
+
 ## ✅ Checklist de Generación de Documentación
 
 Antes de considerar la documentación completa, verifica:
@@ -1846,6 +3217,8 @@ Antes de considerar la documentación completa, verifica:
 - [ ] **Prompt 08 ejecutado** - ADRs documentados
 
 - [ ] **Prompt 09 ejecutado** - Archivos complementarios del repositorio (README, .gitignore, CHANGELOG, .env.example, CONTRIBUTING)
+
+- [ ] **Prompt 10 ejecutado** - Documentación de API OpenAPI/Swagger (openapi.yaml + ai_docs/08-api-reference.md)
 
 - [ ] **Revisión humana** - Alguien del equipo ha revisado la documentación
 
@@ -1920,6 +3293,242 @@ Solo la sección actualizada en markdown.
 
 ---
 
+## 🔄 Qué Hacer Si Hay Inconsistencias
+
+### Problema: El Análisis Inicial No Coincide con Archivos Generados
+
+Es normal que al ejecutar los prompts 02-09, notes que la información generada no coincide 100% con el análisis inicial (Prompt 01). Esto puede pasar por varias razones:
+
+1. **El agente IA interpretó algo diferente** en cada ejecución
+2. **El contexto cambió** entre prompts (código actualizado)
+3. **Información faltante** que se completó con suposiciones
+
+### ✅ Proceso de Validación y Corrección
+
+#### PASO 1: Identifica las Inconsistencias
+
+Compara el archivo `ai_docs/00-analisis-inicial.md` con los archivos generados después:
+
+**Ejemplo de inconsistencia:**
+
+```markdown
+# En 00-analisis-inicial.md
+- Base de datos: PostgreSQL 15
+
+# En 04-tecnico/01-stack-tecnologico.md
+- Base de datos: MySQL 8.0
+```
+
+#### PASO 2: Verifica la Realidad
+
+Revisa el código fuente para confirmar cuál es la información correcta:
+
+```bash
+# Revisa archivos de configuración
+cat package.json
+cat docker-compose.yml
+cat .env.example
+
+# Busca en el código
+grep -r "postgres\|mysql" src/
+```
+
+#### PASO 3: Decide la Acción
+
+Tienes 3 opciones:
+
+##### Opción A: Corregir el Archivo Específico ✅ (Recomendado para inconsistencias menores)
+
+Si solo 1-2 archivos tienen errores pequeños:
+
+```
+@workspace
+
+Necesito corregir el archivo ai_docs/04-tecnico/01-stack-tecnologico.md
+
+PROBLEMA: El archivo dice que usamos MySQL, pero en realidad usamos PostgreSQL 15.
+
+TAREA: 
+1. Abre ai_docs/04-tecnico/01-stack-tecnologico.md
+2. Busca la sección de Base de Datos
+3. Reemplaza "MySQL 8.0" por "PostgreSQL 15"
+4. Asegúrate de mantener el formato de la tabla
+5. Guarda el archivo
+
+ARCHIVO DE SALIDA: ai_docs/04-tecnico/01-stack-tecnologico.md (actualizado)
+```
+
+##### Opción B: Re-ejecutar el Prompt Completo ⚠️ (Para inconsistencias mayores)
+
+Si todo el archivo está mal o tiene muchas inconsistencias:
+
+1. **Borra el archivo incorrecto** (opcional, puedes pedir a Copilot que lo sobrescriba)
+2. **Re-ejecuta el prompt correspondiente** con información más específica
+
+**Ejemplo mejorado del Prompt 05:**
+
+```
+@workspace
+
+CONTEXTO: Estoy re-generando el archivo 04-tecnico/01-stack-tecnologico.md porque 
+la versión anterior tenía información incorrecta.
+
+INFORMACIÓN CORRECTA (validada del código):
+- Base de datos: PostgreSQL 15 (NO MySQL)
+- ORM: Prisma 5.7 (NO TypeORM)
+- Framework: Express 4.18
+- Lenguaje: TypeScript 5.3
+
+TAREA: Genera el archivo ai_docs/04-tecnico/01-stack-tecnologico.md usando 
+esta información CORRECTA.
+
+[... resto del prompt original ...]
+
+⚠️ SOBRESCRIBE el archivo existente con la información correcta.
+```
+
+##### Opción C: Re-generar Todo Desde Cero 🔴 (Última opción)
+
+Si hay MUCHAS inconsistencias en MÚLTIPLES archivos:
+
+1. **Borra la carpeta ai_docs/** completa
+2. **Re-ejecuta el Prompt 01** con información MÁS ESPECÍFICA:
+
+```
+@workspace
+
+ROL: Eres un Arquitecto Senior analizando el proyecto.
+
+PROYECTO: [Nombre]
+
+⚠️ INFORMACIÓN ESPECÍFICA QUE DEBES USAR:
+
+- Base de datos: PostgreSQL 15 (confirmado en docker-compose.yml)
+- Framework backend: Express 4.18 (confirmado en package.json)
+- ORM: Prisma 5.7 (confirmado en package.json)
+- Frontend: React 18 con TypeScript
+- Cloud: AWS (usa RDS, S3, EC2)
+
+TAREA: Analiza el proyecto usando ESTA información como base de verdad.
+Genera ai_docs/00-analisis-inicial.md
+
+[... resto del prompt ...]
+```
+
+3. **Re-ejecuta todos los prompts 02-09** en orden
+
+#### PASO 4: Documenta los Cambios
+
+Si hiciste correcciones manuales, documéntalas en el archivo de análisis inicial:
+
+```markdown
+# En ai_docs/00-analisis-inicial.md
+
+## Correcciones Realizadas
+
+**Fecha:** 2025-12-11
+
+**Cambios:**
+- ✅ Corregida base de datos de MySQL a PostgreSQL 15
+- ✅ Actualizado ORM de TypeORM a Prisma 5.7
+- ✅ Confirmado deployment en AWS (no Azure)
+
+**Archivos afectados:**
+- ai_docs/04-tecnico/01-stack-tecnologico.md (re-generado)
+- ai_docs/06-infraestructura/01-deployment.md (corregido manualmente)
+```
+
+### 🎯 Mejores Prácticas para Evitar Inconsistencias
+
+#### 1. Sé Específico en el Prompt 01
+
+❌ **Genérico:**
+```
+Analiza el proyecto y genera el análisis inicial.
+```
+
+✅ **Específico:**
+```
+Analiza el proyecto "E-commerce API".
+
+INFORMACIÓN CLAVE:
+- Es un sistema de e-commerce B2C
+- Stack: Node.js + Express + PostgreSQL + React
+- Infraestructura: AWS (ECS + RDS + S3)
+- Usuarios estimados: 10,000 concurrentes
+```
+
+#### 2. Valida el Análisis Inicial ANTES de Continuar
+
+Después del Prompt 01, **revisa `ai_docs/00-analisis-inicial.md` línea por línea** y corrige cualquier error ANTES de ejecutar los Prompts 02-09.
+
+#### 3. Usa el Análisis Inicial como Referencia
+
+Al ejecutar Prompts 02-09, menciona explícitamente:
+
+```
+IMPORTANTE: Consulta ai_docs/00-analisis-inicial.md para mantener coherencia.
+```
+
+#### 4. Ejecuta en Sesiones Cortas
+
+No ejecutes los 9 prompts en una sola sesión de chat. Divide en sesiones:
+
+**Sesión 1:**
+- Prompt 01 (análisis)
+- PAUSA → Revisar y validar
+
+**Sesión 2 (nuevo chat):**
+- Prompts 02-04 (requerimientos + vista ejecutiva + arquitectura)
+- PAUSA → Revisar coherencia
+
+**Sesión 3 (nuevo chat):**
+- Prompts 05-07 (técnico + procesos + infraestructura)
+- PAUSA → Revisar coherencia
+
+**Sesión 4 (nuevo chat):**
+- Prompts 08-09 (apéndices + archivos del repo)
+- PAUSA → Revisión final
+
+#### 5. Mantén un Checklist de Validación
+
+Crea un archivo `VALIDACION.md` en la raíz con:
+
+```markdown
+# Checklist de Validación
+
+## Información Crítica a Validar
+
+- [ ] Nombre del proyecto: [CORRECTO / INCORRECTO]
+- [ ] Base de datos: [PostgreSQL 15]
+- [ ] Framework: [Express 4.18]
+- [ ] Cloud: [AWS]
+- [ ] Usuarios concurrentes: [10,000]
+
+## Archivos Generados
+
+- [ ] 00-analisis-inicial.md → Revisado y correcto
+- [ ] 01-requerimientos.md → Coherente con análisis inicial
+- [ ] 02-vista-ejecutiva.md → Números coinciden
+- [ ] 03-arquitectura/*.md → Diagramas coherentes
+- [ ] 04-tecnico/*.md → Stack correcto
+- [ ] 05-procesos-negocio/*.md → Casos de uso reales
+- [ ] 06-infraestructura/*.md → Infraestructura correcta
+- [ ] README.md → Información precisa
+
+## Inconsistencias Encontradas
+
+| Archivo | Problema | Solución | Estado |
+|---------|----------|----------|--------|
+| 04-tecnico/01-stack.md | Decía MySQL en vez de PostgreSQL | Re-generado Prompt 05 | ✅ Resuelto |
+```
+
+### 📌 Regla de Oro
+
+> **"El análisis inicial (Prompt 01) es la fuente de verdad. Si otros archivos no coinciden, revisa el análisis inicial primero. Si el análisis inicial está mal, corrígelo ANTES de continuar."**
+
+---
+
 ## 🚀 Siguiente Paso
 
 Continúa con **[Workflow de Integración](/guia-documentacion/06-workflow/)** para aprender cómo integrar la documentación generada al Hub Central.
@@ -1927,5 +3536,5 @@ Continúa con **[Workflow de Integración](/guia-documentacion/06-workflow/)** p
 ---
 
 <div style="text-align: center; margin-top: 50px;">
-    <small>Última actualización: 2025-12-10</small>
+    <small>Última actualización: 2025-12-11</small>
 </div>

@@ -1,0 +1,179 @@
+# ============================================
+# CUESTIONARIO GENERADO AUTOMÁTICAMENTE
+# Fecha: 2025-12-12
+# Proyecto: fast-documentation-ai
+# ============================================
+# 
+# Este archivo fue generado analizando el código.
+# Solo contiene preguntas sobre información NO encontrada.
+# 
+# ✅ ENCONTRADO - Ya incluido en el template
+# ❌ NO ENCONTRADO - Requiere respuesta manual
+# ============================================
+
+title: "Deployment & Infraestructura - fast-documentation-ai"
+description: "Completa la información faltante para generar documentación completa de deployment."
+
+# ============================================
+# INFORMACIÓN AUTO-EXTRAÍDA DEL CÓDIGO
+# ============================================
+
+auto_extracted:
+  project_name: "fast-documentation-ai"
+  
+  # Docker
+  has_dockerfile: true
+  dockerfile_base_image: "python:3.11-slim"
+  dockerfile_ports: [8000]
+  has_compose: true
+  compose_services: ["mkdocs"]
+  
+  # CI/CD
+  cicd_tool_detected: null
+  cicd_file_found: null
+  
+  # Base de Datos
+  database_type: null
+  orm_detected: null
+  
+  # Cloud Provider
+  cloud_providers_detected:
+    aws: false
+    ibm: false
+    gcp: false
+    azure: false
+  
+  # Monitoreo
+  monitoring_tools_detected: []
+
+# ============================================
+# PREGUNTAS SOLO SOBRE LO NO ENCONTRADO
+# ============================================
+
+sections:
+  - icon: "ℹ️"
+    title: "Información General"
+    questions:
+      - id: projectName
+        type: text
+        label: "Nombre del proyecto"
+        default: "fast-documentation-ai"
+        help: "Auto-detectado del workspace"
+
+  - icon: "☁️"
+    title: "Cloud Provider"
+    description: "No se detectó cloud provider en el código. ¿Dónde se despliega o planea desplegar?"
+    questions:
+      - id: cloudProvider
+        type: checkbox
+        label: "¿Qué cloud providers usa el proyecto?"
+        options:
+          - value: aws
+            label: "AWS (Amazon Web Services)"
+          - value: ibm
+            label: "IBM Cloud"
+          - value: gcp
+            label: "GCP (Google Cloud Platform)"
+          - value: azure
+            label: "Microsoft Azure"
+          - value: onpremise
+            label: "On-Premise / Datacenter Propio"
+          - value: noaplica
+            label: "No aplica / No se despliega"
+
+  - icon: "🚀"
+    title: "Plataforma de Deployment"
+    description: "¿Dónde se ejecuta la aplicación en producción?"
+    questions:
+      - id: deployPlatform
+        type: select
+        label: "Plataforma de deployment"
+        options:
+          - value: kubernetes
+            label: "Kubernetes (cualquier cloud o on-premise)"
+          - value: docker-compose
+            label: "Docker Compose (simple deployment)"
+          - value: vm
+            label: "Máquinas Virtuales / VMs"
+          - value: serverless
+            label: "Serverless / Functions"
+          - value: paas
+            label: "PaaS (Platform as a Service)"
+          - value: noaplica
+            label: "No se despliega / Solo desarrollo local"
+        help: "Selecciona la plataforma principal donde corre en producción"
+
+  - icon: "🔄"
+    title: "CI/CD"
+    description: "No se detectó pipeline de CI/CD. ¿Qué herramienta se usa o planea usar?"
+    questions:
+      - id: cicdTool
+        type: checkbox
+        label: "Herramienta de CI/CD"
+        options:
+          - value: github-actions
+            label: "GitHub Actions"
+          - value: gitlab-ci
+            label: "GitLab CI"
+          - value: jenkins
+            label: "Jenkins"
+          - value: circleci
+            label: "CircleCI"
+          - value: travis
+            label: "Travis CI"
+          - value: azure-devops
+            label: "Azure DevOps"
+          - value: ibm-toolchain
+            label: "IBM Toolchain"
+          - value: manual
+            label: "Deployment Manual"
+          - value: noaplica
+            label: "No aplica / No hay CI/CD"
+
+  - icon: "🌍"
+    title: "Ambientes"
+    questions:
+      - id: environments
+        type: checkbox
+        label: "¿Qué ambientes existen?"
+        options:
+          - value: dev
+            label: "Desarrollo (local o remoto)"
+          - value: test
+            label: "Testing / QA"
+          - value: staging
+            label: "Staging / Pre-producción"
+          - value: prod
+            label: "Producción"
+        help: "Marca todos los ambientes que existen en el proyecto"
+
+  - icon: "📊"
+    title: "Monitoreo y Observabilidad"
+    description: "No se detectaron herramientas de monitoreo. ¿Se usa alguna?"
+    questions:
+      - id: monitoring
+        type: checkbox
+        label: "Herramientas de monitoreo"
+        options:
+          - value: prometheus
+            label: "Prometheus + Grafana"
+          - value: datadog
+            label: "Datadog"
+          - value: newrelic
+            label: "New Relic"
+          - value: cloudwatch
+            label: "AWS CloudWatch"
+          - value: stackdriver
+            label: "Google Cloud Monitoring"
+          - value: logs
+            label: "Solo logs (sin métricas)"
+          - value: noaplica
+            label: "No hay monitoreo configurado"
+
+# ============================================
+# TEMPLATE CON INFO ENCONTRADA + VARIABLES
+# ============================================
+
+template: |
+  # ROL
+  Eres un DevOps Engineer/SRE documentando infraestructura y procesos operacionales.

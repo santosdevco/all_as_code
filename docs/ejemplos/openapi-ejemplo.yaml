@@ -1,0 +1,473 @@
+openapi: 3.0.3
+info:
+  title: API de Ejemplo - E-commerce
+  description: |
+    API REST para plataforma de e-commerce con funcionalidades de gestión de usuarios, productos y pedidos.
+    
+    ## Autenticación
+    
+    Esta API usa autenticación JWT (JSON Web Tokens). Para obtener un token:
+    
+    1. Usa el endpoint `POST /auth/login` con tus credenciales
+    2. Obtén el token de la respuesta
+    3. Incluye el token en el header `Authorization: Bearer {token}` en todas las requests subsiguientes
+    
+    ## Rate Limiting
+    
+    - **Límite:** 1000 requests por hora por IP
+    - **Headers de respuesta:**
+      - `X-RateLimit-Limit`: Límite total
+      - `X-RateLimit-Remaining`: Requests restantes
+      - `X-RateLimit-Reset`: Timestamp de reset
+    
+    ## Versionado
+    
+    La API usa versionado en la URL: `/v1/`, `/v2/`, etc.
+    
+  version: 1.0.0
+  contact:
+    name: Equipo de Desarrollo
+    email: dev@example.com
+    url: https://docs.example.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://api-staging.example.com/v1
+    description: Staging (recomendado para pruebas)
+  - url: https://api.example.com/v1
+    description: Producción
+  - url: http://localhost:3000/api/v1
+    description: Desarrollo local
+
+security:
+  - bearerAuth: []
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        Token JWT obtenido del endpoint /auth/login.
+        
+        **Formato:** `Authorization: Bearer {token}`
+        
+        **Ejemplo:**
+        ```
+        Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+        ```
+
+  parameters:
+    ClientVersionHeader:
+      name: X-Client-Version
+      in: header
+      required: false
+      schema:
+        type: string
+        example: "1.0.0"
+      description: Versión del cliente que consume la API
+    
+    RequestIdHeader:
+      name: X-Request-ID
+      in: header
+      required: false
+      schema:
+        type: string
+        format: uuid
+        example: "550e8400-e29b-41d4-a716-446655440000"
+      description: ID único de la request para trazabilidad en logs
+    
+    PageParam:
+      name: page
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Número de página para paginación
+    
+    LimitParam:
+      name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+      description: Cantidad de items por página (máximo 100)
+
+  schemas:
+    User:
+      type: object
+      required:
+        - id
+        - email
+        - name
+        - role
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "550e8400-e29b-41d4-a716-446655440000"
+          description: ID único del usuario
+        email:
+          type: string
+          format: email
+          example: "usuario@example.com"
+          description: Email del usuario (único)
+        name:
+          type: string
+          minLength: 2
+          maxLength: 100
+          example: "Juan Pérez"
+          description: Nombre completo
+        role:
+          type: string
+          enum:
+            - admin
+            - user
+            - guest
+          example: "user"
+          description: Rol del usuario
+        createdAt:
+          type: string
+          format: date-time
+          example: "2025-12-11T10:30:00Z"
+          readOnly: true
+        updatedAt:
+          type: string
+          format: date-time
+          example: "2025-12-11T10:30:00Z"
+          readOnly: true
+    
+    CreateUserRequest:
+      type: object
+      required:
+        - email
+        - password
+        - name
+      properties:
+        email:
+          type: string
+          format: email
+          example: "nuevo@example.com"
+        password:
+          type: string
+          format: password
+          minLength: 8
+          example: "SecurePass123!"
+          description: Contraseña (mínimo 8 caracteres, debe incluir mayúsculas, minúsculas y números)
+        name:
+          type: string
+          minLength: 2
+          maxLength: 100
+          example: "María García"
+    
+    Pagination:
+      type: object
+      properties:
+        page:
+          type: integer
+          example: 1
+        limit:
+          type: integer
+          example: 20
+        total:
+          type: integer
+          example: 150
+          description: Total de items disponibles
+        totalPages:
+          type: integer
+          example: 8
+    
+    SuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: "Operación exitosa"
+    
+    ErrorResponse:
+      type: object
+      required:
+        - success
+        - error
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: "VALIDATION_ERROR"
+            message:
+              type: string
+              example: "Error de validación"
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  field:
+                    type: string
+                    example: "email"
+                  message:
+                    type: string
+                    example: "Email inválido"
+
+  responses:
+    Unauthorized:
+      description: No autenticado - Token inválido o expirado
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            success: false
+            error:
+              code: "UNAUTHORIZED"
+              message: "Token inválido o expirado"
+    
+    Forbidden:
+      description: No autorizado - Permisos insuficientes
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    
+    NotFound:
+      description: Recurso no encontrado
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            success: false
+            error:
+              code: "NOT_FOUND"
+              message: "El recurso no existe"
+
+paths:
+  /auth/login:
+    post:
+      tags:
+        - Autenticación
+      summary: Iniciar sesión
+      description: Autenticar usuario y obtener token JWT
+      operationId: login
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: "test@example.com"
+                password:
+                  type: string
+                  format: password
+                  example: "TestPassword123!"
+      responses:
+        '200':
+          description: Login exitoso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      token:
+                        type: string
+                        example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                      expiresIn:
+                        type: integer
+                        example: 3600
+                        description: Segundos hasta expiración
+                      user:
+                        $ref: '#/components/schemas/User'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /users:
+    get:
+      tags:
+        - Usuarios
+      summary: Listar usuarios
+      description: Obtener listado paginado de usuarios del sistema
+      operationId: listUsers
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/LimitParam'
+        - $ref: '#/components/parameters/ClientVersionHeader'
+        - $ref: '#/components/parameters/RequestIdHeader'
+        - name: role
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [admin, user, guest]
+          description: Filtrar por rol
+      responses:
+        '200':
+          description: Lista de usuarios
+          headers:
+            X-Request-ID:
+              schema:
+                type: string
+                format: uuid
+              description: ID de la request
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+                example: 1000
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+                example: 999
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    
+    post:
+      tags:
+        - Usuarios
+      summary: Crear usuario
+      description: Crear un nuevo usuario en el sistema
+      operationId: createUser
+      parameters:
+        - $ref: '#/components/parameters/ClientVersionHeader'
+        - $ref: '#/components/parameters/RequestIdHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserRequest'
+      responses:
+        '201':
+          description: Usuario creado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/User'
+                  message:
+                    type: string
+                    example: "Usuario creado exitosamente"
+        '400':
+          description: Error de validación
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          description: Email ya existe
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /users/{userId}:
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+        description: ID del usuario
+        example: "550e8400-e29b-41d4-a716-446655440000"
+    
+    get:
+      tags:
+        - Usuarios
+      summary: Obtener usuario
+      description: Obtener información de un usuario específico
+      operationId: getUserById
+      parameters:
+        - $ref: '#/components/parameters/ClientVersionHeader'
+        - $ref: '#/components/parameters/RequestIdHeader'
+      responses:
+        '200':
+          description: Usuario encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/User'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    
+    delete:
+      tags:
+        - Usuarios
+      summary: Eliminar usuario
+      description: Eliminar un usuario del sistema (soft delete)
+      operationId: deleteUser
+      parameters:
+        - $ref: '#/components/parameters/ClientVersionHeader'
+        - $ref: '#/components/parameters/RequestIdHeader'
+      responses:
+        '204':
+          description: Usuario eliminado
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+tags:
+  - name: Autenticación
+    description: Endpoints de autenticación y manejo de sesiones
+  - name: Usuarios
+    description: Gestión de usuarios del sistema

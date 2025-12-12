@@ -1,0 +1,523 @@
+/**
+ * PromptBuilder CSS - Estilos para formularios de prompts
+ */
+
+.prompt-builder {
+    background: #f5f5f5;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+/* Loading indicator */
+.pb-loading {
+    text-align: center;
+    padding: 40px;
+    font-size: 1.2em;
+    color: #666;
+    background: #f9f9f9;
+    border-radius: 8px;
+    margin: 20px 0;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* Header */
+.pb-header h3 {
+    margin-top: 0;
+    color: #333;
+    font-size: 1.5em;
+}
+
+.pb-description {
+    color: #666;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+/* Warning */
+.pb-warning {
+    background: #fff3cd;
+    border-left: 4px solid #ffc107;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+}
+
+.pb-warning strong {
+    color: #856404;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.pb-warning p {
+    color: #856404;
+    margin: 5px 0;
+}
+
+.pb-warning ol {
+    color: #856404;
+    margin: 10px 0 0 20px;
+}
+
+/* Auto-Extracted Information */
+.pb-auto-extracted {
+    background: #e7f5e7;
+    border-left: 4px solid #4caf50;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+}
+
+.pb-auto-extracted h4 {
+    margin-top: 0;
+    color: #2e7d32;
+    font-size: 1.1em;
+    margin-bottom: 8px;
+}
+
+.pb-ae-description {
+    color: #558b2f;
+    margin-bottom: 15px;
+    font-size: 0.95em;
+}
+
+.pb-ae-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 10px;
+}
+
+.pb-ae-item {
+    background: white;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #c8e6c9;
+}
+
+.pb-ae-label {
+    font-weight: bold;
+    color: #2e7d32;
+    margin-right: 5px;
+}
+
+.pb-ae-value {
+    color: #333;
+}
+
+.pb-ae-value.detected {
+    color: #4caf50;
+    font-weight: 500;
+}
+
+.pb-ae-value.not-detected {
+    color: #999;
+    font-style: italic;
+}
+
+.pb-ae-extra {
+    display: block;
+    color: #666;
+    font-size: 0.9em;
+    margin-top: 5px;
+    font-style: italic;
+}
+
+/* Section */
+.pb-section {
+    margin-bottom: 25px;
+    padding: 15px;
+    background: white;
+    border-radius: 6px;
+    border-left: 4px solid #2196F3;
+}
+
+.pb-section h4 {
+    margin-top: 0;
+    color: #2196F3;
+    font-size: 1.2em;
+}
+
+.pb-section-desc {
+    color: #666;
+    font-size: 0.95em;
+    margin-bottom: 15px;
+}
+
+/* Question */
+.pb-question {
+    margin-bottom: 15px;
+}
+
+.pb-label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+    font-size: 0.95em;
+}
+
+.pb-required {
+    color: #d32f2f;
+    margin-left: 3px;
+}
+
+.pb-help {
+    font-size: 0.85em;
+    color: #666;
+    font-style: italic;
+    margin-top: 5px;
+    line-height: 1.4;
+}
+
+/* Input Fields */
+.pb-input,
+.pb-select,
+.pb-textarea {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 0.95em;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+
+.pb-input:focus,
+.pb-select:focus,
+.pb-textarea:focus {
+    outline: none;
+    border-color: #2196F3;
+    box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.1);
+}
+
+.pb-textarea {
+    resize: vertical;
+    min-height: 60px;
+}
+
+/* Radio and Checkbox Groups */
+.pb-radio-group,
+.pb-checkbox-group {
+    margin: 10px 0;
+}
+
+.pb-radio-label,
+.pb-checkbox-label {
+    display: block;
+    margin: 8px 0;
+    font-weight: normal;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.pb-radio-label:hover,
+.pb-checkbox-label:hover {
+    background-color: #f0f0f0;
+}
+
+.pb-radio-label input,
+.pb-checkbox-label input {
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+/* Buttons */
+.pb-generate-btn {
+    background: #4CAF50;
+    color: white;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.2s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.pb-generate-btn:hover {
+    background: #45a049;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+}
+
+.pb-generate-btn:active {
+    transform: translateY(1px);
+}
+
+/* Show/Hide Form Button */
+.pb-show-form-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 20px 0;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(102, 126, 234, 0.3);
+    width: 100%;
+    max-width: 300px;
+    display: block;
+}
+
+.pb-show-form-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(102, 126, 234, 0.4);
+}
+
+.pb-show-form-btn:active {
+    transform: translateY(0);
+}
+
+/* Output */
+.pb-output {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin-top: 20px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.pb-output-actions {
+    display: flex;
+    gap: 10px;
+    padding: 12px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #ddd;
+}
+
+.pb-copy-btn,
+.pb-toggle-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.pb-copy-btn {
+    background: #28a745;
+    color: white;
+}
+
+.pb-copy-btn:hover {
+    background: #218838;
+    transform: translateY(-1px);
+}
+
+.pb-toggle-btn {
+    background: #6c757d;
+    color: white;
+}
+
+.pb-toggle-btn:hover {
+    background: #5a6268;
+    transform: translateY(-1px);
+}
+
+.pb-output pre {
+    margin: 0;
+    padding: 15px;
+    background: #263238;
+    color: #aed581;
+    overflow-x: auto;
+    font-family: 'Courier New', Consolas, Monaco, monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.pb-copy-btn:hover {
+    background: #1976D2;
+}
+
+/* Error */
+.pb-error {
+    background: #ffebee;
+    color: #c62828;
+    padding: 15px;
+    border-radius: 4px;
+    border-left: 4px solid #c62828;
+    margin: 10px 0;
+}
+
+/* Dark mode support */
+[data-md-color-scheme="slate"] .prompt-builder {
+    background: #1e1e1e;
+}
+
+[data-md-color-scheme="slate"] .pb-section {
+    background: #2d2d2d;
+    border-left-color: #42a5f5;
+}
+
+[data-md-color-scheme="slate"] .pb-section h4 {
+    color: #42a5f5;
+}
+
+[data-md-color-scheme="slate"] .pb-label {
+    color: #e0e0e0;
+}
+
+[data-md-color-scheme="slate"] .pb-help {
+    color: #999;
+}
+
+[data-md-color-scheme="slate"] .pb-input,
+[data-md-color-scheme="slate"] .pb-select,
+[data-md-color-scheme="slate"] .pb-textarea {
+    background: #1e1e1e;
+    border-color: #444;
+    color: #e0e0e0;
+}
+
+[data-md-color-scheme="slate"] .pb-radio-label:hover,
+[data-md-color-scheme="slate"] .pb-checkbox-label:hover {
+    background-color: #3a3a3a;
+}
+
+[data-md-color-scheme="slate"] .pb-warning {
+    background: #3a2f1a;
+    border-left-color: #ffa000;
+}
+
+/* ===================================
+   ESTILOS PARA BOTÓN DE CARGA
+   =================================== */
+
+/* Botón personalizado con efectos hover */
+button[onclick*="loadPromptForm"] {
+    transition: transform 0.2s ease, box-shadow 0.3s ease !important;
+}
+
+button[onclick*="loadPromptForm"]:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6) !important;
+}
+
+button[onclick*="loadPromptForm"]:active {
+    transform: translateY(0) !important;
+    box-shadow: 0 3px 10px rgba(102, 126, 234, 0.4) !important;
+}
+
+/* Dark mode para el botón */
+[data-md-color-scheme="slate"] button[onclick*="loadPromptForm"] {
+    background: linear-gradient(135deg, #5568d3 0%, #6a4c93 100%) !important;
+    box-shadow: 0 4px 15px rgba(85, 104, 211, 0.4) !important;
+}
+
+[data-md-color-scheme="slate"] button[onclick*="loadPromptForm"]:hover {
+    box-shadow: 0 6px 20px rgba(85, 104, 211, 0.6) !important;
+}
+[data-md-color-scheme="slate"] .pb-warning strong,
+[data-md-color-scheme="slate"] .pb-warning p,
+[data-md-color-scheme="slate"] .pb-warning ol {
+    color: #ffb74d;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .prompt-builder {
+        padding: 15px;
+    }
+    
+    .pb-section {
+        padding: 12px;
+    }
+    
+    .pb-generate-btn {
+        width: 100%;
+    }
+}
+
+/* ============================================ */
+/* ESTILOS PARA CARGA DE YAML DIRECTO */
+/* ============================================ */
+
+/* Textarea para pegar YAML */
+textarea[id$="-input"] {
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+textarea[id$="-input"]:focus {
+    outline: none;
+    border-color: #2980b9 !important;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+textarea[id$="-input"]:hover {
+    border-color: #5dade2;
+}
+
+/* Botones de carga de YAML */
+button[onclick*="loadPromptFromYAML"],
+button[onclick*="loadPromptForm"] {
+    transition: all 0.3s ease;
+}
+
+button[onclick*="loadPromptFromYAML"]:hover,
+button[onclick*="loadPromptForm"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3) !important;
+}
+
+button[onclick*="loadPromptFromYAML"]:active,
+button[onclick*="loadPromptForm"]:active {
+    transform: translateY(0);
+}
+
+/* Contenedor de resultado después de cargar YAML */
+#prompt-yaml-container,
+#prompt-07-generated-container {
+    margin-top: 20px;
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Error mejorado para YAML inválido */
+.pb-error {
+    background: #fee;
+    border-left: 4px solid #dc3545;
+    padding: 15px 20px;
+    border-radius: 6px;
+    color: #721c24;
+    font-size: 0.95em;
+    margin: 15px 0;
+}
+
+.pb-error small {
+    display: block;
+    margin-top: 8px;
+    color: #a94442;
+    font-size: 0.85em;
+}
+

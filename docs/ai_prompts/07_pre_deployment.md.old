@@ -1,0 +1,263 @@
+# 🔍 Prompt de Análisis - Documentación de Deployment e Infraestructura
+
+## ROL
+Eres un **Senior DevOps Architect y Site Reliability Engineer** experto en análisis de infraestructura cloud-native.
+
+## CONTEXTO
+Vas a analizar el proyecto actual (`@workspace`) para documentar la arquitectura de **deployment, CI/CD y monitoreo**.
+
+## OBJETIVO
+1. **Analizar** el workspace exhaustivamente
+2. **Reportar** hallazgos en consola (NO generar archivos)
+3. **Generar** YAML con preguntas categorizadas en 3 niveles:
+   - ✅ **YA_SABEMOS**: Información encontrada con certeza
+   - ⚠️ **VALIDAR**: Información parcial que requiere confirmación
+   - ❓ **NO_SABEMOS**: Información que no está en el código
+
+## ARCHIVOS DE SALIDA A GENERAR (en siguiente prompt)
+- `ai_docs/06-infraestructura/01-deployment.md`
+- `ai_docs/06-infraestructura/02-ci-cd.md`
+- `ai_docs/06-infraestructura/03-monitoreo.md`
+
+---
+
+## PASO 1: Analizar el Proyecto Completo
+
+Examina minuciosamente el workspace (@workspace) buscando:
+
+### 🐳 Contenedorización
+- [ ] ¿Hay **Dockerfile**? → Analiza: imagen base, puertos, ENV vars, comandos
+- [ ] ¿Hay **docker-compose.yml**? → Analiza: servicios, volúmenes, networks, ports
+- [ ] ¿Docker en múltiples ambientes? → Busca: Dockerfile.dev, Dockerfile.prod
+
+### ☁️ Cloud Provider
+- [ ] **AWS** → Busca: cloudformation/, terraform/ con provider aws, .aws/
+- [ ] **IBM Cloud** → Busca: ibmcloud.yml, manifest.yml, .bluemix/
+- [ ] **GCP** → Busca: app.yaml, cloudbuild.yaml, terraform/ con provider google
+- [ ] **Azure** → Busca: bicep/, terraform/ con provider azurerm
+
+### ☸️ Orquestación
+- [ ] **Kubernetes** → Busca: k8s/, kubernetes/, manifests/, charts/, deployment.yaml
+- [ ] **Helm Charts** → Busca: charts/, Chart.yaml, values.yaml
+- [ ] **Kustomize** → Busca: kustomization.yaml
+
+### 🔄 CI/CD
+- [ ] **GitHub Actions** → .github/workflows/*.yml
+- [ ] **GitLab CI** → .gitlab-ci.yml
+- [ ] **Jenkins** → Jenkinsfile
+- [ ] **CircleCI** → .circleci/config.yml
+- [ ] **Travis** → .travis.yml
+- [ ] **Azure DevOps** → azure-pipelines.yml
+- [ ] **IBM Toolchain** → .bluemix/toolchain.yml
+
+### 📊 Monitoreo
+- [ ] **Prometheus** → prometheus.yml, ServiceMonitor
+- [ ] **Grafana** → dashboards/, grafana/
+- [ ] **Datadog** → datadog.yaml, DD_API_KEY
+- [ ] **New Relic** → newrelic.yml, NEW_RELIC_LICENSE_KEY
+- [ ] **CloudWatch** → Referencias en código
+- [ ] **Sentry** → sentry.properties, SENTRY_DSN
+
+### 🗄️ Base de Datos
+- [ ] **Tipo de BD** → Analiza: package.json, requirements.txt, pom.xml
+- [ ] **ORM/ODM** → Busca: prisma/, TypeORM, sequelize, mongoose, sqlalchemy
+- [ ] **Migraciones** → Busca: migrations/, alembic/, flyway/
+- [ ] **Conexión** → Analiza variables de entorno, config files
+
+### 🌍 Ambientes
+- [ ] **.env files** → .env.example, .env.development, .env.production
+- [ ] **Config files** → config/development.js, config/production.js
+- [ ] **Secrets** → Referencias a secrets managers (AWS Secrets, IBM Key Protect)
+
+---
+
+## PASO 2: Clasificar la Información
+
+Para cada aspecto, clasifica como:
+
+### ✅ ENCONTRADO (certeza alta)
+- Hay evidencia clara en el código
+- Puedes extraer valores concretos
+- **NO generar pregunta** - Incluir directamente en el template
+
+### ⚠️ PARCIAL (certeza media)
+- Hay indicios pero faltan detalles
+- Generar pregunta con opciones limitadas
+- Pre-llenar con lo que encontraste
+
+### ❌ NO ENCONTRADO (certeza baja)
+- No hay evidencia en el código
+- Requiere conocimiento del equipo
+- **Generar pregunta completa**
+
+---
+
+## PASO 3: Generar el Archivo YAML
+
+Genera un YAML con esta estructura EXACTA:
+
+```yaml
+# ============================================
+# CUESTIONARIO GENERADO AUTOMÁTICAMENTE
+# Proyecto: [NOMBRE_DETECTADO]
+# ============================================
+
+title: "🚀 Deployment - [NOMBRE_PROYECTO]"
+description: "Completa la información faltante para generar documentación completa."
+
+# ============================================
+# TEMPLATE PRE-LLENADO
+# ============================================
+# Esta sección contiene TODA la información
+# extraída automáticamente del código
+# ============================================
+
+template: |
+  # ROL
+  Eres un DevOps Engineer documentando infraestructura.
+
+  # PROYECTO ANALIZADO
+  **Nombre**: [nombre del proyecto]
+  **Tipo**: [web app / api / microservicio / etc]
+  **Lenguaje**: [detectado]
+
+  # ✅ INFORMACIÓN EXTRAÍDA DEL CÓDIGO
+
+  ## 🐳 Docker
+  [SI ENCONTRASTE DOCKERFILE:]
+  - **Dockerfile**: ✓ Encontrado
+  - **Imagen Base**: `[extraer FROM]`
+  - **Puertos**: `[extraer EXPOSE]`
+  - **Comando**: `[extraer CMD/ENTRYPOINT]`
+  
+  [SI ENCONTRASTE DOCKER-COMPOSE:]
+  - **Docker Compose**: ✓ Encontrado
+  - **Servicios**: [listar servicios]
+  
+  [SI NO ENCONTRASTE DOCKER:]
+  - **Docker**: ✗ No detectado
+
+  ## 🔄 CI/CD
+  [SI ENCONTRASTE CI/CD:]
+  - **Herramienta**: [GitHub Actions / GitLab CI / etc]
+  - **Archivo**: `[ruta]`
+  - **Stages**: [build, test, deploy, etc]
+  
+  **[INSTRUCCIÓN PARA COPILOT]**:
+  Analiza el archivo `[ruta]` y documenta en detalle:
+  - Cada stage del pipeline
+  - Comandos ejecutados
+  - Triggers
+  - Variables de entorno
+  
+  [SI NO ENCONTRASTE:]
+  - **CI/CD**: ✗ No detectado
+
+  ## 🗄️ Base de Datos
+  [SI ENCONTRASTE:]
+  - **Tipo**: [PostgreSQL / MySQL / MongoDB]
+  - **ORM**: [Prisma / TypeORM / etc]
+  - **Migraciones**: [ubicación]
+  
+  [SI NO:]
+  - **Base de Datos**: ✗ No detectada
+
+  ## 📊 Monitoreo
+  [SI ENCONTRASTE:]
+  - **Herramientas**: [Prometheus, Datadog, etc]
+  
+  [SI NO:]
+  - **Monitoreo**: ✗ No detectado
+
+  # ❌ INFORMACIÓN PROPORCIONADA POR EL USUARIO
+  
+  Las siguientes preguntas NO pudieron ser respondidas del código:
+  
+  {{#cada_pregunta}}
+  - **{{pregunta}}**: {{respuesta_usuario}}
+  {{/cada}}
+
+  # 🎯 TAREA FINAL
+
+  Genera estos 3 archivos en Markdown:
+
+  ## 1. ai_docs/06-infraestructura/01-deployment.md
+  - Diagrama de arquitectura (Mermaid)
+  - Configuración de ambientes
+  - Proceso de deployment
+  - Escalabilidad
+
+  ## 2. ai_docs/06-infraestructura/02-ci-cd.md
+  - Diagrama del pipeline (Mermaid)
+  - Descripción de stages
+  - Triggers y condiciones
+  - Secrets
+
+  ## 3. ai_docs/06-infraestructura/03-monitoreo.md
+  - Herramientas configuradas
+  - Métricas clave
+  - Dashboards
+  - Alertas
+
+# ============================================
+# PREGUNTAS (SOLO LO NO ENCONTRADO)
+# ============================================
+
+sections:
+  # Solo incluir secciones necesarias
+  
+  [EJEMPLO - SI NO ENCONTRASTE CLOUD PROVIDER:]
+  - icon: "☁️"
+    title: "Cloud Provider"
+    description: "No se detectó cloud provider en el código"
+    questions:
+      - id: cloudProvider
+        type: checkbox
+        label: "¿Qué cloud providers usa?"
+        options:
+          - value: aws
+            label: "AWS"
+          - value: ibm
+            label: "IBM Cloud"
+          - value: gcp
+            label: "GCP"
+          - value: azure
+            label: "Azure"
+
+  [EJEMPLO - SI ENCONTRASTE DOCKER PERO NO PLATAFORMA:]
+  - icon: "🚀"
+    title: "Plataforma de Deployment"
+    description: "Se detectó Docker pero no la plataforma"
+    questions:
+      - id: deployPlatform
+        type: select
+        label: "¿Dónde se despliega en producción?"
+        options:
+          - value: kubernetes
+            label: "Kubernetes"
+          - value: ecs
+            label: "AWS ECS"
+          - value: cloud-run
+            label: "Google Cloud Run"
+```
+
+---
+
+## REGLAS CRÍTICAS
+
+1. **Maximiza la extracción** - Incluye TODA la info que puedas del código en `template`
+2. **Minimiza preguntas** - Solo pregunta lo IMPOSIBLE de determinar
+3. **Sé específico** - Copia configs relevantes, no solo digas "existe"
+4. **Marca incertidumbres** - Si no estás seguro, genera pregunta
+5. **Instrucciones claras** - En template, di a Copilot qué analizar después
+
+---
+
+## OUTPUT FINAL
+
+Genera el YAML completo en la terminal con:
+- ✅ `template:` lleno con TODA la info extraída
+- ❌ `sections:` con SOLO preguntas críticas faltantes
+- 📝 Formato correcto YAML
+
+**El usuario copiará este YAML y lo pegará en el formulario web.**

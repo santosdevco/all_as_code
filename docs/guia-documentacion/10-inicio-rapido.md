@@ -32,13 +32,30 @@ Antes de empezar, asegúrate de tener:
 
 ```mermaid
 flowchart LR
-    A["1️⃣ Crear<br/>Estructura"] --> B["2️⃣ Ejecutar<br/>Prompts"]
+    A["1️⃣ Crear<br/>Estructura"] --> B["2️⃣ Ejecutar<br/>Prompts<br/>(9 obligatorios<br/>+1 opcional)"]
     B --> C["3️⃣ Revisar y<br/>Publicar"]
     
     style A fill:#4caf50,color:#fff
     style B fill:#2196f3,color:#fff
     style C fill:#ff9800,color:#fff
 ```
+
+!!! success "📊 Checklist de Prompts"
+    **PROMPTS OBLIGATORIOS (para todos los proyectos):**
+    
+    - [ ] Prompt 01 - Análisis Inicial
+    - [ ] Prompt 02 - Vista Ejecutiva
+    - [ ] Prompt 03 - Arquitectura C4
+    - [ ] Prompt 04 - Stack Tecnológico
+    - [ ] Prompt 05 - Modelo de Datos
+    - [ ] Prompt 06 - Casos de Uso
+    - [ ] Prompt 07 - Deployment e Infraestructura
+    - [ ] Prompt 08 - Decisiones Técnicas
+    - [ ] Prompt 09 - Archivos de Repositorio
+    
+    **PROMPTS OPCIONALES (según tipo de proyecto):**
+    
+    - [ ] Prompt 10 - API REST (SOLO si tu proyecto expone endpoints HTTP)
 
 ---
 
@@ -142,58 +159,55 @@ Ahora vas a usar GitHub Copilot en modo agente para generar la documentación au
 
 !!! example "📍 Información del Prompt"
     - **Modo:** `@workspace` (OBLIGATORIO)
-    - **Propósito:** Entender el proyecto completo
-    - **Genera archivo:** ❌ NO (solo análisis)
-    - **Tiempo estimado:** 2-3 minutos
+!!! example "📍 Información del Prompt"
+    - **Modo:** `@workspace` (OBLIGATORIO)
+    - **Propósito:** Análisis completo del proyecto (BASE para todos los demás prompts)
+    - **Genera archivo:** ✅ `ai_docs/00-analisis-inicial.md`
+    - **Tiempo estimado:** 5-8 minutos
+
+**Ver prompt completo en:** [05-prompts.md - Prompt 01](/guia-documentacion/05-prompts/#-prompt-01-analisis-inicial)
+
+**⚠️ CRÍTICO:** Este análisis se guardará en `ai_docs/00-analisis-inicial.md` y servirá como:
+- ✅ Fuente de verdad para validar otros prompts
+- ✅ Documentación base del proyecto
+- ✅ Referencia para detectar inconsistencias
 
 **Cómo completar:**
 
 ```
-ROL: Eres un Arquitecto Senior analizando un proyecto de software.
+ROL: Eres un Arquitecto de Software Senior analizando un proyecto.
 
-TAREA: Analiza completamente el repositorio actual y genera un resumen ejecutivo.
+CONTEXTO: Primer paso para generar documentación estandarizada.
 
-INFORMACIÓN DEL PROYECTO:
+PROYECTO: [COMPLETAR: Nombre del proyecto]
 
-- Nombre del proyecto: [COMPLETAR: ej. "E-commerce API"]
+TAREA: Analiza el proyecto y genera el archivo ai_docs/00-analisis-inicial.md
 
-- Propósito principal: [COMPLETAR: ej. "API REST para tienda online"]
+El análisis debe incluir:
 
-- Repositorio: [COMPLETAR: URL del repo si está disponible]
+1. Identificación del Proyecto (nombre, tipo, propósito, dominio)
+2. Stack Tecnológico Completo (con VERSIONES)
+3. 🆕 Análisis de Dependencias (tabla con versión actual vs última, estado)
+4. Estructura del Proyecto (patrón, carpetas, archivos de configuración)
+5. Integraciones Identificadas (APIs externas, servicios)
+6. Modelo de Datos Preliminar (entidades principales)
+7. Casos de Uso Evidentes (5-10 principales)
+8. Ejecución Local (prerequisitos, instalación)
+9. Variables de Entorno Identificadas (tabla completa)
+10. Accesos (URLs de ambientes si están documentados)
+11. Observaciones Críticas (buenas prácticas, deuda técnica)
+12. Recomendaciones Iniciales
 
-ENTREGABLE: 
-Genera un resumen ejecutivo en formato markdown que incluya:
+ARCHIVO DE SALIDA: ai_docs/00-analisis-inicial.md
 
-1. **Descripción del Sistema** (3-4 párrafos)
-
-2. **Stack Tecnológico Identificado** (tabla con tecnología y propósito)
-
-3. **Componentes Principales** (lista con descripción)
-
-4. **Patrones Arquitectónicos Detectados**
-
-5. **Dependencias Externas** (sistemas, APIs, servicios)
-
-6. **Usuarios y Casos de Uso Principales** (inferidos del código)
-
-ANALIZA:
-
-- Archivos de configuración (package.json, requirements.txt, etc.)
-
-- Estructura de carpetas
-
-- Código fuente principal
-
-- Variables de entorno (.env.example)
-
-- README.md existente
-
-- Tests (para entender casos de uso)
-
-NO GENERES NINGÚN ARCHIVO AÚN. Solo entrega el análisis.
+IMPORTANTE: Este archivo es la BASE. Guárdalo para referencia.
 ```
 
-**✅ Acción:** Lee el análisis que Copilot genera. Valida que entendió correctamente el proyecto.
+**✅ Qué esperar:**
+- Copilot generará `ai_docs/00-analisis-inicial.md` con análisis completo
+- Incluirá análisis de dependencias con versiones
+- Identificará archivos de configuración y su propósito
+- **GUARDA ESTE ARCHIVO** - lo usarás para validar los demás prompts
 
 ---
 
@@ -807,6 +821,121 @@ ARCHIVOS DE SALIDA:
 - Creará .env.example si detecta variables de entorno en el código
 - Creará CONTRIBUTING.md con guía de contribución
 - **Revisa** que el README tenga sentido y esté completo antes de publicar
+
+---
+
+### 🔌 Prompt 10: Generar Documentación de API (OPCIONAL)
+
+!!! info "📍 Información del Prompt"
+    - **Modo:** `@workspace` (OBLIGATORIO)
+    - **Propósito:** Generar documentación OpenAPI/Swagger para APIs REST
+    - **¿Es obligatorio?** ❌ NO - Solo si tu proyecto es una API REST
+    - **Genera archivos:** ✅ 3 archivos
+      - `openapi.yaml` (raíz)
+      - `swagger-ui.html` (standalone, copiar y pegar)
+      - `ai_docs/08-api-reference.md`
+    - **Tiempo estimado:** 10-15 minutos
+
+!!! warning "⚠️ ¿Cuándo usar este prompt?"
+    **Ejecuta este prompt SOLO si tu proyecto:**
+    
+    ✅ Es una API REST (tiene endpoints HTTP)
+    ✅ Quieres documentación interactiva tipo Swagger
+    ✅ Necesitas que otros equipos consuman tu API
+    
+    **NO ejecutes este prompt si:**
+    
+    ❌ Es una aplicación web frontend sin API
+    ❌ Es un script o CLI
+    ❌ Es una biblioteca/librería
+    ❌ No expone endpoints HTTP
+
+**Propósito:** Generar documentación completa de API en formato OpenAPI 3.0 + Swagger UI interactivo
+
+**Ver prompt completo en:** [05-prompts.md - Prompt 10](/guia-documentacion/05-prompts/#-prompt-10-generar-documentacion-de-api-openapiswagger-opcional)
+
+**Cómo decidir si lo necesitas:**
+
+```
+¿Mi proyecto tiene endpoints como estos?
+  - GET /users
+  - POST /products
+  - PUT /orders/{id}
+  - DELETE /items/{id}
+
+Si respondiste SÍ → Ejecuta Prompt 10
+Si respondiste NO → Salta al Paso 3
+```
+
+**Cómo completar (si decidiste generarlo):**
+
+```
+ROL: Eres un API Architect Senior especializado en OpenAPI 3.0 y Swagger.
+
+CONTEXTO: Proyecto "[COMPLETAR: nombre del proyecto]"
+
+TAREA: Genera documentación completa de API.
+
+INFORMACIÓN REQUERIDA:
+
+- Nombre de la API: [COMPLETAR: ej. "E-commerce API"]
+- Versión: [COMPLETAR: ej. "1.0.0"]
+
+SERVIDORES (hosts disponibles):
+- Producción: [COMPLETAR: ej. "https://api.example.com" o "a definir"]
+- QA/Testing: [COMPLETAR: ej. "https://api-qa.example.com" o "a definir"]
+- Staging: [COMPLETAR: ej. "https://api-staging.example.com" o "a definir"]
+- Desarrollo: [COMPLETAR: ej. "https://api-dev.example.com" o "a definir"]
+- Local: [COMPLETAR: ej. "http://localhost:3000"]
+- Otro (manual): [COMPLETAR: Si necesitas un host adicional, escríbelo aquí]
+
+Path Base: [COMPLETAR: ej. "/api/v1" o dejar vacío]
+
+Autenticación: [COMPLETAR: "Bearer Token (JWT)" / "API Key" / "None"]
+
+ARCHIVOS A GENERAR:
+
+1. openapi.json (raíz) - Especificación OpenAPI 3.0 en JSON
+2. ai_docs/08-api-reference.md - Documentación markdown que importa el openapi.json
+
+NOTA IMPORTANTE: El openapi.json tendrá un dropdown de servidores donde el usuario
+puede elegir entre Producción, QA, Staging, Dev, Local, o escribir manualmente
+cualquier URL personalizada.
+```
+
+**✅ Qué esperar:**
+- Copilot generará `openapi.json` con todos los endpoints del código
+- Generará `ai_docs/08-api-reference.md` que importa el JSON con Swagger UI
+- **Dropdown de servidores** en Swagger UI para cambiar entre ambientes
+- **Campo manual** para escribir URLs personalizadas
+- Documentación interactiva lista para probar
+
+**🎯 Usar el Swagger UI en el Hub de Documentación:**
+
+Una vez generado el `openapi.json`, se renderizará automáticamente en el hub:
+
+```markdown
+# El archivo ai_docs/08-api-reference.md incluirá:
+
+<swagger-ui src="../openapi.json"/>
+
+# Esto renderiza el Swagger UI con:
+✅ Dropdown de servidores (Producción, QA, Dev, Local, etc.)
+✅ Opción de escribir URL manual
+✅ Botón "Try it out" para ejecutar requests
+✅ Autenticación con Bearer Token
+✅ Headers dinámicos configurables
+```
+
+**🔄 Cambiar de Servidor en Swagger UI:**
+
+1. Abre el hub de documentación: `mkdocs serve`
+2. Ve a la página "Referencia de API"
+3. En el Swagger UI, verás un **dropdown** arriba que dice "Servers"
+4. Haz clic y selecciona: 🚀 Producción | 🧪 QA | 🎭 Staging | 🔧 Dev | 💻 Local
+5. O escribe manualmente cualquier URL en el campo "Server URL"
+6. Haz clic en "Authorize" para configurar tu token
+7. ¡Prueba los endpoints en el ambiente que elijas!
 
 ---
 

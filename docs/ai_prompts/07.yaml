@@ -1,0 +1,845 @@
+title: "🚀 Cuestionario de Deployment, CI/CD e Infraestructura"
+description: "Completa este formulario para generar documentación completa de infraestructura, deployment y CI/CD del proyecto."
+
+warning:
+  title: "⚠️ Necesitas información del equipo de DevOps/SRE"
+  message: "Algunas preguntas requieren conocimiento técnico sobre producción. Si tienes dudas:"
+  items:
+    - "Pregunta al DevOps/SRE del equipo"
+    - "Revisa la documentación de infraestructura existente"
+    - "Marca \"No sé / A investigar\" - el prompt generará placeholders para validar"
+
+sections:
+  # ============================================
+  # SECCIÓN 1: INFORMACIÓN GENERAL
+  # ============================================
+  - icon: "📦"
+    title: "1. Información General"
+    description: "Información básica del proyecto"
+    questions:
+      - id: projectName
+        type: text
+        label: "Nombre del Proyecto:"
+        placeholder: "Ej: E-commerce Backend API"
+        required: true
+        help: "El nombre exacto del proyecto/aplicación"
+      
+      - id: projectType
+        type: select
+        label: "Tipo de aplicación:"
+        options:
+          - value: api-rest
+            label: "API REST"
+          - value: web-app
+            label: "Aplicación Web (Frontend + Backend)"
+          - value: microservicio
+            label: "Microservicio"
+          - value: monolito
+            label: "Monolito"
+          - value: frontend
+            label: "Frontend (SPA/SSR)"
+          - value: backend
+            label: "Backend puro"
+          - value: worker
+            label: "Worker/Job Processor"
+          - value: otro
+            label: "Otro"
+        default: api-rest
+        showOther: true
+        otherPlaceholder: "Especifica el tipo de aplicación"
+  
+  # ============================================
+  # SECCIÓN 2: CONTENEDORIZACIÓN
+  # ============================================
+  - icon: "🐳"
+    title: "2. Contenedorización (Docker)"
+    questions:
+      - id: hasDockerfile
+        type: radio
+        label: "¿El proyecto tiene Dockerfile?"
+        options:
+          - value: si
+            label: "Sí"
+          - value: no
+            label: "No"
+        default: si
+        help: "Busca el archivo 'Dockerfile' en la raíz del proyecto"
+      
+      - id: dockerUsage
+        type: checkbox
+        label: "¿Dónde se usa Docker? (marca todos los que apliquen)"
+        options:
+          - value: dev
+            label: "Desarrollo local"
+          - value: test
+            label: "Testing/CI"
+          - value: staging
+            label: "Staging"
+          - value: prod
+            label: "Producción"
+          - value: noaplica
+            label: "No aplica / No se usa Docker"
+          - value: nolose
+            label: "No sé / A investigar"
+        help: "⚠️ Pregunta al DevOps en qué ambientes se usa Docker"
+      
+      - id: hasCompose
+        type: radio
+        label: "¿Existe docker-compose.yml?"
+        options:
+          - value: si
+            label: "Sí"
+          - value: no
+            label: "No"
+        default: si
+      
+      - id: registryType
+        type: select
+        label: "¿Dónde se almacenan las imágenes Docker?"
+        options:
+          - value: nolose
+            label: "No sé / A investigar"
+          - value: ecr
+            label: "AWS ECR (Elastic Container Registry)"
+          - value: gcr
+            label: "Google Container Registry (GCR)"
+          - value: acr
+            label: "Azure Container Registry"
+          - value: ibm-registry
+            label: "IBM Cloud Container Registry"
+          - value: dockerhub
+            label: "Docker Hub"
+          - value: artifactory
+            label: "JFrog Artifactory"
+          - value: nexus
+            label: "Sonatype Nexus"
+          - value: github-packages
+            label: "GitHub Container Registry"
+          - value: gitlab-registry
+            label: "GitLab Container Registry"
+          - value: otro
+            label: "Otro"
+        default: nolose
+        showOther: true
+        otherPlaceholder: "Especifica el registry"
+        help: "⚠️ Importante para documentar el flujo de build"
+  
+  # ============================================
+  # SECCIÓN 3: CLOUD PROVIDER Y PLATAFORMA
+  # ============================================
+  - icon: "☁️"
+    title: "3. Cloud Provider y Plataforma de Deployment"
+    questions:
+      - id: cloudProvider
+        type: checkbox
+        label: "¿Qué cloud providers se usan? (marca todos)"
+        options:
+          - value: aws
+            label: "🟧 AWS (Amazon Web Services)"
+          - value: ibm
+            label: "🔵 IBM Cloud"
+          - value: gcp
+            label: "🔴 Google Cloud Platform"
+          - value: azure
+            label: "🔷 Microsoft Azure"
+          - value: onpremise
+            label: "🏢 On-Premise (servidores propios)"
+          - value: otro
+            label: "Otro"
+        help: "Selecciona TODOS los providers usados (puede ser híbrido)"
+        showOther: true
+        otherPlaceholder: "Ej: Oracle Cloud, Alibaba Cloud, etc."
+      
+      - id: deployPlatform
+        type: select
+        label: "Plataforma principal de deployment en PRODUCCIÓN:"
+        options:
+          - value: nolose
+            label: "No sé / A investigar"
+          - value: eks
+            label: "AWS EKS (Kubernetes)"
+          - value: ecs
+            label: "AWS ECS/Fargate"
+          - value: ec2
+            label: "AWS EC2 (instancias virtuales)"
+          - value: lambda
+            label: "AWS Lambda (Serverless)"
+          - value: elastic-beanstalk
+            label: "AWS Elastic Beanstalk"
+          - value: ibm-kubernetes
+            label: "IBM Cloud Kubernetes Service"
+          - value: ibm-code-engine
+            label: "IBM Cloud Code Engine"
+          - value: ibm-cloud-foundry
+            label: "IBM Cloud Foundry"
+          - value: gke
+            label: "Google Kubernetes Engine (GKE)"
+          - value: cloud-run
+            label: "Google Cloud Run"
+          - value: app-engine
+            label: "Google App Engine"
+          - value: aks
+            label: "Azure Kubernetes Service (AKS)"
+          - value: app-service
+            label: "Azure App Service"
+          - value: heroku
+            label: "Heroku"
+          - value: vercel
+            label: "Vercel"
+          - value: netlify
+            label: "Netlify"
+          - value: digitalocean
+            label: "DigitalOcean"
+          - value: onpremise
+            label: "On-Premise (servidores propios)"
+          - value: otro
+            label: "Otro"
+        default: nolose
+        showOther: true
+        otherPlaceholder: "Especifica la plataforma"
+        help: "⚠️ Pregunta al DevOps la plataforma principal de producción"
+      
+      - id: hasKubernetes
+        type: radio
+        label: "¿Se usa Kubernetes (archivos k8s, manifests, Helm)?"
+        options:
+          - value: si
+            label: "Sí (tenemos archivos k8s/)"
+          - value: no
+            label: "No"
+          - value: nolose
+            label: "No revisé"
+        default: nolose
+        help: "Busca carpetas: k8s/, kubernetes/, manifests/, charts/, helm/"
+      
+      - id: helmCharts
+        type: radio
+        label: "¿Se usa Helm para Kubernetes?"
+        options:
+          - value: si
+            label: "Sí"
+          - value: no
+            label: "No"
+          - value: nolose
+            label: "No sé"
+        default: nolose
+  
+  # ============================================
+  # SECCIÓN 4: CI/CD
+  # ============================================
+  - icon: "🔄"
+    title: "4. CI/CD (Integración y Despliegue Continuo)"
+    questions:
+      - id: cicdTool
+        type: select
+        label: "Herramienta principal de CI/CD:"
+        options:
+          - value: nolose
+            label: "No sé / A investigar"
+          - value: github-actions
+            label: "GitHub Actions"
+          - value: gitlab-ci
+            label: "GitLab CI/CD"
+          - value: jenkins
+            label: "Jenkins"
+          - value: circleci
+            label: "CircleCI"
+          - value: travis
+            label: "Travis CI"
+          - value: aws-codepipeline
+            label: "AWS CodePipeline"
+          - value: ibm-toolchain
+            label: "IBM Cloud Continuous Delivery (Toolchain)"
+          - value: azure-devops
+            label: "Azure DevOps Pipelines"
+          - value: gcp-cloud-build
+            label: "Google Cloud Build"
+          - value: bitbucket
+            label: "Bitbucket Pipelines"
+          - value: teamcity
+            label: "TeamCity"
+          - value: bamboo
+            label: "Bamboo"
+          - value: ninguno
+            label: "Ninguno (deployment manual)"
+          - value: otro
+            label: "Otro"
+        default: nolose
+        showOther: true
+        otherPlaceholder: "Especifica la herramienta"
+        help: "Busca: .github/workflows/, .gitlab-ci.yml, Jenkinsfile, .circleci/, etc."
+      
+      - id: cicdStages
+        type: checkbox
+        label: "¿Qué stages tiene el pipeline? (marca todos)"
+        options:
+          - value: lint
+            label: "Lint (análisis de código)"
+          - value: build
+            label: "Build (compilación)"
+            checked: true
+          - value: unit-tests
+            label: "Unit Tests"
+          - value: integration-tests
+            label: "Integration Tests"
+          - value: e2e-tests
+            label: "E2E Tests"
+          - value: security-scan
+            label: "Security Scan (SAST/DAST)"
+          - value: docker-build
+            label: "Docker Build"
+          - value: docker-push
+            label: "Docker Push (registry)"
+          - value: deploy-dev
+            label: "Deploy Development"
+          - value: deploy-staging
+            label: "Deploy Staging"
+          - value: deploy-prod
+            label: "Deploy Production"
+          - value: smoke-tests
+            label: "Smoke Tests"
+          - value: rollback
+            label: "Rollback automático"
+          - value: nolose
+            label: "No sé / No revisé"
+        help: "Revisa el archivo de CI/CD y marca todos los stages que encuentres"
+      
+      - id: autoDeploy
+        type: radio
+        label: "¿El deploy a producción es automático?"
+        options:
+          - value: auto
+            label: "Sí, automático al hacer merge a main/master"
+          - value: approval
+            label: "Semi-automático (requiere aprobación manual)"
+          - value: manual
+            label: "No, completamente manual"
+          - value: nolose
+            label: "No sé"
+        default: nolose
+        help: "⚠️ Pregunta al DevOps si el deploy es automático o requiere aprobación"
+      
+      - id: gitStrategy
+        type: select
+        label: "Estrategia de branching en Git:"
+        options:
+          - value: nolose
+            label: "No sé"
+          - value: git-flow
+            label: "Git Flow (main, develop, feature/*, hotfix/*)"
+          - value: github-flow
+            label: "GitHub Flow (main + feature branches)"
+          - value: trunk-based
+            label: "Trunk Based (todos a main con feature flags)"
+          - value: gitlab-flow
+            label: "GitLab Flow (main + environment branches)"
+          - value: otro
+            label: "Otro"
+        default: nolose
+        showOther: true
+  
+  # ============================================
+  # SECCIÓN 5: AMBIENTES
+  # ============================================
+  - icon: "🌍"
+    title: "5. Ambientes Disponibles"
+    questions:
+      - id: environments
+        type: checkbox
+        label: "¿Qué ambientes/entornos existen?"
+        options:
+          - value: local
+            label: "Local (desarrollo en máquina del dev)"
+            checked: true
+          - value: dev
+            label: "Development (servidor compartido)"
+          - value: qa
+            label: "QA/Testing"
+          - value: staging
+            label: "Staging (pre-producción)"
+            checked: true
+          - value: prod
+            label: "Producción"
+            checked: true
+          - value: dr
+            label: "Disaster Recovery"
+        
+      - id: envUrls
+        type: textarea
+        label: "URLs de los ambientes (opcional):"
+        placeholder: |
+          Dev: https://dev-api.example.com
+          Staging: https://staging-api.example.com
+          Prod: https://api.example.com
+        rows: 5
+        help: "Si conoces las URLs, colócalas para documentarlas"
+  
+  # ============================================
+  # SECCIÓN 6: NETWORKING Y SEGURIDAD
+  # ============================================
+  - icon: "🔒"
+    title: "6. Networking y Seguridad"
+    questions:
+      - id: hasLoadBalancer
+        type: radio
+        label: "¿Hay load balancer?"
+        options:
+          - value: si
+            label: "Sí"
+          - value: no
+            label: "No"
+          - value: nolose
+            label: "No sé"
+        default: nolose
+      
+      - id: lbType
+        type: select
+        label: "Tipo de load balancer (si aplica):"
+        options:
+          - value: na
+            label: "N/A"
+          - value: alb
+            label: "AWS Application Load Balancer (ALB)"
+          - value: nlb
+            label: "AWS Network Load Balancer (NLB)"
+          - value: ibm-lb
+            label: "IBM Cloud Load Balancer"
+          - value: gcp-lb
+            label: "Google Cloud Load Balancer"
+          - value: nginx
+            label: "Nginx"
+          - value: haproxy
+            label: "HAProxy"
+          - value: otro
+            label: "Otro"
+        default: na
+        showOther: true
+      
+      - id: hasWAF
+        type: radio
+        label: "¿Hay WAF (Web Application Firewall)?"
+        options:
+          - value: si
+            label: "Sí"
+          - value: no
+            label: "No"
+          - value: nolose
+            label: "No sé"
+        default: nolose
+        help: "Ej: AWS WAF, Cloudflare, IBM Cloud Internet Services"
+      
+      - id: sslCertificates
+        type: select
+        label: "¿Cómo se manejan certificados SSL/TLS?"
+        options:
+          - value: nolose
+            label: "No sé"
+          - value: acm
+            label: "AWS Certificate Manager (ACM)"
+          - value: ibm-cis
+            label: "IBM Cloud Internet Services"
+          - value: letsencrypt
+            label: "Let's Encrypt"
+          - value: manual
+            label: "Certificados manuales"
+          - value: otro
+            label: "Otro"
+        default: nolose
+        showOther: true
+  
+  # ============================================
+  # SECCIÓN 7: BASE DE DATOS Y PERSISTENCIA
+  # ============================================
+  - icon: "🗄️"
+    title: "7. Base de Datos y Persistencia"
+    questions:
+      - id: dbProvider
+        type: checkbox
+        label: "¿Dónde está alojada la base de datos?"
+        options:
+          - value: aws-rds
+            label: "AWS RDS (PostgreSQL, MySQL, etc.)"
+          - value: aws-dynamodb
+            label: "AWS DynamoDB"
+          - value: ibm-databases
+            label: "IBM Cloud Databases"
+          - value: gcp-sql
+            label: "Google Cloud SQL"
+          - value: gcp-firestore
+            label: "Google Firestore"
+          - value: azure-sql
+            label: "Azure SQL Database"
+          - value: mongodb-atlas
+            label: "MongoDB Atlas"
+          - value: self-hosted
+            label: "Self-hosted (en instancias propias)"
+          - value: otro
+            label: "Otro"
+        showOther: true
+        otherPlaceholder: "Especifica el proveedor"
+      
+      - id: hasBackups
+        type: radio
+        label: "¿Hay backups automáticos de la base de datos?"
+        options:
+          - value: si
+            label: "Sí"
+          - value: no
+            label: "No"
+          - value: nolose
+            label: "No sé"
+        default: nolose
+        help: "⚠️ Pregunta al DevOps sobre la estrategia de backups"
+      
+      - id: backupFrequency
+        type: select
+        label: "Frecuencia de backups (si aplica):"
+        options:
+          - value: na
+            label: "N/A"
+          - value: realtime
+            label: "Tiempo real (replicación continua)"
+          - value: hourly
+            label: "Cada hora"
+          - value: daily
+            label: "Diario"
+          - value: weekly
+            label: "Semanal"
+          - value: nolose
+            label: "No sé"
+        default: na
+      
+      - id: migrationTool
+        type: select
+        label: "¿Cómo se gestionan migraciones de BD?"
+        options:
+          - value: nolose
+            label: "No sé / A investigar"
+          - value: prisma
+            label: "Prisma Migrate"
+          - value: typeorm
+            label: "TypeORM Migrations"
+          - value: sequelize
+            label: "Sequelize Migrations"
+          - value: flyway
+            label: "Flyway"
+          - value: liquibase
+            label: "Liquibase"
+          - value: alembic
+            label: "Alembic (Python)"
+          - value: knex
+            label: "Knex.js Migrations"
+          - value: manual
+            label: "SQL scripts manuales"
+          - value: ninguno
+            label: "No hay migraciones"
+          - value: otro
+            label: "Otro"
+        default: nolose
+        showOther: true
+  
+  # ============================================
+  # SECCIÓN 8: MONITOREO Y OBSERVABILIDAD
+  # ============================================
+  - icon: "📊"
+    title: "8. Monitoreo y Observabilidad"
+    questions:
+      - id: monitoring
+        type: checkbox
+        label: "¿Qué herramientas de monitoreo se usan?"
+        options:
+          - value: none
+            label: "❌ Ninguna / No sé"
+            checked: true
+          - value: cloudwatch
+            label: "AWS CloudWatch"
+          - value: ibm-monitoring
+            label: "IBM Cloud Monitoring"
+          - value: gcp-monitoring
+            label: "Google Cloud Monitoring (Stackdriver)"
+          - value: datadog
+            label: "Datadog"
+          - value: newrelic
+            label: "New Relic"
+          - value: prometheus
+            label: "Prometheus + Grafana"
+          - value: elastic
+            label: "Elastic Stack (ELK)"
+          - value: sentry
+            label: "Sentry (errores)"
+          - value: splunk
+            label: "Splunk"
+          - value: dynatrace
+            label: "Dynatrace"
+          - value: otro
+            label: "Otro"
+        showOther: true
+        otherPlaceholder: "Especifica las herramientas"
+      
+      - id: hasAlerting
+        type: radio
+        label: "¿Hay alertas configuradas?"
+        options:
+          - value: si
+            label: "Sí"
+          - value: no
+            label: "No"
+          - value: nolose
+            label: "No sé"
+        default: nolose
+      
+      - id: alertChannels
+        type: checkbox
+        label: "Canales de alertas (si aplica):"
+        options:
+          - value: email
+            label: "Email"
+          - value: slack
+            label: "Slack"
+          - value: teams
+            label: "Microsoft Teams"
+          - value: pagerduty
+            label: "PagerDuty"
+          - value: opsgenie
+            label: "Opsgenie"
+          - value: otro
+            label: "Otro"
+        showOther: true
+  
+  # ============================================
+  # SECCIÓN 9: ESCALABILIDAD Y HA
+  # ============================================
+  - icon: "📈"
+    title: "9. Escalabilidad y Alta Disponibilidad"
+    questions:
+      - id: scaleType
+        type: radio
+        label: "¿Cómo escala la aplicación?"
+        options:
+          - value: horizontal
+            label: "Horizontal (múltiples instancias)"
+          - value: vertical
+            label: "Vertical (aumento de recursos)"
+          - value: both
+            label: "Ambos (horizontal y vertical)"
+          - value: none
+            label: "No escala (solo 1 instancia)"
+          - value: nolose
+            label: "No sé"
+        default: nolose
+      
+      - id: autoScaling
+        type: radio
+        label: "¿Hay auto-scaling configurado?"
+        options:
+          - value: si
+            label: "Sí"
+          - value: no
+            label: "No"
+          - value: nolose
+            label: "No sé"
+        default: nolose
+        help: "Auto-scaling ajusta instancias automáticamente según carga"
+      
+      - id: minMaxInstances
+        type: text
+        label: "Mínimo y máximo de instancias (si aplica):"
+        placeholder: "Ej: Min: 2, Max: 10"
+        help: "Deja vacío si no aplica o no sabes"
+      
+      - id: haStrategy
+        type: checkbox
+        label: "Estrategias de Alta Disponibilidad:"
+        options:
+          - value: multi-az
+            label: "Multi-AZ (múltiples zonas de disponibilidad)"
+          - value: multi-region
+            label: "Multi-Region"
+          - value: failover
+            label: "Failover automático"
+          - value: health-checks
+            label: "Health checks configurados"
+          - value: none
+            label: "Ninguna / No sé"
+  
+  # ============================================
+  # SECCIÓN 10: INFRAESTRUCTURA COMO CÓDIGO
+  # ============================================
+  - icon: "🏗️"
+    title: "10. Infraestructura como Código (IaC)"
+    questions:
+      - id: iacTool
+        type: checkbox
+        label: "¿Se usa Infrastructure as Code?"
+        options:
+          - value: ninguno
+            label: "❌ No / No sé"
+            checked: true
+          - value: terraform
+            label: "Terraform"
+          - value: cloudformation
+            label: "AWS CloudFormation"
+          - value: ibm-schematics
+            label: "IBM Cloud Schematics"
+          - value: deployment-manager
+            label: "Google Cloud Deployment Manager"
+          - value: arm
+            label: "Azure ARM Templates"
+          - value: pulumi
+            label: "Pulumi"
+          - value: ansible
+            label: "Ansible"
+          - value: chef
+            label: "Chef"
+          - value: puppet
+            label: "Puppet"
+        help: "Busca carpetas: terraform/, cloudformation/, iac/, infrastructure/"
+      
+      - id: iacRepo
+        type: radio
+        label: "¿El IaC está en el mismo repo o separado?"
+        options:
+          - value: same
+            label: "Mismo repositorio"
+          - value: separate
+            label: "Repositorio separado"
+          - value: na
+            label: "N/A (no hay IaC)"
+        default: na
+
+# ============================================
+# TEMPLATE DEL PROMPT (Solo Variables)
+# ============================================
+template: |
+  # INFORMACIÓN RECOPILADA DEL PROYECTO
+  
+  ## 📋 Datos Generales
+  - **Proyecto**: {{projectName}}
+  - **Tipo de Aplicación**: {{projectType}}
+  
+  ---
+  
+  ## 📦 Contenedorización
+  - **Tiene Dockerfile**: {{hasDockerfile}}
+  - **Uso de Docker**: {{dockerUsage}}
+  - **Docker Compose**: {{hasCompose}}
+  - **Registry**: {{registryType}}
+  
+  ## ☁️ Cloud Provider y Plataforma
+  - **Cloud Providers**: {{cloudProvider}}
+  - **Plataforma Principal (Producción)**: {{deployPlatform}}
+  - **Usa Kubernetes**: {{hasKubernetes}}
+  - **Helm Charts**: {{helmCharts}}
+  
+  ## 🔄 CI/CD
+  - **Herramienta**: {{cicdTool}}
+  - **Stages del Pipeline**: {{cicdStages}}
+  - **Deploy Automático**: {{autoDeploy}}
+  - **Estrategia Git**: {{gitStrategy}}
+  
+  ## 🌍 Ambientes
+  - **Ambientes Disponibles**: {{environments}}
+  - **URLs**:
+  {{envUrls}}
+  
+  ## 🔒 Networking y Seguridad
+  - **Load Balancer**: {{hasLoadBalancer}} (Tipo: {{lbType}})
+  - **WAF**: {{hasWAF}}
+  - **Certificados SSL**: {{sslCertificates}}
+  
+  ## 🗄️ Base de Datos y Persistencia
+  - **Provider**: {{dbProvider}}
+  - **Backups Automáticos**: {{hasBackups}} (Frecuencia: {{backupFrequency}})
+  - **Herramienta de Migraciones**: {{migrationTool}}
+  
+  ## 📊 Monitoreo y Observabilidad
+  - **Herramientas**: {{monitoring}}
+  - **Alertas Configuradas**: {{hasAlerting}} (Canales: {{alertChannels}})
+  
+  ## 📈 Escalabilidad y Alta Disponibilidad
+  - **Tipo de Escalamiento**: {{scaleType}}
+  - **Auto-scaling**: {{autoScaling}}
+  - **Instancias**: {{minMaxInstances}}
+  - **Estrategias HA**: {{haStrategy}}
+  
+  ## 🏗️ Infraestructura como Código
+  - **Herramientas IaC**: {{iacTool}}
+  - **Ubicación del Código**: {{iacRepo}}
+  
+  ---
+  
+  # 🔍 ANÁLISIS INICIAL DEL CÓDIGO
+  
+  **PEGAR A CONTINUACIÓN el output del Prompt de Análisis Inicial:**
+  
+  ```
+  [AQUÍ VA EL ANÁLISIS COMPLETO QUE GENERÓ COPILOT AL EXAMINAR EL @workspace]
+  ```
+  
+  ---
+  
+  # 📋 INSTRUCCIONES DE GENERACIÓN
+  
+  **Las instrucciones detalladas sobre QUÉ generar y CÓMO generarlo se encuentran en:**
+  → `/ai_prompts/07_output_instructions.md`
+  
+  Por favor, lee y sigue TODAS las instrucciones de ese archivo para generar los 3 archivos de documentación.
+  
+  # CONTEXTO
+  Proyecto: **{{projectName}}**
+  Tipo: {{projectType}}
+  
+  # INFORMACIÓN DEL CUESTIONARIO
+  
+  ## 📦 Contenedorización
+  - Tiene Dockerfile: {{hasDockerfile}}
+  - Uso de Docker: {{dockerUsage}}
+  - Docker Compose: {{hasCompose}}
+  - Registry: {{registryType}}
+  
+  ## ☁️ Cloud Provider y Plataforma
+  - Cloud Providers: {{cloudProvider}}
+  - Plataforma principal (Prod): {{deployPlatform}}
+  - Usa Kubernetes: {{hasKubernetes}}
+  - Helm Charts: {{helmCharts}}
+  
+  ## 🔄 CI/CD
+  - Herramienta: {{cicdTool}}
+  - Stages del pipeline: {{cicdStages}}
+  - Deploy automático: {{autoDeploy}}
+  - Estrategia Git: {{gitStrategy}}
+  
+  ## 🌍 Ambientes
+  - Ambientes disponibles: {{environments}}
+  - URLs:
+  {{envUrls}}
+  
+  ## 🔒 Networking y Seguridad
+  - Load Balancer: {{hasLoadBalancer}} (Tipo: {{lbType}})
+  - WAF: {{hasWAF}}
+  - Certificados SSL: {{sslCertificates}}
+  
+  ## 🗄️ Base de Datos
+  - Provider: {{dbProvider}}
+  - Backups automáticos: {{hasBackups}} (Frecuencia: {{backupFrequency}})
+  - Migraciones: {{migrationTool}}
+  
+  ## 📊 Monitoreo
+  - Herramientas: {{monitoring}}
+  - Alertas: {{hasAlerting}} (Canales: {{alertChannels}})
+  
+  ## 📈 Escalabilidad
+  - Tipo de escalamiento: {{scaleType}}
+  - Auto-scaling: {{autoScaling}}
+  - Instancias: {{minMaxInstances}}
+  - Estrategias HA: {{haStrategy}}
+  
+  ## 🏗️ Infraestructura como Código
+  - Herramientas: {{iacTool}}
+  - Ubicación: {{iacRepo}}
+  
+  ---
+  
+  **✅ INFORMACIÓN RECOPILADA COMPLETA**
+  
+  Ahora, por favor consulta las instrucciones de generación en: `/ai_prompts/07_output_instructions.md`
