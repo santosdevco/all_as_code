@@ -317,23 +317,31 @@ class PromptBuilder {
     /**
      * Genera el prompt basado en el template
      */
-    generatePrompt() {
+    async generatePrompt() {
         const data = this.collectFormData();
         this.formData = data;
         
-        let prompt = this.config.template;
+        let prompt = '';
         
-        // Usar Handlebars si está disponible
-        if (typeof Handlebars !== 'undefined') {
-            try {
-                const template = Handlebars.compile(prompt);
-                prompt = template(data);
-            } catch (error) {
-                console.warn('Error con Handlebars, usando reemplazo simple:', error);
+        // Si no hay template en el config, cargar el archivo de salida
+        if (!this.config.template) {
+            // Construir prompt combinando respuestas + archivo de salida
+            prompt = await this.buildPromptWithSalida(data);
+        } else {
+            prompt = this.config.template;
+            
+            // Usar Handlebars si está disponible
+            if (typeof Handlebars !== 'undefined') {
+                try {
+                    const template = Handlebars.compile(prompt);
+                    prompt = template(data);
+                } catch (error) {
+                    console.warn('Error con Handlebars, usando reemplazo simple:', error);
+                    prompt = this.simpleReplace(prompt, data);
+                }
+            } else {
                 prompt = this.simpleReplace(prompt, data);
             }
-        } else {
-            prompt = this.simpleReplace(prompt, data);
         }
         
         // Ocultar formulario y mostrar botón de "Mostrar Formulario"
@@ -358,9 +366,86 @@ class PromptBuilder {
     }
 
     /**
+     * Construye el prompt combinando respuestas del formulario con archivo de salida
+     */
+    async buildPromptWithSalida(data) {
+        try {
+            // Determinar la ruta del archivo de salida según el tipo de prompt
+            // Por defecto usa deployment, pero se puede configurar
+            const salidaPath = this.config.salidaFile || '/prompts/deployment/02-salida/';
+            
+            // Cargar el contenido del archivo de salida
+            const response = await fetch(salidaPath);
+            if (!response.ok) {
+                throw new Error(`No se pudo cargar ${salidaPath}`);
+            }
+            
+            const html = await response.text();
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            
+            // Extraer el contenido del artículo
+            const article = doc.querySelector('article.md-content__inner') || doc.querySelector('article');
+            if (!article) {
+                throw new Error('No se encontró el contenido del archivo de salida');
+            }
+            
+            const salidaContent = article.innerText || article.textContent;
+            
+            // Construir sección de respuestas del formulario
+            let respuestasSection = '# INFORMACIÓN DEL PROYECTO\n\n';
+            respuestasSection += 'A continuación se presenta toda la información recopilada:\n\n';
+            
+            // Agrupar respuestas por sección
+            this.config.sections.forEach(section => {
+                respuestasSection += `## ${section.title}\n\n`;
+                
+                section.questions.forEach(question => {
+                    const value = data[question.id];
+                    if (value) {
+                        respuestasSection += `**${question.label}**\n`;
+                        
+                        if (Array.isArray(value)) {
+                            respuestasSection += value.map(v => `- ${v}`).join('\n') + '\n\n';
+                        } else {
+                            respuestasSection += `${value}\n\n`;
+                        }
+                    }
+                });
+            });
+            
+            // Combinar: Respuestas + Contenido de salida
+            return respuestasSection + '\n---\n\n' + salidaContent;
+            
+        } catch (error) {
+            console.error('Error al construir prompt con archivo de salida:', error);
+            
+            // Fallback: construir prompt básico solo con respuestas
+            let prompt = '# INFORMACIÓN DEL PROYECTO\n\n';
+            
+            this.config.sections.forEach(section => {
+                prompt += `## ${section.title}\n\n`;
+                
+                section.questions.forEach(question => {
+                    const value = data[question.id];
+                    if (value) {
+                        prompt += `**${question.label}** ${Array.isArray(value) ? value.join(', ') : value}\n\n`;
+                    }
+                });
+            });
+            
+            prompt += '\n⚠️ **NOTA:** No se pudo cargar la especificación de salida. Por favor, revisa el archivo 02-salida.md manualmente.\n';
+            
+            return prompt;
+        }
+    }
+
+    /**
      * Reemplazo simple de variables {{variable}}
      */
     simpleReplace(template, data) {
+        if (!template) return '';
+        
         return template.replace(/\{\{(\w+)\}\}/g, (match, key) => {
             if (Array.isArray(data[key])) {
                 return data[key].join(', ');
