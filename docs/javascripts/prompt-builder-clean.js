@@ -110,9 +110,12 @@ sections:
                         ${this.renderSections()}
                     </form>
                     
-                    <button class="pb-generate-btn" onclick="promptBuilderInstances['${this.promptId}'].handleGenerateClick()">
-                        🚀 Generar y Copiar Prompt
-                    </button>
+                    <div class="pb-buttons-container" style="display: flex; gap: 15px; margin-top: 20px; flex-wrap: wrap;">
+                        <button class="pb-copy-answers-btn" onclick="promptBuilderInstances['${this.promptId}'].copyAnswers()" style="background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%); color: white; border: none; padding: 15px 30px; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 15px rgba(155, 89, 182, 0.4); transition: all 0.3s ease; flex: 1; min-width: 200px;">
+                            📋 Copiar Respuestas
+                        </button>
+                      
+                    </div>
                 </div>
                 
                 <button id="pb-show-form-${this.promptId}" class="pb-show-form-btn" style="display: none;" onclick="promptBuilderInstances['${this.promptId}'].toggleFormVisibility()">
@@ -348,6 +351,52 @@ sections:
         });
         
         return data;
+    }
+
+    /**
+     * Copia solo las respuestas del formulario (para proceso iterativo)
+     */
+    copyAnswers() {
+        const data = this.collectFormData();
+        
+        // Construir sección de respuestas
+        let answersText = '# RESPUESTAS DEL USUARIO\n\n';
+        
+        // Agrupar respuestas por sección
+        this.config.sections.forEach(section => {
+            answersText += `## ${section.icon} ${section.title}\n\n`;
+            
+            section.questions.forEach(question => {
+                const value = data[question.id];
+                if (value && value.length > 0) {
+                    answersText += `**${question.label}**\n`;
+                    
+                    if (Array.isArray(value)) {
+                        answersText += value.map(v => `- ${v}`).join('\n') + '\n\n';
+                    } else {
+                        answersText += `${value}\n\n`;
+                    }
+                }
+            });
+        });
+        
+        // Agregar el mensaje para Copilot
+        answersText += '\n---\n\n';
+        answersText += '¿Tienes más dudas? Si es así, genera el YAML con las preguntas. Si no, solo responde: "todo ok"\n';
+        
+        // Copiar al clipboard
+        try {
+            navigator.clipboard.writeText(answersText).then(() => {
+                // Mostrar confirmación
+                alert('✅ Respuestas copiadas al portapapeles!\n\nPega esto en Copilot (mismo chat) y espera su respuesta.');
+            }).catch(error => {
+                console.error('Error al copiar:', error);
+                alert('Error al copiar. Intenta de nuevo.');
+            });
+        } catch (error) {
+            console.error('Error al copiar:', error);
+            alert('Error al copiar. Intenta de nuevo.');
+        }
     }
 
     /**
