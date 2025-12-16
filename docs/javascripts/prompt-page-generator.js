@@ -9,25 +9,61 @@ class PromptPageGenerator {
     constructor(rootElement) {
         this.root = rootElement;
         
-        // Tipos de documentación disponibles
+        // Tipos de documentación disponibles (ordenados por flujo lógico de documentación)
         this.documentTypes = {
+            'vista-ejecutiva': {
+                title: '1️⃣ Vista Ejecutiva',
+                description: 'Genera resumen ejecutivo orientado a stakeholders y tomadores de decisión',
+                analysisPath: '/prompts/vista-ejecutiva/01-analisis/',
+                outputPath: '/prompts/vista-ejecutiva/02-salida/'
+            },
+            'requerimientos': {
+                title: '2️⃣ Análisis de Requerimientos',
+                description: 'Genera requisitos funcionales y no funcionales con análisis automático del código',
+                analysisPath: '/prompts/requerimientos/01-analisis/',
+                outputPath: '/prompts/requerimientos/02-salida/'
+            },
+            'arquitectura': {
+                title: '3️⃣ Documentación de Arquitectura',
+                description: 'Genera diagramas C4, ADRs y decisiones arquitectónicas',
+                analysisPath: '/prompts/arquitectura/01-analisis/',
+                outputPath: '/prompts/arquitectura/02-salida/'
+            },
+            'adr': {
+                title: '4️⃣ Architecture Decision Records',
+                description: 'Genera registro de decisiones arquitectónicas con contexto y consecuencias',
+                analysisPath: '/prompts/adr/01-analisis/',
+                outputPath: '/prompts/adr/02-salida/'
+            },
+            'tecnica': {
+                title: '5️⃣ Documentación Técnica',
+                description: 'Genera documentación de stack tecnológico, modelo de datos, APIs e integraciones',
+                analysisPath: '/prompts/tecnica/01-analisis/',
+                outputPath: '/prompts/tecnica/02-salida/'
+            },
+            'procesos-negocio': {
+                title: '6️⃣ Procesos de Negocio',
+                description: 'Genera casos de uso y flujos funcionales del sistema',
+                analysisPath: '/prompts/procesos-negocio/01-analisis/',
+                outputPath: '/prompts/procesos-negocio/02-salida/'
+            },
+            'swagger': {
+                title: '7️⃣ API Reference (Swagger/OpenAPI)',
+                description: 'Genera especificación OpenAPI 3.0 completa con Swagger UI integrado',
+                analysisPath: '/prompts/swagger/01-analisis/',
+                outputPath: '/prompts/swagger/02-salida/'
+            },
             'deployment': {
-                title: '🚀 Deployment e Infraestructura',
+                title: '8️⃣ Deployment e Infraestructura',
                 description: 'Genera documentación completa de deployment, CI/CD y monitoreo',
                 analysisPath: '/prompts/deployment/01-analisis/',
                 outputPath: '/prompts/deployment/02-salida/'
             },
             'api': {
-                title: '📡 Documentación de API',
+                title: '9️⃣ Documentación de API (Legacy)',
                 description: 'Genera documentación completa de endpoints, autenticación y ejemplos',
                 analysisPath: '/prompts/api/01-analisis/',
                 outputPath: '/prompts/api/02-salida/'
-            },
-            'arquitectura': {
-                title: '🏗️ Documentación de Arquitectura',
-                description: 'Genera diagramas C4, ADRs y decisiones arquitectónicas',
-                analysisPath: '/prompts/arquitectura/01-analisis/',
-                outputPath: '/prompts/arquitectura/02-salida/'
             }
         };
         

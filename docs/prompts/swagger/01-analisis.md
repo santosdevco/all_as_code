@@ -1,147 +1,88 @@
-# 🔍 Prompt de Análisis - Arquitectura de Software
+# ROL
+Eres un API Architect Senior especializado en documentación de APIs con OpenAPI 3.0 y Swagger.
 
-## ROL
-Eres un **Arquitecto de Software Senior** especializado en modelado C4, documentación de arquitectura y patrones de diseño.
+# CONTEXTO
+Analiza el proyecto actual para extraer:
 
-## CONTEXTO
-Vas a analizar el proyecto actual (`@workspace`) para crear documentación de **arquitectura de software** siguiendo el modelo C4 (Context, Containers, Components, Code).
+- Endpoints de la API (controllers, routes)
+- Esquemas de datos (models, entities, DTOs)
+- Métodos de autenticación implementados
+- Configuración de servidores y ambientes
+- Información técnica existente en `ai_docs/04-tecnico/03-apis.md`
 
-## OBJETIVO
-1. **Analizar** el workspace exhaustivamente
-2. **Reportar** hallazgos en consola (NO generar archivos)
-3. **Generar** YAML con preguntas necesarias
+# OBJETIVO
+Este prompt tiene 3 objetivos secuenciales:
 
+1. **Analizar el workspace** buscando controllers, rutas, models, middleware de autenticación
+2. **Reportar hallazgos** en la consola
+3. **Generar YAML** con preguntas clave para completar información faltante
 
----
+## FASE 1: Análisis del Proyecto
 
-## FASE 1: ANÁLISIS EXHAUSTIVO
+Busca en el código:
 
-Examina **todos los archivos** del proyecto (`@workspace`) identificando:
+**Endpoints y Rutas:**
+- Archivos de rutas (routes/, router/, api/)
+- Controllers con endpoints
+- Métodos HTTP (GET, POST, PUT, DELETE, PATCH)
+- Paths y parámetros de ruta
+- Query parameters y request bodies
 
-### 🌐 **Nivel 1 - Contexto**
+**Modelos de Datos:**
+- Entidades/Models (models/, entities/, schemas/)
+- DTOs y tipos TypeScript
+- Validaciones (class-validator, Joi, Zod)
+- Relaciones entre entidades
 
-**Detectar:**
-- **Usuarios/Actores**: Roles del sistema (de auth, rutas, permisos)
-- **Sistema principal**: Nombre, propósito
-- **Sistemas externos**: APIs, servicios cloud, integraciones
-- **Protocolos de comunicación**: REST, GraphQL, gRPC, WebSockets, Message Queues
+**Autenticación:**
+- Middleware de autenticación (auth/, middleware/)
+- Estrategias (JWT, API Key, OAuth2)
+- Headers de autenticación
+- Endpoints de login/register
 
----
+**Configuración:**
+- Variables de entorno (.env, .env.example)
+- URLs de servidores (desarrollo, staging, producción)
+- Puerto del servidor local
+- Base paths (/api/v1, etc.)
 
-### 📦 **Nivel 2 - Contenedores**
+## FASE 2: Reporte en Consola
 
-**Archivos clave:**
-- `package.json`, `pom.xml`, `requirements.txt` → Tecnologías y versiones
-- `src/`, estructura de carpetas → Separación frontend/backend
-- `docker-compose.yml` → Servicios containerizados
-- `config/`, `.env.example` → Configuraciones de componentes
-
-**Identificar:**
-- **Aplicaciones frontend**: React, Vue, Angular, etc. + versión
-- **Servicios backend**: Express, Spring Boot, Django, etc. + versión
-- **Bases de datos**: PostgreSQL, MongoDB, MySQL, etc. + versión
-- **Cache**: Redis, Memcached + versión
-- **Message brokers**: RabbitMQ, Kafka, SQS
-- **Autenticación**: Auth service separado o integrado
-- **Storage**: S3, Azure Blob, local filesystem
-
----
-
-### 🧩 **Nivel 3 - Componentes**
-
-**Analizar estructura interna del backend/servicio principal:**
-
-**Detectar patrones:**
-- **MVC**: `controllers/`, `models/`, `views/`
-- **Layered**: `controllers/`, `services/`, `repositories/`
-- **Hexagonal/Clean**: `domain/`, `application/`, `infrastructure/`
-- **Modular**: Carpetas por feature/módulo
-
-**Componentes típicos:**
-- Controllers/Handlers
-- Services/Use Cases
-- Repositories/Data Access
-- Middleware/Interceptors
-- DTOs/Validators
-- Event Handlers
-- Jobs/Workers
-
----
-
-### 📐 **Patrones y Decisiones Arquitectónicas**
-
-**Buscar evidencia de:**
-- **Patrones de diseño**: Singleton, Factory, Repository, Strategy, etc.
-- **Arquitectura**: Monolito, Microservicios, Serverless
-- **Comunicación**: Síncrona (HTTP), Asíncrona (eventos, colas)
-- **Data management**: CQRS, Event Sourcing, transacciones
-- **Escalabilidad**: Stateless, horizontal scaling, load balancing
-- **Resiliencia**: Circuit breaker, retry policies, timeouts
-
-**Archivos útiles:**
-- `docs/ADR/`, `docs/architecture/`, `README.md`
-- Comentarios en código con justificaciones
-- Tests que revelan decisiones de diseño
-
----
-
-## FASE 2: REPORTE EN CONSOLA
+Imprime hallazgos con este formato:
 
 ```
-================================================================================
-📊 ANÁLISIS DE ARQUITECTURA - [NOMBRE_PROYECTO]
-================================================================================
+🔍 ANÁLISIS DE API COMPLETADO
+==============================
 
-🌐 C4 NIVEL 1 - CONTEXTO
-✅ ENCONTRADO:
-   - Sistema principal: [nombre]
-   - Usuarios detectados: [N] tipos
-   - Sistemas externos: [N] integraciones
-   
-❓ PREGUNTAR:
-   - ¿Cuál es el propósito de negocio del sistema? (para contexto)
-   - ¿Hay integraciones planificadas no implementadas?
+📡 ENDPOINTS ENCONTRADOS:
+- [MÉTODO] [PATH] - [Descripción/Función]
+  Ejemplos: POST /auth/login, GET /users, POST /users/:id
 
----
+📊 MODELOS DE DATOS:
+- [Modelo] - [Campos principales]
+  Ejemplo: User - id, email, name, role, createdAt
 
-📦 C4 NIVEL 2 - CONTENEDORES
-✅ ENCONTRADO:
-   - Frontend: [tecnología + versión]
-   - Backend: [tecnología + versión]
-   - Base de datos: [tipo + versión]
-   - Cache: [sí/no - tipo]
-   
-❓ PREGUNTAR:
-   - ¿Por qué se eligió [tecnología X]? (para ADR)
-   - ¿Hay planes de migración tecnológica?
+🔐 AUTENTICACIÓN:
+- Tipo detectado: [JWT/API Key/OAuth2/Ninguno]
+- Headers: [Authorization, X-API-Key, etc.]
+- Endpoints de auth: [/login, /register, /refresh]
 
----
+⚙️ CONFIGURACIÓN:
+- Puerto local: [3000, 8080, etc.]
+- Base path: [/api/v1, /v2, ninguno]
+- Variables de entorno detectadas: [API_URL, DATABASE_URL, etc.]
 
-🧩 C4 NIVEL 3 - COMPONENTES
-✅ ENCONTRADO:
-   - Patrón arquitectónico: [detectado]
-   - Componentes principales: [lista]
-   - Separación de responsabilidades: [sí/no]
-   
-❓ PREGUNTAR:
-   - ¿Qué componente es el más complejo y requiere documentación detallada?
+📚 DOCUMENTACIÓN EXISTENTE:
+- Archivo: ai_docs/04-tecnico/03-apis.md [Existe/No existe]
+- Info disponible: [Resumen de contenido]
 
----
-
-📐 DECISIONES ARQUITECTÓNICAS
-✅ ENCONTRADO:
-   - [Decisión 1]: [evidencia encontrada]
-   - [Decisión 2]: [evidencia encontrada]
-   
-❓ PREGUNTAR:
-   - ¿Por qué se eligió [patrón/tecnología]?
-   - ¿Qué alternativas se consideraron?
-   - ¿Qué trade-offs se aceptaron?
+⚠️ INFORMACIÓN FALTANTE:
+[Lista lo que necesitas confirmar con el usuario]
 ```
 
----
+## FASE 3: Generar YAML para Formulario
 
-## FASE 3: GENERAR YAML
+Genera YAML adaptativo según hallazgos:
 
 ```yaml
 title: "🚀 Deployment - [NOMBRE_PROYECTO]"
@@ -315,20 +256,18 @@ sections:
 ```
 
 
----
+**⚠️ IMPORTANTE:**
 
-## REGLAS CRÍTICAS
+- Adapta las preguntas según lo que encuentres en el análisis
+- Si detectas valores, ponlos en `valor_detectado`
+- NO incluyas schemas completos de OpenAPI (se generan en fase 2)
+- Enfócate en info de configuración que el código no puede inferir
+- Headers globales detectados desde middleware/interceptors
 
-1. **MAXIMIZA** extracción del código → Infiere arquitectura del código real
-2. **IDENTIFICA patrones** → Reconoce MVC, Layered, Hexagonal, etc.
-3. **EXTRAE tecnologías** → Versiones exactas de package.json, pom.xml, etc.
-4. **Adapta el YAML** → Solo pregunta lo que no puedes inferir
-5. **NO GENERES ARCHIVOS** → Solo reporte + YAML
+## OUTPUT
 
----
+**Imprime en consola:**
+1. Reporte de análisis completo
+2. Bloque YAML con preguntas contextualizadas
 
-## OUTPUT ESPERADO
-
-1. **Reporte en consola** con arquitectura detectada por niveles C4
-2. **YAML** con preguntas necesarias (máximo 10-12)
-3. **NO generar archivos markdown**
+**NO generes archivos** - solo análisis y YAML para el formulario.

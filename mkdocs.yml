@@ -85,18 +85,18 @@ nav:
     - '4️⃣ Conclusiones': all-as-code/04_conclusiones.md
     - '🚀 Tutorial MkDocs + Mermaid': all-as-code/05_tutorial_mkdocs.md
 
-  - Guía de Documentación:
-      - 📖 Introducción: guia-documentacion/00-intro.md
-      - 🚀 Inicio Rápido: guia-documentacion/10-inicio-rapido.md
-      - 📝 Formato y Convenciones: guia-documentacion/01-formato.md
-      - 🎭 Niveles de Abstracción: guia-documentacion/02-niveles-abstraccion.md
-      - 📊 Catálogo de Diagramas: guia-documentacion/03-diagramas.md
-      - 📋 Plantillas Reutilizables: guia-documentacion/04-plantillas.md
-      - 🔄 Workflow de Integración: guia-documentacion/06-workflow.md
-      - 📚 Glosario: guia-documentacion/07-glosario.md
-      - 🔧 Corrección de Formato: guia-documentacion/08-correccion-formato.md
-      - 📋 Análisis de Requerimientos: guia-documentacion/09-requerimientos.md
-      - 🔌 Integración Swagger UI: guia-documentacion/11-integracion-swagger.md
+  # - Guía de Documentación:
+  #     - 📖 Introducción: guia-documentacion/00-intro.md
+  #     - 🚀 Inicio Rápido: guia-documentacion/10-inicio-rapido.md
+  #     - 📝 Formato y Convenciones: guia-documentacion/01-formato.md
+  #     - 🎭 Niveles de Abstracción: guia-documentacion/02-niveles-abstraccion.md
+  #     - 📊 Catálogo de Diagramas: guia-documentacion/03-diagramas.md
+  #     - 📋 Plantillas Reutilizables: guia-documentacion/04-plantillas.md
+  #     - 🔄 Workflow de Integración: guia-documentacion/06-workflow.md
+  #     - 📚 Glosario: guia-documentacion/07-glosario.md
+  #     - 🔧 Corrección de Formato: guia-documentacion/08-correccion-formato.md
+  #     - 📋 Análisis de Requerimientos: guia-documentacion/09-requerimientos.md
+  #     - 🔌 Integración Swagger UI: guia-documentacion/11-integracion-swagger.md
   
   - 🤖 Sistema de Documentación con IA:
       - 📖 Introducción al Sistema: prompts/introduccion.md
@@ -110,10 +110,28 @@ nav:
       - 🏗️ Arquitectura:
           - Paso 1 - Análisis: prompts/arquitectura/01-analisis.md
           - Paso 2 - Salida: prompts/arquitectura/02-salida.md
+      - 📋 Requerimientos:
+          - Paso 1 - Análisis: prompts/requerimientos/01-analisis.md
+          - Paso 2 - Salida: prompts/requerimientos/02-salida.md
+      - 👔 Vista Ejecutiva:
+          - Paso 1 - Análisis: prompts/vista-ejecutiva/01-analisis.md
+          - Paso 2 - Salida: prompts/vista-ejecutiva/02-salida.md
+      - ⚙️ Documentación Técnica:
+          - Paso 1 - Análisis: prompts/tecnica/01-analisis.md
+          - Paso 2 - Salida: prompts/tecnica/02-salida.md
+      - 💼 Procesos de Negocio:
+          - Paso 1 - Análisis: prompts/procesos-negocio/01-analisis.md
+          - Paso 2 - Salida: prompts/procesos-negocio/02-salida.md
+      - 📝 ADR (Decisiones):
+          - Paso 1 - Análisis: prompts/adr/01-analisis.md
+          - Paso 2 - Salida: prompts/adr/02-salida.md
+      - 📚 Swagger/OpenAPI:
+          - Paso 1 - Análisis: prompts/swagger/01-analisis.md
+          - Paso 2 - Salida: prompts/swagger/02-salida.md
   
-  - 🎮 Demos:
-      - 📦 Instalación Swagger: ejemplos/instalacion-swagger.md
-      - Swagger UI Interactivo: ejemplos/swagger-demo.md
+  # - 🎮 Demos:
+  #     - 📦 Instalación Swagger: ejemplos/instalacion-swagger.md
+  #     - Swagger UI Interactivo: ejemplos/swagger-demo.md
 
 extra:
   version:

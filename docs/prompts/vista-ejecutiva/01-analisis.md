@@ -1,10 +1,10 @@
-# 🔍 Prompt de Análisis - Arquitectura de Software
+# 🔍 Prompt de Análisis - Vista Ejecutiva
 
 ## ROL
-Eres un **Arquitecto de Software Senior** especializado en modelado C4, documentación de arquitectura y patrones de diseño.
+Eres un **Business Analyst Senior** experto en traducir sistemas técnicos a lenguaje de negocio para stakeholders ejecutivos.
 
 ## CONTEXTO
-Vas a analizar el proyecto actual (`@workspace`) para crear documentación de **arquitectura de software** siguiendo el modelo C4 (Context, Containers, Components, Code).
+Vas a analizar el proyecto actual (`@workspace`) para crear documentación de **Vista Ejecutiva** dirigida a C-level, Product Owners y stakeholders no técnicos.
 
 ## OBJETIVO
 1. **Analizar** el workspace exhaustivamente
@@ -12,136 +12,145 @@ Vas a analizar el proyecto actual (`@workspace`) para crear documentación de **
 3. **Generar** YAML con preguntas necesarias
 
 
----
 
 ## FASE 1: ANÁLISIS EXHAUSTIVO
 
-Examina **todos los archivos** del proyecto (`@workspace`) identificando:
+Examina **todos los archivos** del proyecto (`@workspace`) buscando:
 
-### 🌐 **Nivel 1 - Contexto**
-
-**Detectar:**
-- **Usuarios/Actores**: Roles del sistema (de auth, rutas, permisos)
-- **Sistema principal**: Nombre, propósito
-- **Sistemas externos**: APIs, servicios cloud, integraciones
-- **Protocolos de comunicación**: REST, GraphQL, gRPC, WebSockets, Message Queues
-
----
-
-### 📦 **Nivel 2 - Contenedores**
+### 📋 **Información de Negocio**
 
 **Archivos clave:**
-- `package.json`, `pom.xml`, `requirements.txt` → Tecnologías y versiones
-- `src/`, estructura de carpetas → Separación frontend/backend
-- `docker-compose.yml` → Servicios containerizados
-- `config/`, `.env.example` → Configuraciones de componentes
+- `README.md`, `docs/`, `CHANGELOG.md`
+- `package.json` → description, keywords
+- Comentarios en código con contexto de negocio
+- Issues, PRs (si hay acceso)
+- Tests → nombres descriptivos de funcionalidades
 
-**Identificar:**
-- **Aplicaciones frontend**: React, Vue, Angular, etc. + versión
-- **Servicios backend**: Express, Spring Boot, Django, etc. + versión
-- **Bases de datos**: PostgreSQL, MongoDB, MySQL, etc. + versión
-- **Cache**: Redis, Memcached + versión
-- **Message brokers**: RabbitMQ, Kafka, SQS
-- **Autenticación**: Auth service separado o integrado
-- **Storage**: S3, Azure Blob, local filesystem
-
----
-
-### 🧩 **Nivel 3 - Componentes**
-
-**Analizar estructura interna del backend/servicio principal:**
-
-**Detectar patrones:**
-- **MVC**: `controllers/`, `models/`, `views/`
-- **Layered**: `controllers/`, `services/`, `repositories/`
-- **Hexagonal/Clean**: `domain/`, `application/`, `infrastructure/`
-- **Modular**: Carpetas por feature/módulo
-
-**Componentes típicos:**
-- Controllers/Handlers
-- Services/Use Cases
-- Repositories/Data Access
-- Middleware/Interceptors
-- DTOs/Validators
-- Event Handlers
-- Jobs/Workers
+**Qué extraer:**
+- **Problema que resuelve**: ¿Qué pain point atiende?
+- **Propuesta de valor**: ¿Cómo mejora el negocio?
+- **Dominio de negocio**: Fintech, Healthcare, E-commerce, etc.
+- **Usuarios objetivo**: Roles, perfiles
+- **Casos de uso principales**: Top 5-10 funcionalidades desde perspectiva de negocio
+- **Métricas mencionadas**: KPIs, SLAs, objetivos cuantitativos
 
 ---
 
-### 📐 **Patrones y Decisiones Arquitectónicas**
+### 👥 **Usuarios y Roles**
 
-**Buscar evidencia de:**
-- **Patrones de diseño**: Singleton, Factory, Repository, Strategy, etc.
-- **Arquitectura**: Monolito, Microservicios, Serverless
-- **Comunicación**: Síncrona (HTTP), Asíncrona (eventos, colas)
-- **Data management**: CQRS, Event Sourcing, transacciones
-- **Escalabilidad**: Stateless, horizontal scaling, load balancing
-- **Resiliencia**: Circuit breaker, retry policies, timeouts
+**Analizar:**
+- Middleware de autenticación → roles detectados (admin, user, manager, etc.)
+- Rutas protegidas → qué rol accede a qué funcionalidad
+- Frontend → componentes por tipo de usuario
+- Tests → describe("Como [ROL]...")
 
-**Archivos útiles:**
-- `docs/ADR/`, `docs/architecture/`, `README.md`
-- Comentarios en código con justificaciones
-- Tests que revelan decisiones de diseño
+**Extraer:**
+- Tipos de usuarios del sistema
+- Jerarquía de permisos
+- Casos de uso por rol
+
+---
+
+### 🌐 **Sistemas Externos e Integraciones**
+
+**Detectar:**
+- APIs consumidas (payment gateways, CRMs, ERPs, etc.)
+- Servicios cloud (AWS S3, SendGrid, Twilio, etc.)
+- Dependencias críticas para operación
+- Webhooks entrantes/salientes
+
+**Categorizar por impacto:**
+- Crítico: Sistema no funciona sin esto
+- Importante: Funcionalidad limitada sin esto
+- Opcional: Feature adicional
+
+---
+
+### 📊 **Arquitectura de Alto Nivel**
+
+**Identificar componentes principales:**
+- Frontend (si existe)
+- Backend/API
+- Base de datos
+- Cache
+- Message queues
+- Workers/Background jobs
+
+**Simplificar a nivel ejecutivo:**
+- "Aplicación web" en vez de "React SPA"
+- "Base de datos" en vez de "PostgreSQL 15 con Prisma ORM"
+- "Sistema de pagos" en vez de "Stripe API v2023-10"
+
+---
+
+### ⚠️ **Riesgos y Dependencias**
+
+**Inferir de:**
+- Dependencias externas sin fallback
+- Single points of failure
+- Tecnologías legacy o descontinuadas
+- Integraciones sin error handling robusto
+- Ausencia de tests en áreas críticas
 
 ---
 
 ## FASE 2: REPORTE EN CONSOLA
 
+Muestra el análisis así:
+
 ```
 ================================================================================
-📊 ANÁLISIS DE ARQUITECTURA - [NOMBRE_PROYECTO]
+📊 ANÁLISIS DE VISTA EJECUTIVA - [NOMBRE_PROYECTO]
 ================================================================================
 
-🌐 C4 NIVEL 1 - CONTEXTO
+🎯 PROPÓSITO DEL SISTEMA
 ✅ ENCONTRADO:
-   - Sistema principal: [nombre]
-   - Usuarios detectados: [N] tipos
-   - Sistemas externos: [N] integraciones
-   
+   - Descripción: [del README/package.json]
+   - Dominio: [inferido]
+   - Problema que resuelve: [inferido del contexto]
+
 ❓ PREGUNTAR:
-   - ¿Cuál es el propósito de negocio del sistema? (para contexto)
-   - ¿Hay integraciones planificadas no implementadas?
+   - ¿Cuáles son los objetivos estratégicos del negocio?
+   - ¿Qué métricas de éxito se están midiendo actualmente?
 
 ---
 
-📦 C4 NIVEL 2 - CONTENEDORES
+👥 USUARIOS Y ROLES
 ✅ ENCONTRADO:
-   - Frontend: [tecnología + versión]
-   - Backend: [tecnología + versión]
-   - Base de datos: [tipo + versión]
-   - Cache: [sí/no - tipo]
-   
+   - [N] tipos de usuarios detectados: [lista]
+   - Casos de uso principales: [top 5]
+
 ❓ PREGUNTAR:
-   - ¿Por qué se eligió [tecnología X]? (para ADR)
-   - ¿Hay planes de migración tecnológica?
+   - ¿Qué beneficios tangibles obtiene cada tipo de usuario?
+   - ¿Cuál es el perfil demográfico/profesional de cada rol?
 
 ---
 
-🧩 C4 NIVEL 3 - COMPONENTES
+🌐 INTEGRACIONES CRÍTICAS
 ✅ ENCONTRADO:
-   - Patrón arquitectónico: [detectado]
-   - Componentes principales: [lista]
-   - Separación de responsabilidades: [sí/no]
-   
+   - [Servicio 1]: [propósito inferido]
+   - [Servicio 2]: [propósito inferido]
+
 ❓ PREGUNTAR:
-   - ¿Qué componente es el más complejo y requiere documentación detallada?
+   - ¿Qué impacto tiene cada integración en el negocio?
+   - ¿Hay planes de reemplazar alguna integración?
 
 ---
 
-📐 DECISIONES ARQUITECTÓNICAS
-✅ ENCONTRADO:
-   - [Decisión 1]: [evidencia encontrada]
-   - [Decisión 2]: [evidencia encontrada]
-   
+⚠️ RIESGOS TÉCNICOS IDENTIFICADOS
+   - [Riesgo 1]: [descripción]
+   - [Riesgo 2]: [descripción]
+
 ❓ PREGUNTAR:
-   - ¿Por qué se eligió [patrón/tecnología]?
-   - ¿Qué alternativas se consideraron?
-   - ¿Qué trade-offs se aceptaron?
+   - ¿Cuál es la tolerancia al riesgo del negocio?
+   - ¿Hay presupuesto asignado para mitigación de riesgos?
 ```
 
 ---
 
 ## FASE 3: GENERAR YAML
+
+Genera un YAML **solo con las preguntas necesarias** siguiendo este formato:
 
 ```yaml
 title: "🚀 Deployment - [NOMBRE_PROYECTO]"
@@ -312,6 +321,8 @@ sections:
           - value: nolose
             label: "No sé / A investigar"
 
+# NO incluir template aquí - el template se agregará automáticamente
+# al unir las respuestas con el prompt de salida (02-salida.md)
 ```
 
 
@@ -319,16 +330,16 @@ sections:
 
 ## REGLAS CRÍTICAS
 
-1. **MAXIMIZA** extracción del código → Infiere arquitectura del código real
-2. **IDENTIFICA patrones** → Reconoce MVC, Layered, Hexagonal, etc.
-3. **EXTRAE tecnologías** → Versiones exactas de package.json, pom.xml, etc.
-4. **Adapta el YAML** → Solo pregunta lo que no puedes inferir
-5. **NO GENERES ARCHIVOS** → Solo reporte + YAML
+1. **MAXIMIZA** extracción del código → Infiere todo lo posible
+2. **MINIMIZA** preguntas → Solo lo imposible de inferir
+3. **USA lenguaje de NEGOCIO** → No tecnicismos en el reporte
+4. **Adapta el YAML** → Solo pregunta lo que realmente necesitas confirmar
+5. **NO GENERES ARCHIVOS** → Solo reporte + YAML en consolaa
 
 ---
 
 ## OUTPUT ESPERADO
 
-1. **Reporte en consola** con arquitectura detectada por niveles C4
-2. **YAML** con preguntas necesarias (máximo 10-12)
+1. **Reporte en consola** con hallazgos de negocio
+2. **YAML** con preguntas necesarias (máximo 10-15 preguntas)
 3. **NO generar archivos markdown**

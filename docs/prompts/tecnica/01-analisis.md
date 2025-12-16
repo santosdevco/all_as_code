@@ -1,87 +1,109 @@
-# 🔍 Prompt de Análisis - Arquitectura de Software
+# 🔍 Prompt de Análisis - Documentación Técnica
 
 ## ROL
-Eres un **Arquitecto de Software Senior** especializado en modelado C4, documentación de arquitectura y patrones de diseño.
+Eres un **Technical Writer Senior y Arquitecto de Software** experto en documentación técnica exhaustiva.
 
 ## CONTEXTO
-Vas a analizar el proyecto actual (`@workspace`) para crear documentación de **arquitectura de software** siguiendo el modelo C4 (Context, Containers, Components, Code).
+Vas a analizar el proyecto actual (`@workspace`) para crear **documentación técnica completa**: stack, modelo de datos, APIs e integraciones.
 
 ## OBJETIVO
 1. **Analizar** el workspace exhaustivamente
 2. **Reportar** hallazgos en consola (NO generar archivos)
 3. **Generar** YAML con preguntas necesarias
 
+## ARCHIVOS DE SALIDA (se generarán en siguiente prompt)
+- `ai_docs/04-tecnica/01-stack-tecnologico.md`
+- `ai_docs/04-tecnica/02-modelo-datos.md`
+- `ai_docs/04-tecnica/03-apis.md`
+- `ai_docs/04-tecnica/04-integraciones.md`
 
 ---
 
 ## FASE 1: ANÁLISIS EXHAUSTIVO
 
-Examina **todos los archivos** del proyecto (`@workspace`) identificando:
-
-### 🌐 **Nivel 1 - Contexto**
-
-**Detectar:**
-- **Usuarios/Actores**: Roles del sistema (de auth, rutas, permisos)
-- **Sistema principal**: Nombre, propósito
-- **Sistemas externos**: APIs, servicios cloud, integraciones
-- **Protocolos de comunicación**: REST, GraphQL, gRPC, WebSockets, Message Queues
-
----
-
-### 📦 **Nivel 2 - Contenedores**
+### ⚙️ **Stack Tecnológico**
 
 **Archivos clave:**
-- `package.json`, `pom.xml`, `requirements.txt` → Tecnologías y versiones
-- `src/`, estructura de carpetas → Separación frontend/backend
-- `docker-compose.yml` → Servicios containerizados
-- `config/`, `.env.example` → Configuraciones de componentes
+- `package.json`, `package-lock.json` → Dependencias + versiones exactas
+- `pom.xml`, `build.gradle` → Java dependencies
+- `requirements.txt`, `Pipfile` → Python packages
+- `go.mod` → Go modules
+- `.nvmrc`, `.node-version` → Runtime versions
+- `Dockerfile` → Imagen base, runtime
 
-**Identificar:**
-- **Aplicaciones frontend**: React, Vue, Angular, etc. + versión
-- **Servicios backend**: Express, Spring Boot, Django, etc. + versión
-- **Bases de datos**: PostgreSQL, MongoDB, MySQL, etc. + versión
-- **Cache**: Redis, Memcached + versión
-- **Message brokers**: RabbitMQ, Kafka, SQS
-- **Autenticación**: Auth service separado o integrado
-- **Storage**: S3, Azure Blob, local filesystem
-
----
-
-### 🧩 **Nivel 3 - Componentes**
-
-**Analizar estructura interna del backend/servicio principal:**
-
-**Detectar patrones:**
-- **MVC**: `controllers/`, `models/`, `views/`
-- **Layered**: `controllers/`, `services/`, `repositories/`
-- **Hexagonal/Clean**: `domain/`, `application/`, `infrastructure/`
-- **Modular**: Carpetas por feature/módulo
-
-**Componentes típicos:**
-- Controllers/Handlers
-- Services/Use Cases
-- Repositories/Data Access
-- Middleware/Interceptors
-- DTOs/Validators
-- Event Handlers
-- Jobs/Workers
+**Extraer:**
+- **Runtime + versión**: Node.js 18.17.0, Python 3.11, etc.
+- **Framework principal + versión**: Express 4.18.2, Django 4.2, etc.
+- **Base de datos + versión**: PostgreSQL 15, MongoDB 6.0
+- **ORM/ODM + versión**: Prisma 5.0, Sequelize, TypeORM, Mongoose
+- **Librerías clave**: Autenticación, validación, testing, etc.
+- **Frontend (si existe)**: React, Vue, Angular + versiones
+- **Build tools**: Webpack, Vite, esbuild
 
 ---
 
-### 📐 **Patrones y Decisiones Arquitectónicas**
+### 💾 **Modelo de Datos**
 
-**Buscar evidencia de:**
-- **Patrones de diseño**: Singleton, Factory, Repository, Strategy, etc.
-- **Arquitectura**: Monolito, Microservicios, Serverless
-- **Comunicación**: Síncrona (HTTP), Asíncrona (eventos, colas)
-- **Data management**: CQRS, Event Sourcing, transacciones
-- **Escalabilidad**: Stateless, horizontal scaling, load balancing
-- **Resiliencia**: Circuit breaker, retry policies, timeouts
+**Archivos clave:**
+- `models/`, `entities/`, `schemas/`
+- `migrations/`, `prisma/schema.prisma`
+- `db/`, `database/`
+- SQL files, seed files
 
-**Archivos útiles:**
-- `docs/ADR/`, `docs/architecture/`, `README.md`
-- Comentarios en código con justificaciones
-- Tests que revelan decisiones de diseño
+**Detectar:**
+- **Todas las entidades/tablas/colecciones**
+- **Campos** con tipos de datos
+- **Primary keys, Foreign keys, Unique constraints**
+- **Relaciones**: 1:1, 1:N, N:M
+- **Índices** definidos
+- **Validaciones** a nivel de BD
+- **Triggers, procedures** (si existen)
+
+**Para cada entidad:**
+- Nombre
+- Campos (nombre, tipo, constraints)
+- Relaciones con otras entidades
+- Propósito en el dominio
+
+---
+
+### 📡 **APIs y Endpoints**
+
+**Archivos clave:**
+- `routes/`, `controllers/`, `handlers/`
+- `api/`, `endpoints/`
+- OpenAPI/Swagger specs
+- GraphQL schemas
+
+**Para CADA endpoint detectado:**
+- **Método HTTP**: GET, POST, PUT, DELETE, PATCH
+- **Ruta**: `/api/users/:id`
+- **Parámetros**: Path, Query, Body
+- **Request schema**: Estructura esperada
+- **Response schema**: Estructura de respuesta
+- **Status codes**: 200, 201, 400, 404, 500, etc.
+- **Autenticación**: Requerida o no
+- **Roles permitidos**: Admin, User, etc.
+- **Descripción**: Qué hace el endpoint
+
+---
+
+### 🌐 **Integraciones Externas**
+
+**Archivos clave:**
+- `services/`, `integrations/`, `clients/`
+- `.env.example` → API keys, endpoints externos
+- `config/` → Configuraciones de servicios
+
+**Para CADA integración:**
+- **Servicio**: Stripe, Twilio, SendGrid, AWS S3, etc.
+- **Propósito**: Para qué se usa
+- **Protocolo**: REST, GraphQL, gRPC, SDK
+- **Autenticación**: API Key, OAuth, JWT
+- **Endpoints consumidos**: Qué endpoints del servicio externo
+- **Rate limits**: Si se conocen
+- **Fallback/Circuit breaker**: Si está implementado
+- **Criticidad**: Alta/Media/Baja
 
 ---
 
@@ -89,54 +111,60 @@ Examina **todos los archivos** del proyecto (`@workspace`) identificando:
 
 ```
 ================================================================================
-📊 ANÁLISIS DE ARQUITECTURA - [NOMBRE_PROYECTO]
+📊 ANÁLISIS TÉCNICO - [NOMBRE_PROYECTO]
 ================================================================================
 
-🌐 C4 NIVEL 1 - CONTEXTO
+⚙️ STACK TECNOLÓGICO
 ✅ ENCONTRADO:
-   - Sistema principal: [nombre]
-   - Usuarios detectados: [N] tipos
-   - Sistemas externos: [N] integraciones
+   - Runtime: Node.js v18.17.0
+   - Framework: Express v4.18.2
+   - Database: PostgreSQL 15.3
+   - ORM: Prisma 5.0.0
+   - [... listar TODAS las tecnologías con versiones]
    
 ❓ PREGUNTAR:
-   - ¿Cuál es el propósito de negocio del sistema? (para contexto)
-   - ¿Hay integraciones planificadas no implementadas?
+   - ¿Por qué se eligió [tecnología X] sobre alternativas?
+   - ¿Hay dependencias legacy que se planea actualizar?
 
 ---
 
-📦 C4 NIVEL 2 - CONTENEDORES
+💾 MODELO DE DATOS
 ✅ ENCONTRADO:
-   - Frontend: [tecnología + versión]
-   - Backend: [tecnología + versión]
-   - Base de datos: [tipo + versión]
-   - Cache: [sí/no - tipo]
+   - [N] entidades detectadas
+   - Entidad 1: [nombre] - [N] campos
+   - Entidad 2: [nombre] - [N] campos
+   - [... listar todas]
+   - Relaciones: [N] detectadas
    
 ❓ PREGUNTAR:
-   - ¿Por qué se eligió [tecnología X]? (para ADR)
-   - ¿Hay planes de migración tecnológica?
+   - ¿Hay reglas de negocio complejas en el modelo que deban documentarse?
+   - ¿Existe data warehousing o analytics separado?
 
 ---
 
-🧩 C4 NIVEL 3 - COMPONENTES
+📡 APIs Y ENDPOINTS
 ✅ ENCONTRADO:
-   - Patrón arquitectónico: [detectado]
-   - Componentes principales: [lista]
-   - Separación de responsabilidades: [sí/no]
+   - [N] endpoints totales
+   - GET /api/users (lista usuarios)
+   - POST /api/users (crea usuario)
+   - [... listar todos los endpoints]
    
 ❓ PREGUNTAR:
-   - ¿Qué componente es el más complejo y requiere documentación detallada?
+   - ¿Hay documentación OpenAPI/Swagger generada?
+   - ¿Qué ejemplos de request/response son más útiles?
 
 ---
 
-📐 DECISIONES ARQUITECTÓNICAS
+🌐 INTEGRACIONES EXTERNAS
 ✅ ENCONTRADO:
-   - [Decisión 1]: [evidencia encontrada]
-   - [Decisión 2]: [evidencia encontrada]
+   - Stripe: Procesamiento de pagos
+   - SendGrid: Envío de emails
+   - AWS S3: Almacenamiento de archivos
+   - [... listar todas]
    
 ❓ PREGUNTAR:
-   - ¿Por qué se eligió [patrón/tecnología]?
-   - ¿Qué alternativas se consideraron?
-   - ¿Qué trade-offs se aceptaron?
+   - ¿Cuáles son los rate limits de cada servicio?
+   - ¿Hay planes B si alguna integración falla?
 ```
 
 ---
@@ -319,16 +347,17 @@ sections:
 
 ## REGLAS CRÍTICAS
 
-1. **MAXIMIZA** extracción del código → Infiere arquitectura del código real
-2. **IDENTIFICA patrones** → Reconoce MVC, Layered, Hexagonal, etc.
-3. **EXTRAE tecnologías** → Versiones exactas de package.json, pom.xml, etc.
-4. **Adapta el YAML** → Solo pregunta lo que no puedes inferir
-5. **NO GENERES ARCHIVOS** → Solo reporte + YAML
+1. **EXTRAE TODO del código** → No inventes nada
+2. **Versiones EXACTAS** → De package.json, pom.xml, etc.
+3. **TODOS los endpoints** → Analiza routes/, controllers/
+4. **TODAS las entidades** → Analiza models/, schemas/, migrations/
+5. **Adapta el YAML** → Solo pregunta lo que no puedas inferir
+6. **NO GENERES ARCHIVOS** → Solo reporte + YAML
 
 ---
 
 ## OUTPUT ESPERADO
 
-1. **Reporte en consola** con arquitectura detectada por niveles C4
-2. **YAML** con preguntas necesarias (máximo 10-12)
+1. **Reporte en consola** con todo lo detectado (exhaustivo)
+2. **YAML** con preguntas necesarias (máximo 8-10)
 3. **NO generar archivos markdown**
