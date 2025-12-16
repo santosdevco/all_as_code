@@ -100,16 +100,14 @@ nav:
   
   - 🤖 Sistema de Documentación con IA:
       - 📖 Introducción al Sistema: prompts/introduccion.md
-      - 🚀 Deployment e Infraestructura:
-          - 🎯 Generar Docs: prompts/deployment/index.md
+      - 🎯 Generador de Documentación: prompts/generador.md
+      - 🚀 Deployment:
           - Paso 1 - Análisis: prompts/deployment/01-analisis.md
           - Paso 2 - Salida: prompts/deployment/02-salida.md
-      - 📡 Documentación de API:
-          - 🎯 Generar Docs: prompts/api/index.md
+      - 📡 API:
           - Paso 1 - Análisis: prompts/api/01-analisis.md
           - Paso 2 - Salida: prompts/api/02-salida.md
-      - 🏗️ Documentación de Arquitectura:
-          - 🎯 Generar Docs: prompts/arquitectura/index.md
+      - 🏗️ Arquitectura:
           - Paso 1 - Análisis: prompts/arquitectura/01-analisis.md
           - Paso 2 - Salida: prompts/arquitectura/02-salida.md
   

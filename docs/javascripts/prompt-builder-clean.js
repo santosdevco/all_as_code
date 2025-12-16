@@ -118,8 +118,8 @@ sections:
                     </div>
                 </div>
                 
-                <button id="pb-show-form-${this.promptId}" class="pb-show-form-btn" style="display: none;" onclick="promptBuilderInstances['${this.promptId}'].toggleFormVisibility()">
-                    ⬇️ Mostrar Formulario
+                <button id="pb-show-form-${this.promptId}" class="pb-show-form-btn" style="display: none; width: 100%; margin: 20px 0; padding: 15px 30px; background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); color: white; border: none; font-size: 16px; font-weight: 600; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3); transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(52, 152, 219, 0.4)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(52, 152, 219, 0.3)';" onclick="promptBuilderInstances['${this.promptId}'].toggleFormVisibility()">
+                    📋 Mostrar Formulario (opcional)
                 </button>
                 
                 <div id="pb-output-${this.promptId}" class="pb-output" style="display: none;">
@@ -387,6 +387,18 @@ sections:
         // Copiar al clipboard
         try {
             navigator.clipboard.writeText(answersText).then(() => {
+                // Ocultar formulario y mostrar botón de "Mostrar Formulario"
+                const formContainer = document.getElementById(`pb-form-container-${this.promptId}`);
+                const showFormBtn = document.getElementById(`pb-show-form-${this.promptId}`);
+                
+                if (formContainer) {
+                    formContainer.style.display = 'none';
+                }
+                if (showFormBtn) {
+                    showFormBtn.style.display = 'block';
+                    showFormBtn.textContent = '📋 Mostrar Formulario (opcional)';
+                }
+                
                 // Mostrar confirmación
                 alert('✅ Respuestas copiadas al portapapeles!\n\nPega esto en Copilot (mismo chat) y espera su respuesta.');
             }).catch(error => {

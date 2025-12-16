@@ -1,30 +1,39 @@
 /**
  * Prompt Page Generator
  * 
- * Genera dinámicamente las páginas de prompts usando un template HTML embebido
- * y configurándolo según los parámetros de cada tipo de documentación.
- * 
- * Uso en Markdown:
- * <div id="prompt-page-root"
- *      data-type="deployment"
- *      data-title="🚀 Deployment e Infraestructura"
- *      data-description="Genera documentación completa de deployment, CI/CD y monitoreo"
- *      data-analysis-path="/prompts/deployment/01-analisis/"
- *      data-output-path="/prompts/deployment/02-salida/">
- * </div>
- * <script src="/javascripts/prompt-page-generator.js"></script>
+ * Genera dinámicamente las páginas de prompts cargando un template HTML
+ * desde el servidor y configurándolo según el tipo de documentación seleccionado.
  */
 
 class PromptPageGenerator {
     constructor(rootElement) {
         this.root = rootElement;
-        this.config = {
-            type: rootElement.dataset.type,
-            title: rootElement.dataset.title,
-            description: rootElement.dataset.description,
-            analysisPath: rootElement.dataset.analysisPath,
-            outputPath: rootElement.dataset.outputPath
+        
+        // Tipos de documentación disponibles
+        this.documentTypes = {
+            'deployment': {
+                title: '🚀 Deployment e Infraestructura',
+                description: 'Genera documentación completa de deployment, CI/CD y monitoreo',
+                analysisPath: '/prompts/deployment/01-analisis/',
+                outputPath: '/prompts/deployment/02-salida/'
+            },
+            'api': {
+                title: '📡 Documentación de API',
+                description: 'Genera documentación completa de endpoints, autenticación y ejemplos',
+                analysisPath: '/prompts/api/01-analisis/',
+                outputPath: '/prompts/api/02-salida/'
+            },
+            'arquitectura': {
+                title: '🏗️ Documentación de Arquitectura',
+                description: 'Genera diagramas C4, ADRs y decisiones arquitectónicas',
+                analysisPath: '/prompts/arquitectura/01-analisis/',
+                outputPath: '/prompts/arquitectura/02-salida/'
+            }
         };
+        
+        // Configuración inicial (deployment por defecto)
+        this.currentType = 'deployment';
+        this.config = this.documentTypes[this.currentType];
     }
 
     async init() {
@@ -32,17 +41,31 @@ class PromptPageGenerator {
             // Cargar template desde servidor
             const template = await this.loadTemplate();
             
-            // Renderizar template en el root
+            // Generar opciones del select
+            const typeOptions = Object.entries(this.documentTypes)
+                .map(([key, value]) => `<option value="${key}">${value.title}</option>`)
+                .join('');
+            
+            // Renderizar con selector sticky
             this.root.innerHTML = `
-                <h1>${this.config.title}</h1>
-                <p style="font-size: 18px; margin-bottom: 30px;">${this.config.description}</p>
-                ${template}
+                <div class="type-selector-sticky">
+                    <label for="doc-type-select">📚 Tipo de Documentación:</label>
+                    <select id="doc-type-select" class="doc-type-select">
+                        ${typeOptions}
+                    </select>
+                </div>
+                
+                <div id="content-area">
+                    <h1>${this.config.title}</h1>
+                    <p style="font-size: 18px; margin-bottom: 30px;">${this.config.description}</p>
+                    ${template}
+                </div>
             `;
             
-            // IMPORTANTE: Configurar event listeners DESPUÉS de insertar el HTML
-            // Usar setTimeout para asegurar que el DOM esté actualizado
+            // Configurar event listeners después de insertar el HTML
             setTimeout(() => {
                 this.setupEventListeners();
+                this.setupTypeSelector();
             }, 100);
             
         } catch (error) {
@@ -58,7 +81,6 @@ class PromptPageGenerator {
 
     /**
      * Carga el template HTML desde el servidor
-     * @returns {Promise<string>} Contenido HTML del template
      */
     async loadTemplate() {
         const templatePath = '/assets/templates/prompt-page.html';
@@ -72,189 +94,36 @@ class PromptPageGenerator {
     }
 
     /**
-     * Método obsoleto - mantener por compatibilidad
-     * @deprecated Usar loadTemplate() en su lugar
+     * Configura el selector de tipo de documentación
      */
-    getTemplate() {
-        return `
-            <div class="prompt-page-content">
-                <!-- PASO 1: Copiar Prompt de Análisis -->
-                <h2>📋 PASO 1: Copiar Prompt de Análisis Inicial</h2>
-                
-                <div style="text-align: center; margin: 30px 0;">
-                    <button 
-                        id="copy-analysis-btn"
-                        data-action="copy-analysis"
-                        style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-                               color: white; 
-                               border: none; 
-                               padding: 20px 40px; 
-                               font-size: 20px; 
-                               font-weight: bold; 
-                               border-radius: 16px; 
-                               cursor: pointer; 
-                               box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
-                               transition: all 0.3s ease;
-                               display: inline-flex;
-                               align-items: center;
-                               gap: 12px;
-                               margin-right: 15px;">
-                        <span style="font-size: 28px;">📋</span>
-                        Copiar Prompt de Análisis Inicial
-                    </button>
-                    <button 
-                        data-action="view-analysis"
-                        style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); 
-                               color: #333; 
-                               border: none; 
-                               padding: 20px 40px; 
-                               font-size: 20px; 
-                               font-weight: bold; 
-                               border-radius: 16px; 
-                               cursor: pointer; 
-                               box-shadow: 0 6px 20px rgba(168, 237, 234, 0.5);
-                               transition: all 0.3s ease;
-                               display: inline-flex;
-                               align-items: center;
-                               gap: 12px;">
-                        <span style="font-size: 28px;">👁️</span>
-                        Ver Prompt
-                    </button>
-                </div>
-
-                <div class="admonition tip">
-                    <p class="admonition-title">Pega el prompt en Copilot</p>
-                    <p>Copilot analizará el <code>@workspace</code> y generará un YAML con preguntas.</p>
-                </div>
-
-                <hr>
-
-                <!-- PASO 2: Generar Formulario -->
-                <h2>🤖 PASO 2: Generar Formulario de preguntas</h2>
-
-                <div class="admonition warning">
-                    <p class="admonition-title">Importante</p>
-                    <p>Con el prompt del paso 1, Copilot va a generar un YAML, que copias y pegas a continuación</p>
-                </div>
-
-                <hr>
-
-                <div class="pb-warning" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); padding: 20px; border-radius: 12px; color: white; margin: 20px 0;">
-                    <h3 style="margin-top: 0; color: white;">⚠️ Importante</h3>
-                    <p style="margin-bottom: 0;">Copia el YAML completo que generó Copilot y pégalo abajo.</p>
-                </div>
-
-                <div style="margin: 30px 0;">
-                    <label for="yaml-input" style="display: block; font-size: 18px; font-weight: bold; margin-bottom: 10px;">
-                        📄 YAML del Análisis:
-                    </label>
-                    <textarea 
-                        id="yaml-input" 
-                        placeholder="Pega aquí el YAML completo que generó Copilot..."
-                        style="width: 100%; 
-                               height: 200px; 
-                               padding: 15px; 
-                               font-family: 'Courier New', monospace; 
-                               font-size: 14px; 
-                               border: 2px solid #667eea; 
-                               border-radius: 8px; 
-                               background: #f8f9fa;
-                               resize: vertical;">
-                    </textarea>
-                    <button 
-                        id="load-yaml-btn"
-                        data-action="load-yaml"
-                        style="background: linear-gradient(135deg, #f39c12 0%, #f1c40f 100%); 
-                               color: white; 
-                               border: none; 
-                               padding: 15px 30px; 
-                               font-size: 18px; 
-                               font-weight: bold; 
-                               border-radius: 8px; 
-                               cursor: pointer; 
-                               margin-top: 15px;
-                               box-shadow: 0 4px 15px rgba(243, 156, 18, 0.4);
-                               transition: all 0.3s ease;">
-                        🚀 Cargar Formulario
-                    </button>
-                </div>
-
-                <hr>
-
-                <!-- PASO 2.1: Responder Preguntas -->
-                <h2>✏️ PASO 2.1: Responder Preguntas</h2>
-
-                <div id="form-container" style="margin: 30px 0;">
-                    <!-- El formulario se generará aquí automáticamente -->
-                </div>
-
-                <div class="admonition tip">
-                    <p class="admonition-title">Después de responder</p>
-                    <p>Haz clic en <strong>"📋 Copiar Respuestas"</strong> y pégalas en Copilot (mismo chat).</p>
-                </div>
-
-                <div class="admonition warning">
-                    <p class="admonition-title">Si la respuesta es un YAML</p>
-                    <p>Debes regresar al paso 2.</p>
-                </div>
-
-                <div class="admonition warning">
-                    <p class="admonition-title">Si la respuesta es 'Todo OK'</p>
-                    <p>Debes continuar al paso 3</p>
-                </div>
-
-                <!-- PASO 3: Prompt de Formato de Salida -->
-                <h2>PASO 3: Prompt de Formato de Salida</h2>
-
-                <div style="text-align: center; margin: 30px 0;">
-                    <button 
-                        id="copy-output-btn"
-                        data-action="copy-output"
-                        style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-                               color: white; 
-                               border: none; 
-                               padding: 20px 40px; 
-                               font-size: 20px; 
-                               font-weight: bold; 
-                               border-radius: 16px; 
-                               cursor: pointer; 
-                               box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
-                               transition: all 0.3s ease;
-                               display: inline-flex;
-                               align-items: center;
-                               gap: 12px;
-                               margin-right: 15px;">
-                        <span style="font-size: 28px;">📋</span>
-                        Copiar Prompt de Formato de Salida
-                    </button>
-                    <button 
-                        data-action="view-output"
-                        style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); 
-                               color: #333; 
-                               border: none; 
-                               padding: 20px 40px; 
-                               font-size: 20px; 
-                               font-weight: bold; 
-                               border-radius: 16px; 
-                               cursor: pointer; 
-                               box-shadow: 0 6px 20px rgba(168, 237, 234, 0.5);
-                               transition: all 0.3s ease;
-                               display: inline-flex;
-                               align-items: center;
-                               gap: 12px;">
-                        <span style="font-size: 28px;">👁️</span>
-                        Ver Prompt
-                    </button>
-                </div>
-
-                <div class="admonition tip">
-                    <p class="admonition-title">Pega el prompt en Copilot</p>
-                    <p>Manteniendo la misma conversación, Copilot generará los archivos de salida de acuerdo a lo especificado en Salida</p>
-                </div>
-            </div>
-        `;
+    setupTypeSelector() {
+        const selector = this.root.querySelector('#doc-type-select');
+        if (!selector) return;
+        
+        selector.addEventListener('change', async (e) => {
+            this.currentType = e.target.value;
+            this.config = this.documentTypes[this.currentType];
+            
+            // Recargar solo el área de contenido
+            const template = await this.loadTemplate();
+            const contentArea = this.root.querySelector('#content-area');
+            
+            contentArea.innerHTML = `
+                <h1>${this.config.title}</h1>
+                <p style="font-size: 18px; margin-bottom: 30px;">${this.config.description}</p>
+                ${template}
+            `;
+            
+            // Reconfigurar listeners
+            setTimeout(() => {
+                this.setupEventListeners();
+            }, 100);
+        });
     }
 
+    /**
+     * Configura los event listeners de los botones
+     */
     setupEventListeners() {
         // Botón: Copiar Prompt de Análisis
         const copyAnalysisBtn = this.root.querySelector('#copy-analysis-btn');
@@ -276,8 +145,25 @@ class PromptPageGenerator {
         const loadYamlBtn = this.root.querySelector('#load-yaml-btn');
         if (loadYamlBtn) {
             loadYamlBtn.addEventListener('click', () => {
-                loadPromptFromYAML('yaml-input', 'form-container', `${this.config.type}-form`);
+                console.log('🔍 Botón Cargar Formulario clickeado');
+                console.log('currentType:', this.currentType);
+                
+                // Mostrar la sección del formulario
+                const formSection = this.root.querySelector('#form-section');
+                if (formSection) {
+                    formSection.style.display = 'block';
+                }
+                
+                // Cargar el formulario
+                if (typeof loadPromptFromYAML === 'function') {
+                    loadPromptFromYAML('yaml-input', 'form-container', `${this.currentType}-form`);
+                } else {
+                    console.error('loadPromptFromYAML no está disponible');
+                    alert('Error: La función loadPromptFromYAML no está cargada');
+                }
             });
+        } else {
+            console.warn('⚠️ Botón #load-yaml-btn no encontrado');
         }
 
         // Botón: Copiar Prompt de Salida
