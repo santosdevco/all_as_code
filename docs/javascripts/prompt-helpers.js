@@ -40,7 +40,10 @@ window.copyPromptFile = async function(pageUrl, btnId) {
         // Extraer solo el texto
         const content = article.innerText || article.textContent;
         
-        await navigator.clipboard.writeText(content);
+        // Limpiar espacios en blanco al inicio y final
+        const cleanContent = content.trim();
+        
+        await navigator.clipboard.writeText(cleanContent);
         
         if (btn) {
             btn.innerHTML = '✅ ¡Copiado!';
