@@ -49,12 +49,44 @@ class PromptBuilder {
                 throw new Error(`Configuración vacía para prompt ${this.promptId}`);
             }
             
+            // Validar estructura mínima requerida
+            if (!this.config.sections || !Array.isArray(this.config.sections)) {
+                throw new Error('El YAML debe contener un array "sections" con las preguntas del formulario');
+            }
+            
+            if (!this.config.title) {
+                this.config.title = 'Formulario de Documentación';
+            }
+            
+            if (!this.config.description) {
+                this.config.description = 'Completa la información solicitada';
+            }
+            
             this.render();
         } catch (error) {
             console.error('Error al cargar configuración:', error);
             this.container.innerHTML = `
-                <div class="pb-error">
-                    ❌ Error al cargar el formulario: ${error.message}
+                <div class="pb-error" style="background: #fee; border: 2px solid #c33; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                    <h3 style="color: #c33; margin-top: 0;">❌ Error al cargar el formulario</h3>
+                    <p><strong>Mensaje:</strong> ${error.message}</p>
+                    <details style="margin-top: 15px;">
+                        <summary style="cursor: pointer; font-weight: bold;">Ver detalles técnicos</summary>
+                        <pre style="background: #f5f5f5; padding: 10px; margin-top: 10px; overflow: auto;">${error.stack || error}</pre>
+                    </details>
+                    <div style="margin-top: 15px; padding: 15px; background: #ffffed; border-left: 4px solid #fc3;">
+                        <strong>💡 Solución:</strong>
+                        <p>Asegúrate de que el YAML tenga esta estructura:</p>
+                        <pre style="background: #f5f5f5; padding: 10px;">title: "Título del formulario"
+description: "Descripción"
+sections:
+  - icon: "🚀"
+    title: "Sección 1"
+    questions:
+      - id: pregunta1
+        type: select
+        label: "Pregunta..."
+        options: [...]</pre>
+                    </div>
                 </div>
             `;
         }
@@ -78,7 +110,7 @@ class PromptBuilder {
                         ${this.renderSections()}
                     </form>
                     
-                    <button class="pb-generate-btn" onclick="promptBuilderInstances['${this.promptId}'].generatePrompt()">
+                    <button class="pb-generate-btn" onclick="promptBuilderInstances['${this.promptId}'].handleGenerateClick()">
                         🚀 Generar y Copiar Prompt
                     </button>
                 </div>
@@ -127,6 +159,10 @@ class PromptBuilder {
      * Renderiza todas las secciones del formulario
      */
     renderSections() {
+        if (!this.config.sections || !Array.isArray(this.config.sections)) {
+            return '<p class="pb-error">⚠️ No hay secciones definidas en el formulario</p>';
+        }
+        
         return this.config.sections
             .map(section => this.renderSection(section))
             .join('');
@@ -312,6 +348,29 @@ class PromptBuilder {
         });
         
         return data;
+    }
+
+    /**
+     * Maneja el click del botón generar (wrapper para async)
+     */
+    handleGenerateClick() {
+        // Deshabilitar botón mientras genera
+        const btn = event.target;
+        const originalText = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '⏳ Generando...';
+        
+        this.generatePrompt()
+            .then(() => {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            })
+            .catch(error => {
+                console.error('Error al generar prompt:', error);
+                alert('❌ Error al generar el prompt: ' + error.message);
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            });
     }
 
     /**
