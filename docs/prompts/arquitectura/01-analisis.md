@@ -144,176 +144,110 @@ Examina **todos los archivos** del proyecto (`@workspace`) identificando:
 ## FASE 3: GENERAR YAML
 
 ```yaml
-title: "🚀 Deployment - [NOMBRE_PROYECTO]"
-description: "Yaml de ejemplo genera preguntas que concideres, que no puedas inferir del codigo."
+# ============================================
+# EJEMPLO YAML - PROMPT BUILDER
+# ============================================
+# Formato compatible con prompt-builder-clean.js
+# Una pregunta de cada tipo soportado
+
+title: "📋 Ejemplo de Formulario"
+description: "Formulario de ejemplo con los 5 tipos de preguntas disponibles"
+
+# OPCIONAL: Advertencia
+warning:
+  title: "⚠️ Nota Importante"
+  message: "Este es un ejemplo de advertencia"
+  items:
+    - "Punto 1 de la advertencia"
+    - "Punto 2 de la advertencia"
 
 sections:
-  # ============================================
-  # SOLO INCLUIR SECCIONES DONDE FALTE INFO
-  # ============================================
-  
-  - icon: "☁️"
-    title: "Cloud Provider"
-    description: "Información sobre el proveedor cloud"
+  - icon: "🎯"
+    title: "Información del Proyecto"
+    description: "Datos básicos del proyecto"
     questions:
-      # ❓ Pregunta sobre qué encontraste parcialmente
-      - id: cloudProvider
-        type: checkbox
-        label: "¿Qué cloud providers usa el proyecto?"
-        options:
-          - value: aws
-            label: "AWS"
-          - value: gcp
-            label: "GCP"
-          - value: azure
-            label: "Azure"
-          - value: ibm
-            label: "IBM Cloud"
-          - value: onpremise
-            label: "On-Premise"
-        help: "Se detectó AWS en Terraform. Confirma si hay otros providers."
+      # 1. TEXTO SIMPLE
+      - id: projectName
+        type: text
+        label: "Nombre del Proyecto:"
+        placeholder: "Ej: Mi API Backend"
+        required: true
+        help: "Nombre oficial del proyecto"
       
-      - id: awsRegion
-        type: select
-        label: "Región principal de AWS:"
-        options:
-          - value: us-east-1
-            label: "us-east-1 (N. Virginia)"
-          - value: us-west-2
-            label: "us-west-2 (Oregon)"
-          - value: eu-west-1
-            label: "eu-west-1 (Irlanda)"
-          - value: nolose
-            label: "No sé / A investigar"
-        help: "Región donde corre producción"
-  
-  - icon: "🚀"
-    title: "Plataforma de Deployment"
-    questions:
-      - id: deployPlatform
-        type: select
-        label: "¿Dónde se ejecuta en producción?"
-        options:
-          - value: kubernetes
-            label: "Kubernetes"
-          - value: ecs
-            label: "AWS ECS"
-          - value: vm
-            label: "Máquinas Virtuales"
-          - value: nolose
-            label: "No sé / A investigar"
-  
-  - icon: "🔄"
-    title: "CI/CD"
-    questions:
-      - id: cicdTool
-        type: radio
-        label: "Herramienta de CI/CD:"
-        options:
-          - value: github-actions
-            label: "GitHub Actions"
-          - value: gitlab-ci
-            label: "GitLab CI"
-          - value: jenkins
-            label: "Jenkins"
-          - value: noaplica
-            label: "No hay CI/CD configurado"
-        help: "No se detectó archivo de CI/CD. Confirma cuál usan."
+      # 2. TEXTAREA
+      - id: description
+        type: textarea
+        label: "Descripción:"
+        placeholder: "Describe brevemente el proyecto..."
+        rows: 4
+        help: "Resumen del propósito del proyecto"
       
-      - id: autoDeploy
+      # 3. SELECT (con opción "Otro")
+      - id: projectType
+        type: select
+        label: "Tipo de proyecto:"
+        options:
+          - value: api
+            label: "API REST"
+          - value: webapp
+            label: "Aplicación Web"
+          - value: mobile
+            label: "App Móvil"
+          - value: otro
+            label: "Otro"
+        default: api
+        showOther: true
+        otherPlaceholder: "Especifica el tipo"
+        help: "Selecciona el tipo principal"
+      
+      # 4. RADIO BUTTONS
+      - id: hasDocker
         type: radio
-        label: "¿Deploy automático a producción?"
+        label: "¿Usa Docker?"
         options:
           - value: si
-            label: "Sí, automático"
-          - value: manual
-            label: "No, requiere aprobación manual"
+            label: "Sí"
+          - value: no
+            label: "No"
           - value: nolose
-            label: "No sé / A investigar"
-  
-  - icon: "🌍"
-    title: "Ambientes y URLs"
-    questions:
+            label: "No sé"
+        default: si
+        help: "¿El proyecto está contenedorizado?"
+      
+      # 5. CHECKBOXES
       - id: environments
         type: checkbox
-        label: "¿Qué ambientes existen?"
+        label: "Ambientes (marca todos los que apliquen):"
         options:
           - value: dev
-            label: "Development"
+            label: "Desarrollo"
+            checked: true
           - value: staging
             label: "Staging"
           - value: prod
-            label: "Production"
-      
-      - id: envUrls
-        type: textarea
-        label: "URLs de los ambientes:"
-        placeholder: |
-          Dev: https://dev.miapp.com
-          Staging: https://staging.miapp.com
-          Prod: https://miapp.com
-        help: "Una URL por línea"
-  
-  - icon: "📊"
-    title: "Monitoreo"
-    questions:
-      - id: monitoring
-        type: checkbox
-        label: "Herramientas de monitoreo:"
-        options:
-          - value: prometheus
-            label: "Prometheus + Grafana"
-          - value: datadog
-            label: "Datadog"
-          - value: newrelic
-            label: "New Relic"
-          - value: cloudwatch
-            label: "CloudWatch"
-          - value: noaplica
-            label: "No hay monitoreo configurado"
-        help: "No se detectó monitoreo. ¿Se usa alguno?"
-      
-      - id: hasAlerting
-        type: radio
-        label: "¿Hay alertas configuradas?"
-        options:
-          - value: si
-            label: "Sí"
-          - value: no
-            label: "No"
-          - value: nolose
-            label: "No sé / A investigar"
-  
-  - icon: "🗄️"
-    title: "Base de Datos"
-    questions:
-      - id: dbProvider
-        type: select
-        label: "Proveedor de base de datos:"
-        options:
-          - value: rds
-            label: "AWS RDS"
-          - value: cloud-sql
-            label: "Google Cloud SQL"
-          - value: self-hosted
-            label: "Auto-gestionada (en VMs)"
-          - value: nolose
-            label: "No sé / A investigar"
-        help: "Se detectó PostgreSQL. ¿Dónde está alojada?"
-      
-      - id: hasBackups
-        type: radio
-        label: "¿Backups automáticos configurados?"
-        options:
-          - value: si
-            label: "Sí"
-          - value: no
-            label: "No"
-          - value: nolose
-            label: "No sé / A investigar"
+            label: "Producción"
+        help: "Selecciona todos los ambientes activos"
 
 ```
-
+```
+5 Tipos de Preguntas Soportadas:
+text - Campo de texto simple
+textarea - Texto multi-línea
+select - Lista desplegable (con opción "Otro")
+radio - Botones de opción (selección única)
+checkbox - Casillas múltiples
+Propiedades Comunes:
+id - Identificador único
+type - Tipo de campo
+label - Etiqueta visible
+help - Texto de ayuda (opcional)
+Propiedades Específicas:
+TEXT: placeholder, required
+TEXTAREA: placeholder, rows
+SELECT: options, default, showOther, otherPlaceholder
+RADIO: options, default
+CHECKBOX: options (con checked)
+```
 
 ---
 

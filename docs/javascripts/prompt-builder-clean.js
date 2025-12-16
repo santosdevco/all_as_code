@@ -356,7 +356,7 @@ sections:
     /**
      * Copia solo las respuestas del formulario (para proceso iterativo)
      */
-    copyAnswers() {
+    async copyAnswers() {
         const data = this.collectFormData();
         
         // Construir sección de respuestas
@@ -384,6 +384,26 @@ sections:
         answersText += '\n---\n\n';
         answersText += '¿Tienes más dudas? Si es así, genera el YAML con las preguntas. Si no, solo responde: "todo ok"\n';
         
+        // NUEVO: Guardar en backend si estamos en una URL pública
+        const shareToken = this.getShareTokenFromURL();
+        
+        if (shareToken && typeof window.apiClient !== 'undefined') {
+            try {
+                console.log('💾 Guardando respuestas en el backend...');
+                
+                await window.apiClient.post(
+                    window.API_CONFIG.endpoints.updatePublicAnswers(shareToken),
+                    { answers: data }
+                );
+                
+                console.log('✅ Respuestas guardadas en backend');
+            } catch (error) {
+                console.error('Error al guardar en backend:', error);
+                // No bloqueamos el flujo si falla el backend
+                console.warn('⚠️ Continuando sin guardar en backend');
+            }
+        }
+        
         // Copiar al clipboard
         try {
             navigator.clipboard.writeText(answersText).then(() => {
@@ -400,7 +420,11 @@ sections:
                 }
                 
                 // Mostrar confirmación
-                alert('✅ Respuestas copiadas al portapapeles!\n\nPega esto en Copilot (mismo chat) y espera su respuesta.');
+                const message = shareToken 
+                    ? '✅ Respuestas guardadas y copiadas al portapapeles!\n\nPega esto en Copilot (mismo chat) y espera su respuesta.'
+                    : '✅ Respuestas copiadas al portapapeles!\n\nPega esto en Copilot (mismo chat) y espera su respuesta.';
+                
+                alert(message);
             }).catch(error => {
                 console.error('Error al copiar:', error);
                 alert('Error al copiar. Intenta de nuevo.');
@@ -409,6 +433,19 @@ sections:
             console.error('Error al copiar:', error);
             alert('Error al copiar. Intenta de nuevo.');
         }
+    }
+
+    /**
+     * Obtiene el token de compartir de la URL
+     * @returns {string|null} Token si está en URL de respuesta pública
+     */
+    getShareTokenFromURL() {
+        // Extraer token de URL: http://localhost:8001/answer/abc123
+        const pathParts = window.location.pathname.split('/');
+        const answerIndex = pathParts.indexOf('answer');
+        return answerIndex !== -1 && pathParts[answerIndex + 1] 
+            ? pathParts[answerIndex + 1] 
+            : null;
     }
 
     /**

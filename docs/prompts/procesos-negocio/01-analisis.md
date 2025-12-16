@@ -144,69 +144,109 @@ Flujo 2: Generación de Reporte
 ## FASE 3: GENERAR YAML
 
 ```yaml
-title: "🔄 Procesos de Negocio - [NOMBRE_PROYECTO]"
-description: "Este yaml es solo para mostrarte el formato, crea las preguntas de acuerdo a lo que no puedes inferir del codigo"
+# ============================================
+# EJEMPLO YAML - PROMPT BUILDER
+# ============================================
+# Formato compatible con prompt-builder-clean.js
+# Una pregunta de cada tipo soportado
+
+title: "📋 Ejemplo de Formulario"
+description: "Formulario de ejemplo con los 5 tipos de preguntas disponibles"
+
+# OPCIONAL: Advertencia
+warning:
+  title: "⚠️ Nota Importante"
+  message: "Este es un ejemplo de advertencia"
+  items:
+    - "Punto 1 de la advertencia"
+    - "Punto 2 de la advertencia"
 
 sections:
-  - icon: "📋"
-    title: "Casos de Uso"
-    questions:
-      - id: casos_uso_prioritarios
-        type: checkbox
-        label: "¿Qué casos de uso son más críticos para el negocio?"
-        options:
-          - value: cu1
-            label: "[CU-001]: Crear Usuario"
-          - value: cu2
-            label: "[CU-002]: Procesar Pedido"
-          # [Generar opción por cada CU detectado]
-        help: "Selecciona los top 5 más importantes"
-        required: false
-      
-      - id: reglas_negocio_adicionales
-        type: textarea
-        label: "¿Hay reglas de negocio que no estén en el código pero deban documentarse?"
-        placeholder: |
-          - Descuentos solo aplican en horario 9-18h
-          - Reembolsos requieren aprobación manual del gerente
-        help: "Detectadas [N] reglas en el código"
-        required: false
-  
-  - icon: "🔄"
-    title: "Flujos Funcionales"
-    questions:
-      - id: flujos_prioritarios
-        type: checkbox
-        label: "¿Qué flujos requieren documentación detallada?"
-        options:
-          # [Generar opción por cada flujo complejo detectado]
-          - value: flujo1
-            label: "Proceso de Pago (integra con Stripe)"
-          - value: flujo2
-            label: "Generación de Reportes (asíncrono)"
-        help: "Selecciona los 3 más importantes"
-        required: false
-      
-      - id: escenarios_error
-        type: textarea
-        label: "¿Qué escenarios de error son más comunes o críticos?"
-        placeholder: |
-          - Pago rechazado por Stripe: se reversa la reserva de inventario
-          - Email no se envía: se reintenta en background job
-        required: false
-  
   - icon: "🎯"
-    title: "Contexto de Negocio"
+    title: "Información del Proyecto"
+    description: "Datos básicos del proyecto"
     questions:
-      - id: objetivos_procesos
+      # 1. TEXTO SIMPLE
+      - id: projectName
+        type: text
+        label: "Nombre del Proyecto:"
+        placeholder: "Ej: Mi API Backend"
+        required: true
+        help: "Nombre oficial del proyecto"
+      
+      # 2. TEXTAREA
+      - id: description
         type: textarea
-        label: "¿Cuál es el objetivo de negocio de cada proceso principal?"
-        placeholder: |
-          Proceso de Pago: Asegurar transacciones seguras y rápidas
-          Generación de Reportes: Proveer insights para toma de decisiones
-        required: false
+        label: "Descripción:"
+        placeholder: "Describe brevemente el proyecto..."
+        rows: 4
+        help: "Resumen del propósito del proyecto"
+      
+      # 3. SELECT (con opción "Otro")
+      - id: projectType
+        type: select
+        label: "Tipo de proyecto:"
+        options:
+          - value: api
+            label: "API REST"
+          - value: webapp
+            label: "Aplicación Web"
+          - value: mobile
+            label: "App Móvil"
+          - value: otro
+            label: "Otro"
+        default: api
+        showOther: true
+        otherPlaceholder: "Especifica el tipo"
+        help: "Selecciona el tipo principal"
+      
+      # 4. RADIO BUTTONS
+      - id: hasDocker
+        type: radio
+        label: "¿Usa Docker?"
+        options:
+          - value: si
+            label: "Sí"
+          - value: no
+            label: "No"
+          - value: nolose
+            label: "No sé"
+        default: si
+        help: "¿El proyecto está contenedorizado?"
+      
+      # 5. CHECKBOXES
+      - id: environments
+        type: checkbox
+        label: "Ambientes (marca todos los que apliquen):"
+        options:
+          - value: dev
+            label: "Desarrollo"
+            checked: true
+          - value: staging
+            label: "Staging"
+          - value: prod
+            label: "Producción"
+        help: "Selecciona todos los ambientes activos"
 
-# NO incluir template aquí
+```
+```
+5 Tipos de Preguntas Soportadas:
+text - Campo de texto simple
+textarea - Texto multi-línea
+select - Lista desplegable (con opción "Otro")
+radio - Botones de opción (selección única)
+checkbox - Casillas múltiples
+Propiedades Comunes:
+id - Identificador único
+type - Tipo de campo
+label - Etiqueta visible
+help - Texto de ayuda (opcional)
+Propiedades Específicas:
+TEXT: placeholder, required
+TEXTAREA: placeholder, rows
+SELECT: options, default, showOther, otherPlaceholder
+RADIO: options, default
+CHECKBOX: options (con checked)
 ```
 
 ---

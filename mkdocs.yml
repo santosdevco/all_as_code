@@ -100,7 +100,9 @@ nav:
   
   - 🤖 Sistema de Documentación con IA:
       - 📖 Introducción al Sistema: prompts/introduccion.md
+      - 📁 Panel de Proyectos: panel-proyectos.md
       - 🎯 Generador de Documentación: prompts/generador.md
+      - 📝 Responder Preguntas: answer.md
       - 🚀 Deployment:
           - Paso 1 - Análisis: prompts/deployment/01-analisis.md
           - Paso 2 - Salida: prompts/deployment/02-salida.md
@@ -145,8 +147,8 @@ extra_css:
 extra_javascript:
   - https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js
   - https://cdn.jsdelivr.net/npm/handlebars@4.7.8/dist/handlebars.min.js
+  - javascripts/api-client.js
+  - javascripts/documentation-flow.js
   - javascripts/prompt-page-generator.js
-  - javascripts/prompt-helpers.js
-  - javascripts/prompt-builder-clean.js
   - javascripts/prompt-helpers.js
   - javascripts/prompt-builder-clean.js 

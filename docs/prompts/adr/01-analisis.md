@@ -120,113 +120,111 @@ ADR-003: JWT para autenticación
 ## FASE 3: GENERAR YAML
 
 ```yaml
-title: "🏗️ ADR - Decisiones Arquitectónicas - [NOMBRE_PROYECTO]"
-description: "Este yaml es solo un ejemplo de formato, has las preguntas de acuerdo a lo que no puedas inferir del codigo o necesites confirmar"
+# ============================================
+# EJEMPLO YAML - PROMPT BUILDER
+# ============================================
+# Formato compatible con prompt-builder-clean.js
+# Una pregunta de cada tipo soportado
+
+title: "📋 Ejemplo de Formulario"
+description: "Formulario de ejemplo con los 5 tipos de preguntas disponibles"
+
+# OPCIONAL: Advertencia
+warning:
+  title: "⚠️ Nota Importante"
+  message: "Este es un ejemplo de advertencia"
+  items:
+    - "Punto 1 de la advertencia"
+    - "Punto 2 de la advertencia"
 
 sections:
-  - icon: "⚙️"
-    title: "Stack Tecnológico"
+  - icon: "🎯"
+    title: "Información del Proyecto"
+    description: "Datos básicos del proyecto"
     questions:
-      - id: decision_runtime
-        type: textarea
-        label: "¿Por qué se eligió [RUNTIME_DETECTADO]?"
-        placeholder: |
-          Contexto: Necesitábamos un runtime con buen performance para I/O
-          Alternativas consideradas: Python (rechazado por performance), Java (rechazado por complejidad)
-          Razón: Node.js ofrece mejor I/O asíncrono y el equipo tiene experiencia
-        help: "Detectado: [RUNTIME] v[VERSION]"
-        required: false
+      # 1. TEXTO SIMPLE
+      - id: projectName
+        type: text
+        label: "Nombre del Proyecto:"
+        placeholder: "Ej: Mi API Backend"
+        required: true
+        help: "Nombre oficial del proyecto"
       
-      - id: decision_framework
+      # 2. TEXTAREA
+      - id: description
         type: textarea
-        label: "¿Por qué se eligió [FRAMEWORK_DETECTADO]?"
-        placeholder: |
-          Express: Simplicidad, ecosistema maduro, flexibilidad
-          Rechazamos NestJS por overhead innecesario para nuestro caso de uso
-        help: "Detectado: [FRAMEWORK] v[VERSION]"
-        required: false
-  
-  - icon: "💾"
-    title: "Base de Datos"
-    questions:
-      - id: decision_database
-        type: textarea
-        label: "¿Por qué se eligió [DB_DETECTADA]?"
-        placeholder: |
-          PostgreSQL elegido por:
-          - Necesidad de transacciones ACID
-          - Joins complejos en queries
-          - Madurez y confiabilidad
-          
-          MongoDB considerado pero rechazado por falta de consistencia transaccional
-        help: "Detectado: [DATABASE] v[VERSION]"
-        required: false
+        label: "Descripción:"
+        placeholder: "Describe brevemente el proyecto..."
+        rows: 4
+        help: "Resumen del propósito del proyecto"
       
-      - id: decision_cache
-        type: textarea
-        label: "¿Por qué se implementó cache con [CACHE_DETECTADO]?"
-        placeholder: "Redis para sesiones y rate limiting, reduce latencia en 80%"
-        help: "Detectado: [CACHE_TYPE] si aplica"
-        required: false
-  
-  - icon: "🔒"
-    title: "Autenticación y Seguridad"
-    questions:
-      - id: decision_auth
-        type: textarea
-        label: "¿Por qué se eligió [AUTH_MECHANISM]?"
-        placeholder: |
-          JWT elegido por:
-          - Diseño stateless requerido para escalabilidad horizontal
-          - No necesitar shared session store
-          - Mobile apps requieren tokens
-          
-          Sessions rechazadas por necesidad de Redis compartido
-        help: "Detectado: [AUTH_TYPE]"
-        required: false
-  
-  - icon: "🏛️"
-    title: "Patrón Arquitectónico"
-    questions:
-      - id: decision_arquitectura
-        type: textarea
-        label: "¿Por qué se eligió [PATRON_DETECTADO]?"
-        placeholder: |
-          Monolito modular elegido por:
-          - Tamaño del equipo (3 devs)
-          - Complejidad de deployment reducida
-          - Facilidad de debugging
-          
-          Microservicios considerados pero rechazados por overhead operacional
-        help: "Detectado: [PATRON_ARQUITECTONICO]"
-        required: false
+      # 3. SELECT (con opción "Otro")
+      - id: projectType
+        type: select
+        label: "Tipo de proyecto:"
+        options:
+          - value: api
+            label: "API REST"
+          - value: webapp
+            label: "Aplicación Web"
+          - value: mobile
+            label: "App Móvil"
+          - value: otro
+            label: "Otro"
+        default: api
+        showOther: true
+        otherPlaceholder: "Especifica el tipo"
+        help: "Selecciona el tipo principal"
       
-      - id: decision_comunicacion
-        type: textarea
-        label: "¿Por qué [REST/GraphQL/gRPC]?"
-        placeholder: "REST por simplicidad y compatibilidad con todos los clientes"
-        help: "Detectado: [PROTOCOLO]"
-        required: false
-  
-  - icon: "📋"
-    title: "Otras Decisiones"
-    questions:
-      - id: decisiones_adicionales
-        type: textarea
-        label: "¿Hay otras decisiones arquitectónicas significativas no cubiertas?"
-        placeholder: |
-          - Uso de TypeScript para type safety
-          - Estructura monorepo con workspaces
-          - Event-driven con RabbitMQ para procesos asíncronos
-        required: false
+      # 4. RADIO BUTTONS
+      - id: hasDocker
+        type: radio
+        label: "¿Usa Docker?"
+        options:
+          - value: si
+            label: "Sí"
+          - value: no
+            label: "No"
+          - value: nolose
+            label: "No sé"
+        default: si
+        help: "¿El proyecto está contenedorizado?"
       
-      - id: decisiones_lamentadas
-        type: textarea
-        label: "¿Hay decisiones que se lamentan o se planea cambiar?"
-        placeholder: "Considerar migrar de MongoDB a PostgreSQL en Q2 por problemas de consistencia"
-        required: false
+      # 5. CHECKBOXES
+      - id: environments
+        type: checkbox
+        label: "Ambientes (marca todos los que apliquen):"
+        options:
+          - value: dev
+            label: "Desarrollo"
+            checked: true
+          - value: staging
+            label: "Staging"
+          - value: prod
+            label: "Producción"
+        help: "Selecciona todos los ambientes activos"
 
-# NO incluir template aquí
+```
+
+```
+5 Tipos de Preguntas Soportadas:
+text - Campo de texto simple
+textarea - Texto multi-línea
+select - Lista desplegable (con opción "Otro")
+radio - Botones de opción (selección única)
+checkbox - Casillas múltiples
+Propiedades Comunes:
+id - Identificador único
+type - Tipo de campo
+label - Etiqueta visible
+help - Texto de ayuda (opcional)
+Propiedades Específicas:
+TEXT: placeholder, required
+TEXTAREA: placeholder, rows
+SELECT: options, default, showOther, otherPlaceholder
+RADIO: options, default
+CHECKBOX: options (con checked)
+
 ```
 
 ---
