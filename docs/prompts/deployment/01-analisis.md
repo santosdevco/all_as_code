@@ -347,6 +347,6 @@ CHECKBOX: options (con checked)
 
 ## OUTPUT ESPERADO
 
-1. **Reporte en consola** con análisis categorizado (✅ ENCONTRADO / ❓ PREGUNTAR)
+1. **Reporte en consola** con lo mas importtate MAXIMO DIEZ LINEAS POR PROBLEMAS DE TOKENS EN EL OUTPUT
 2. **YAML para formulario** con SOLO las preguntas necesarias
-3. **NO generar archivos markdown** (eso será después con las respuestas + 02-salida.md)
+3. **NO generar archivos markdown** (eso será después )

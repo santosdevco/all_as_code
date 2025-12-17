@@ -14,7 +14,7 @@ Analiza el proyecto actual para extraer:
 Este prompt tiene 3 objetivos secuenciales:
 
 1. **Analizar el workspace** buscando controllers, rutas, models, middleware de autenticación
-2. **Reportar hallazgos** en la consola
+2. **Reportar hallazgos** mas importantes MAXIMO DIEZ LINEAS POR PROBLEMAS DE TOKENS EN EL OUTPUT
 3. **Generar YAML** con preguntas clave para completar información faltante
 
 ## FASE 1: Análisis del Proyecto
@@ -201,7 +201,7 @@ CHECKBOX: options (con checked)
 ## OUTPUT
 
 **Imprime en consola:**
-1. Reporte de análisis completo
+1. Reporte de análisis corto MAXIMO DIEZ LINEAS POR PROBLEMAS DE TOKENS EN EL OUTPUT
 2. Bloque YAML con preguntas contextualizadas
 
 **NO generes archivos** - solo análisis y YAML para el formulario.

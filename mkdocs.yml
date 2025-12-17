@@ -100,9 +100,9 @@ nav:
   
   - 🤖 Sistema de Documentación con IA:
       - 📖 Introducción al Sistema: prompts/introduccion.md
-      - 📁 Panel de Proyectos: panel-proyectos.md
+      - 📁 Panel de Proyectos: admin/panel-proyectos.md
       - 🎯 Generador de Documentación: prompts/generador.md
-      - 📝 Responder Preguntas: answer.md
+      - 📝 Responder Preguntas: admin/answer.md
       - 🚀 Deployment:
           - Paso 1 - Análisis: prompts/deployment/01-analisis.md
           - Paso 2 - Salida: prompts/deployment/02-salida.md

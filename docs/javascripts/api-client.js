@@ -4,7 +4,9 @@
 
 const API_CONFIG = {
     // URL base de la API (cambiar según entorno)
-    baseURL: 'https://fastdocumentationai-backend-1.onrender.com',  // Producción (ajustar según deploy)
+    baseURL: window.location.hostname === 'localhost' 
+        ? 'http://localhost:8000'  // Desarrollo local
+        : 'https://fastdocumentationai-backend-1.onrender.com',  // Producción
     
     // Endpoints
     endpoints: {

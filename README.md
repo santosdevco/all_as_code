@@ -1,5 +1,46 @@
 # Capacitación: Documentación y Diagramas as Code
 
+## 🆕 Nuevo: Sistema Completo Frontend + Backend
+
+Este proyecto incluye un **sistema completo de documentación colaborativa** con:
+
+### 🎨 Frontend (MkDocs + Material)
+- Generador de formularios dinámicos desde YAML
+- Panel de gestión de proyectos
+- Páginas públicas para responder preguntas
+- Sistema de dos fases: Análisis → Generación
+
+### 🚀 Backend (FastAPI + Beanie + MongoDB)
+- API REST completa con autenticación por tokens
+- Gestión de proyectos y sesiones de análisis
+- URLs compartibles para colaboración
+- Almacenamiento de documentación generada
+- Swagger UI integrado
+
+### 🐳 Infraestructura (Docker Compose)
+- MongoDB para persistencia
+- Backend en puerto 8000
+- Frontend en puerto 8001
+- Orquestación automática
+
+**📖 Documentación:**
+- [INTEGRACION.md](INTEGRACION.md) - Guía completa de integración
+- [backend/README.md](backend/README.md) - Instalación y arquitectura del backend
+- [backend/USAGE.md](backend/USAGE.md) - Guía de uso con ejemplos
+- [GUIA_RAPIDA.md](GUIA_RAPIDA.md) - Inicio rápido del sistema
+
+**🚀 Inicio rápido:**
+```bash
+./start.sh
+# Selecciona opción 1: Docker Compose (Full Stack)
+```
+
+**Accesos:**
+- Frontend: http://localhost:8001
+- Backend API: http://localhost:8000/docs
+- Panel de Proyectos: http://localhost:8001/panel-proyectos/
+
+---
 
 ## 🔍 Ejemplo Práctico: Sistema de Pagos (Nivel C4)
 

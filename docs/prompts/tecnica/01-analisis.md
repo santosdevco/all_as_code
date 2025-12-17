@@ -8,7 +8,7 @@ Vas a analizar el proyecto actual (`@workspace`) para crear **documentación té
 
 ## OBJETIVO
 1. **Analizar** el workspace exhaustivamente
-2. **Reportar** hallazgos en consola (NO generar archivos)
+2. **Reportar** cosas mas importantes MAXIMO DIEZ LINEAS POR PROBLEMAS DE TOKENS EN EL OUTPUT (NO generar archivos)
 3. **Generar** YAML con preguntas necesarias
 
 ## ARCHIVOS DE SALIDA (se generarán en siguiente prompt)

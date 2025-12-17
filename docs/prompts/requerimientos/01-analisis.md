@@ -8,7 +8,7 @@ Vas a analizar el proyecto actual (`@workspace`) para documentar **requisitos fu
 
 ## OBJETIVO
 1. **Analizar** el workspace exhaustivamente
-2. **Reportar** hallazgos en consola (NO generar archivos)
+2. **Reportar** hallazgos en consola (NO generar archivos)MAXIMO DIEZ LINEAS POR PROBLEMAS DE TOKENS EN EL OUTPUT
 3. **Generar** YAML con preguntas categorizadas en 3 niveles:
    - ✅ **YA_SABEMOS**: Información encontrada con certeza en el código
    - ⚠️ **VALIDAR**: Información parcial que requiere confirmación
@@ -461,8 +461,6 @@ CHECKBOX: options (con checked)
 
 ## OUTPUT ESPERADO
 
-1. **Reporte en consola** con análisis categorizado:
-   - ✅ Requisitos funcionales detectados (detallado)
-   - ✅ RNF encontrados por categoría
+1. **Reporte en consola** con análisis corto, solo cosas mas importantes MAXIMO DIEZ LINEAS POR PROBLEMAS DE TOKENS EN EL OUTPUT
 2. **YAML para formulario** con SOLO las preguntas necesarias
 3. **NO generar archivos markdown** (eso será después con las respuestas + 02-salida.md)

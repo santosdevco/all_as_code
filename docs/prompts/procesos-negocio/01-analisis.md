@@ -8,7 +8,7 @@ Vas a analizar el proyecto actual (`@workspace`) para documentar **procesos de n
 
 ## OBJETIVO
 1. **Analizar** el workspace exhaustivamente
-2. **Reportar** hallazgos en consola (NO generar archivos)
+2. **Reportar** hallazgos en consola (NO generar archivos) MAXIMO DIEZ LINEAS POR PROBLEMAS DE TOKENS EN EL OUTPUT
 3. **Generar** YAML con preguntas necesarias
 
 ---
@@ -264,6 +264,6 @@ CHECKBOX: options (con checked)
 
 ## OUTPUT ESPERADO
 
-1. **Reporte en consola** con casos de uso y flujos detectados
+1. **Reporte en consola** con cosas mas importante MAXIMO DIEZ LINEAS POR PROBLEMAS DE TOKENS EN EL OUTPUT
 2. **YAML** con preguntas necesarias (máximo 8-10)
 3. **NO generar archivos markdown**

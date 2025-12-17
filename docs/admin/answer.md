@@ -136,6 +136,7 @@ async function loadAnalysisData() {
 function renderAnalysisForm() {
     const container = document.getElementById('answer-page-container');
     const config = analysisData.yaml_config;
+    const hasAnswers = analysisData.answers && Object.keys(analysisData.answers).length > 0;
     
     // Header con info del análisis
     const headerHtml = `
@@ -145,6 +146,7 @@ function renderAnalysisForm() {
                 <p>${config.description || ''}</p>
                 <p><strong>Tipo de análisis:</strong> ${analysisData.analysis_type}</p>
                 <p><strong>Iteración:</strong> ${analysisData.current_iteration}</p>
+                ${hasAnswers ? '<p style="background: #d4edda; color: #155724; padding: 10px; border-radius: 6px; margin-top: 10px;"><strong>✅ Ya hay respuestas guardadas.</strong> Puedes modificarlas y actualizar.</p>' : ''}
             </div>
         </div>
     `;
@@ -153,16 +155,22 @@ function renderAnalysisForm() {
     container.innerHTML = headerHtml + '<div id="form-container-wrapper"></div>';
     
     const formWrapper = document.getElementById('form-container-wrapper');
+    const buttonText = hasAnswers ? '🔄 Actualizar Respuestas' : '✅ Enviar Respuestas';
     
     if (typeof PromptBuilder !== 'undefined' && typeof jsyaml !== 'undefined') {
         // Crear contenedor para PromptBuilder
-        formWrapper.innerHTML = '<div id="prompt-builder-container"></div><button type="button" class="submit-btn" id="submit-answers-btn">✅ Enviar Respuestas</button>';
+        formWrapper.innerHTML = `<div id="prompt-builder-container"></div><button type="button" class="submit-btn" id="submit-answers-btn">${buttonText}</button>`;
         
         // Usar PromptBuilder con YAML directo - usar 'answer' como ID
         const yamlText = jsyaml.dump(config);
         promptBuilder = new PromptBuilder('prompt-builder-container', 'answer', yamlText);
         promptBuilder.init().then(() => {
             console.log('✅ Formulario generado con PromptBuilder');
+            
+            // Pre-cargar respuestas si existen
+            if (hasAnswers) {
+                preloadAnswers(analysisData.answers);
+            }
             
             // Ocultar botones de PromptBuilder (copiar respuestas, etc.)
             const pbButtons = document.querySelector('.pb-buttons-container');
@@ -180,6 +188,61 @@ function renderAnalysisForm() {
         promptBuilder = null;
         renderFallbackFormWithSubmit(formWrapper, config);
     }
+}
+
+// Pre-cargar respuestas existentes en el formulario
+function preloadAnswers(answers) {
+    if (!answers || Object.keys(answers).length === 0) return;
+    
+    console.log('Pre-cargando respuestas:', answers);
+    
+    // El formulario de PromptBuilder tiene el ID 'pb-form-answer'
+    const form = document.getElementById('pb-form-answer');
+    if (!form) {
+        console.warn('Formulario no encontrado, reintentando en 500ms...');
+        setTimeout(() => preloadAnswers(answers), 500);
+        return;
+    }
+    
+    // Llenar cada campo con su valor
+    for (const [key, value] of Object.entries(answers)) {
+        const field = form.querySelector(`[name="${key}"], [name="${key}[]"]`);
+        
+        if (!field) {
+            console.warn(`Campo no encontrado: ${key}`);
+            continue;
+        }
+        
+        // Detectar tipo de campo
+        if (field.type === 'checkbox') {
+            // Para checkboxes, value es un array
+            const checkboxes = form.querySelectorAll(`[name="${key}[]"]`);
+            const values = Array.isArray(value) ? value : [value];
+            
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = values.includes(checkbox.value);
+            });
+        } else if (field.type === 'radio') {
+            // Para radio buttons
+            const radios = form.querySelectorAll(`[name="${key}"]`);
+            radios.forEach(radio => {
+                radio.checked = radio.value === value;
+            });
+        } else {
+            // Para text, textarea, select
+            field.value = Array.isArray(value) ? value.join(', ') : value;
+            
+            // Si es un select con opción "Otro", verificar si necesita activar el campo otro
+            if (field.tagName === 'SELECT' && value === 'otro') {
+                const otroField = form.querySelector(`[name="${key}_otro"]`);
+                if (otroField) {
+                    otroField.style.display = 'block';
+                }
+            }
+        }
+    }
+    
+    console.log('✅ Respuestas pre-cargadas');
 }
 
 // Renderizar formulario fallback con botón de submit
@@ -284,24 +347,31 @@ async function handleSubmit(event) {
         }
         
         // Enviar al backend
+        const hadPreviousAnswers = analysisData.answers && Object.keys(analysisData.answers).length > 0;
+        
         await window.apiClient.post(
             window.API_CONFIG.endpoints.updatePublicAnswers(currentToken),
             { answers: answers }
         );
         
         // Mostrar éxito
+        const actionText = hadPreviousAnswers ? 'actualizadas' : 'enviadas';
+        const successIcon = hadPreviousAnswers ? '🔄' : '✅';
+        
         document.getElementById('answer-page-container').innerHTML = `
             <div class="success-box">
-                <h2>✅ ¡Respuestas enviadas exitosamente!</h2>
+                <h2>${successIcon} ¡Respuestas ${actionText} exitosamente!</h2>
                 <p>Tus respuestas han sido guardadas. El analista será notificado.</p>
-                <p style="margin-top: 20px;">Puedes cerrar esta página.</p>
+                ${hadPreviousAnswers ? '<p style="margin-top: 10px;">Las respuestas anteriores han sido reemplazadas con las nuevas.</p>' : ''}
+                <p style="margin-top: 20px;">Puedes cerrar esta página o <a href="${window.location.href}" style="color: #3498db; text-decoration: underline;">volver a cargar</a> para hacer más cambios.</p>
             </div>
         `;
         
     } catch (error) {
         alert('❌ Error enviando respuestas: ' + error.message);
         submitBtn.disabled = false;
-        submitBtn.textContent = '✅ Enviar Respuestas';
+        const hadPreviousAnswers = analysisData.answers && Object.keys(analysisData.answers).length > 0;
+        submitBtn.textContent = hadPreviousAnswers ? '🔄 Actualizar Respuestas' : '✅ Enviar Respuestas';
     }
 }
 

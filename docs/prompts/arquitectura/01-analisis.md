@@ -8,7 +8,7 @@ Vas a analizar el proyecto actual (`@workspace`) para crear documentación de **
 
 ## OBJETIVO
 1. **Analizar** el workspace exhaustivamente
-2. **Reportar** hallazgos en consola (NO generar archivos)
+2. **Reportar** hallazgos en consola (NO generar archivos)MAXIMO DIEZ LINEAS POR PROBLEMAS DE TOKENS EN EL OUTPUT
 3. **Generar** YAML con preguntas necesarias
 
 
@@ -263,6 +263,6 @@ CHECKBOX: options (con checked)
 
 ## OUTPUT ESPERADO
 
-1. **Reporte en consola** con arquitectura detectada por niveles C4
+1. **Reporte en consola**  cosas mas importantes MAXIMO DIEZ LINEAS POR PROBLEMAS DE TOKENS EN EL OUTPUT
 2. **YAML** con preguntas necesarias (máximo 10-12)
 3. **NO generar archivos markdown**
