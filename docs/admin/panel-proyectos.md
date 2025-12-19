@@ -432,6 +432,30 @@ const ANALYSIS_PROMPTS = {
 
 // Cargar proyectos al iniciar
 document.addEventListener('DOMContentLoaded', async () => {
+    console.log('DOMContentLoaded - Panel de Proyectos');
+    console.log('window.documentationFlow:', window.documentationFlow);
+    console.log('window.apiClient:', window.apiClient);
+    
+    // Esperar a que los scripts se carguen
+    let attempts = 0;
+    while (!window.documentationFlow && attempts < 10) {
+        console.log('Esperando window.documentationFlow...', attempts);
+        await new Promise(resolve => setTimeout(resolve, 100));
+        attempts++;
+    }
+    
+    if (!window.documentationFlow) {
+        console.error('window.documentationFlow no está disponible');
+        document.getElementById('projects-list').innerHTML = `
+            <div class="project-card" style="background: #fff3cd; border-color: #ffc107;">
+                <h3 style="color: #856404; margin-top: 0;">⚠️ Error cargando dependencias</h3>
+                <p>Los scripts necesarios no se cargaron correctamente.</p>
+                <p style="color: #666; font-size: 0.9em;">Recarga la página (Ctrl+R)</p>
+            </div>
+        `;
+        return;
+    }
+    
     await loadProjects();
     await loadPromptsLibrary();
 });
@@ -441,6 +465,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 // ============================================
 
 function switchTab(tabName) {
+    console.log('switchTab:', tabName);
+    
     // Ocultar todas las pestañas
     document.querySelectorAll('.tab-content').forEach(tab => {
         tab.classList.remove('active');
@@ -453,17 +479,16 @@ function switchTab(tabName) {
     
     // Activar pestaña seleccionada
     const tabContent = document.getElementById('tab-' + tabName);
-    const tabButtons = document.querySelectorAll('.tabs-container .tab-btn');
-    
     if (tabContent) {
         tabContent.classList.add('active');
+    } else {
+        console.error('Tab not found:', 'tab-' + tabName);
     }
     
-    // Activar botón correspondiente
-    tabButtons.forEach(btn => {
-        if (btn.textContent.includes(tabName === 'projects' ? 'Proyectos' : 
-                                       tabName === 'create-project' ? 'Crear Proyecto' : 
-                                       'Biblioteca de Prompts')) {
+    // Activar botón correspondiente (buscar por onclick)
+    document.querySelectorAll('.tabs-container .tab-btn').forEach(btn => {
+        const onclick = btn.getAttribute('onclick');
+        if (onclick && onclick.includes("switchTab('" + tabName + "')")) {
             btn.classList.add('active');
         }
     });
@@ -1198,7 +1223,7 @@ async function handleSearch() {
             
             const baseUrl = window.location.hostname === 'localhost' 
                 ? 'http://localhost:8000' 
-                : 'https://fast-documentation-ai.onrender.com';
+                : 'https://fastdocumentationai-backend-1.onrender.com';
             
             const response = await fetch(`${baseUrl}/api/search/analyses?q=${encodeURIComponent(query)}&limit=20`);
             
