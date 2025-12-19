@@ -180,7 +180,6 @@ template: |
 ### 3️⃣ Select Dropdown (Lista desplegable)
 
 ```yaml
-
 - id: deployPlatform
   type: select
   label: "¿Dónde se despliega en PRODUCCIÓN?"
@@ -191,34 +190,28 @@ template: |
       label: "AWS ECS/Fargate"
     - value: heroku
       label: "Heroku"
-    - value: otro
-      label: "Otro"
   default: kubernetes
-  showOther: true
-  otherPlaceholder: "Especifica la plataforma..."
   help: "Pregunta al DevOps si no estás seguro"
 ```
 
 **Genera:**
 
 - Dropdown con todas las opciones
-
-- Si `showOther: true` → muestra campo de texto cuando se selecciona "otro"
-
-- Campo "otro" se oculta/muestra automáticamente
+- **Automáticamente incluye opción "Otro..." al final**
+- Campo de texto se muestra cuando seleccionas "Otro..."
 
 **Variables generadas:**
 
-- `{{deployPlatform}}` → Valor seleccionado
+- `{{deployPlatform}}` → Valor seleccionado o texto personalizado
 
-- `{{deployPlatform_other}}` → Texto ingresado en "otro" (si aplica)
+!!! note "Opción 'Otro' automática"
+    No necesitas agregar "Otro" en las opciones. El sistema lo agrega automáticamente en todos los select, radio y checkbox.
 
 ---
 
 ### 4️⃣ Checkboxes (Selección múltiple)
 
 ```yaml
-
 - id: environments
   type: checkbox
   label: "¿Qué ambientes existen?"
@@ -233,27 +226,59 @@ template: |
     - value: prod
       label: "Producción"
       checked: true
-  showOther: true
-  otherPlaceholder: "Otros ambientes..."
 ```
 
 **Genera:**
 
 - Lista de checkboxes
-
 - Opciones pre-seleccionadas con `checked: true`
+- **Automáticamente incluye checkbox "Otro:" con campo de texto**
 
-- Campo "otro" opcional
+!!! tip "Selección múltiple con 'Otro'"
+    Los usuarios pueden marcar múltiples opciones Y agregar texto personalizado en "Otro".
+
+- Lista de checkboxes
+- Opciones pre-seleccionadas con `checked: true`
+- **Automáticamente incluye checkbox "Otro:" con campo de texto**
+
+!!! tip "Selección múltiple con 'Otro'"
+    Los usuarios pueden marcar múltiples opciones Y agregar texto personalizado en "Otro".
 
 **Variables generadas:**
 
-- `{{environments}}` → Array de valores: `["local", "prod"]`
-
-- `{{environments_other}}` → Texto ingresado (si aplica)
+- `{{environments}}` → Array de valores: `["local", "prod"]` o incluye texto de "Otro"
 
 ---
 
-### 5️⃣ Textarea (Texto multilínea)
+### 5️⃣ Radio Buttons (Selección única)
+
+```yaml
+- id: hasTests
+  type: radio
+  label: "¿El proyecto tiene pruebas automatizadas?"
+  options:
+    - value: si
+      label: "Sí, tiene tests"
+    - value: no
+      label: "No tiene tests"
+    - value: parcial
+      label: "Parcialmente"
+  default: no
+```
+
+**Genera:**
+
+- Grupo de radio buttons (selección única)
+- Opción por defecto seleccionada con `default`
+- **Automáticamente incluye opción "Otro:" con campo de texto**
+
+**Variables generadas:**
+
+- `{{hasTests}}` → Valor seleccionado o texto personalizado
+
+---
+
+### 6️⃣ Textarea (Texto multilínea)
 
 ```yaml
 

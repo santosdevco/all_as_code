@@ -423,6 +423,12 @@ function renderFallbackForm(config) {
 function renderQuestion(question) {
     const baseHtml = `<div class="form-group"><label>${question.label}</label>`;
     
+    // Función helper para normalizar opciones
+    const normalizeOpt = (opt) => {
+        if (typeof opt === 'string') return { value: opt, label: opt };
+        return { value: opt.value || opt.label, label: opt.label || opt.value };
+    };
+    
     switch(question.type) {
         case 'text':
             return `${baseHtml}<input type="text" name="${question.id}" placeholder="${question.placeholder || ''}"></div>`;
@@ -430,25 +436,46 @@ function renderQuestion(question) {
         case 'textarea':
             return `${baseHtml}<textarea name="${question.id}" rows="4" placeholder="${question.placeholder || ''}"></textarea></div>`;
         
-        case 'select':
-            return `${baseHtml}<select name="${question.id}">
+        case 'select': {
+            const opts = question.options ? question.options.map(normalizeOpt) : [];
+            const optionsHtml = opts.map(o => `<option value="${o.value}">${o.label}</option>`).join('');
+            return `${baseHtml}<select name="${question.id}" onchange="if(this.value==='__otro__'){document.getElementById('${question.id}_otro').style.display='block';}else{document.getElementById('${question.id}_otro').style.display='none';}">
                 <option value="">Selecciona una opción</option>
-                ${question.options.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
-            </select></div>`;
+                ${optionsHtml}
+                <option value="__otro__">Otro...</option>
+            </select>
+            <input type="text" id="${question.id}_otro" name="${question.id}_otro" placeholder="Especifica otra opción..." style="display:none;margin-top:8px;padding:8px;width:100%;border:1px solid #ccc;border-radius:4px;"></div>`;
+        }
         
-        case 'radio':
-            return `${baseHtml}${question.options.map(opt => `
+        case 'radio': {
+            const opts = question.options ? question.options.map(normalizeOpt) : [];
+            const optionsHtml = opts.map(o => `
                 <label style="display: block; margin: 5px 0;">
-                    <input type="radio" name="${question.id}" value="${opt}"> ${opt}
+                    <input type="radio" name="${question.id}" value="${o.value}" onchange="document.getElementById('${question.id}_otro').style.display='none';"> ${o.label}
                 </label>
-            `).join('')}</div>`;
+            `).join('');
+            return `${baseHtml}${optionsHtml}
+                <label style="display: block; margin: 5px 0;">
+                    <input type="radio" name="${question.id}" value="__otro__" onchange="document.getElementById('${question.id}_otro').style.display='inline-block';"> Otro:
+                    <input type="text" id="${question.id}_otro" placeholder="Especifica..." style="display:none;margin-left:8px;padding:4px;">
+                </label>
+            </div>`;
+        }
         
-        case 'checkbox':
-            return `${baseHtml}${question.options.map(opt => `
+        case 'checkbox': {
+            const opts = question.options ? question.options.map(normalizeOpt) : [];
+            const optionsHtml = opts.map(o => `
                 <label style="display: block; margin: 5px 0;">
-                    <input type="checkbox" name="${question.id}" value="${opt}"> ${opt}
+                    <input type="checkbox" name="${question.id}" value="${o.value}"> ${o.label}
                 </label>
-            `).join('')}</div>`;
+            `).join('');
+            return `${baseHtml}${optionsHtml}
+                <label style="display: block; margin: 5px 0;">
+                    <input type="checkbox" id="${question.id}_otro_check" onchange="document.getElementById('${question.id}_otro').style.display=this.checked?'inline-block':'none';"> Otro:
+                    <input type="text" id="${question.id}_otro" name="${question.id}_otro" placeholder="Especifica..." style="display:none;margin-left:8px;padding:4px;">
+                </label>
+            </div>`;
+        }
         
         default:
             return '';
@@ -484,16 +511,45 @@ async function handleSubmit(event) {
             }
             
             const formData = new FormData(form);
+            const processedCheckboxes = new Set();
             
             for (const [key, value] of formData.entries()) {
-                if (answers[key]) {
-                    // Checkbox múltiple
-                    if (Array.isArray(answers[key])) {
-                        answers[key].push(value);
-                    } else {
-                        answers[key] = [answers[key], value];
+                // Saltar campos _otro que se procesan después
+                if (key.endsWith('_otro')) continue;
+                
+                const input = form.querySelector(`[name="${key}"]`);
+                
+                // Manejar checkbox múltiple
+                if (input && input.type === 'checkbox' && !processedCheckboxes.has(key)) {
+                    processedCheckboxes.add(key);
+                    const checkboxes = form.querySelectorAll(`[name="${key}"]`);
+                    answers[key] = [];
+                    checkboxes.forEach(cb => {
+                        if (cb.checked) answers[key].push(cb.value);
+                    });
+                    // Agregar valor de Otro si está marcado
+                    const otroCheck = document.getElementById(`${key}_otro_check`);
+                    const otroInput = document.getElementById(`${key}_otro`);
+                    if (otroCheck && otroCheck.checked && otroInput && otroInput.value.trim()) {
+                        answers[key].push(otroInput.value.trim());
                     }
-                } else {
+                }
+                // Manejar radio con Otro
+                else if (input && input.type === 'radio' && value === '__otro__') {
+                    const otroInput = document.getElementById(`${key}_otro`);
+                    if (otroInput && otroInput.value.trim()) {
+                        answers[key] = otroInput.value.trim();
+                    }
+                }
+                // Manejar select con Otro
+                else if (input && input.tagName === 'SELECT' && value === '__otro__') {
+                    const otroInput = document.getElementById(`${key}_otro`);
+                    if (otroInput && otroInput.value.trim()) {
+                        answers[key] = otroInput.value.trim();
+                    }
+                }
+                // Valores normales
+                else if (!processedCheckboxes.has(key)) {
                     answers[key] = value;
                 }
             }

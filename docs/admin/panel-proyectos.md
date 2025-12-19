@@ -972,6 +972,16 @@ async function viewProjectAnalysis(projectId) {
                     <strong>Estado:</strong> ${getStatusBadge(project.status)} |
                     <strong>Creado:</strong> ${formatDate(project.created_at)}
                 </div>
+                
+                <!-- Botones de acción del proyecto -->
+                <div style="margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap; padding-top: 15px; border-top: 2px solid #e0e0e0;">
+                    <button class="btn btn-success" onclick="window.location.href='/admin/massive-response/?project_id=${project.id}'">
+                        ✍️ Respuesta Masiva
+                    </button>
+                    <button class="btn" onclick="exportProjectAnswers('${project.id}')">
+                        📦 Exportar Todo el Proyecto
+                    </button>
+                </div>
             </div>
             
             <h3>📊 Sesiones de Análisis</h3>
@@ -1533,6 +1543,212 @@ function formatDate(dateString) {
         hour: '2-digit',
         minute: '2-digit'
     });
+}
+
+// ============================================
+// RESPUESTA MASIVA Y EXPORTACIÓN
+// ============================================
+
+// Exportar todas las respuestas del proyecto
+async function exportProjectAnswers(projectId) {
+    try {
+        const project = await window.apiClient.get(window.API_CONFIG.endpoints.project(projectId));
+        const analyses = await window.apiClient.get(window.API_CONFIG.endpoints.projectAnalyses(projectId));
+        
+        if (analyses.length === 0) {
+            alert('❌ No hay sesiones de análisis en este proyecto');
+            return;
+        }
+        
+        let exportText = `EXPORTACIÓN COMPLETA DEL PROYECTO\n`;
+        exportText += `${'='.repeat(80)}\n`;
+        exportText += `📁 Proyecto: ${project.name}\n`;
+        exportText += `📅 Fecha de exportación: ${new Date().toLocaleString('es-ES')}\n`;
+        exportText += `📊 Total de sesiones: ${analyses.length}\n`;
+        exportText += `${'='.repeat(80)}\n\n`;
+        
+        // Obtener datos completos de cada análisis
+        for (const analysis of analyses) {
+            try {
+                const fullAnalysis = await window.apiClient.get(window.API_CONFIG.endpoints.getPublicAnalysis(analysis.share_token));
+                
+                exportText += `\n${'━'.repeat(80)}\n`;
+                exportText += `📋 SESIÓN: ${fullAnalysis.yaml_config?.title || fullAnalysis.analysis_type}\n`;
+                exportText += `🏷️ Tipo: ${fullAnalysis.analysis_type}\n`;
+                exportText += `🔄 Iteración Actual: ${fullAnalysis.iteration}\n`;
+                exportText += `📅 Creado: ${formatDate(fullAnalysis.created_at)}\n`;
+                exportText += `🔄 Actualizado: ${formatDate(fullAnalysis.updated_at)}\n`;
+                exportText += `${'━'.repeat(80)}\n\n`;
+                
+                // Exportar iteraciones históricas
+                if (fullAnalysis.iteration_history && fullAnalysis.iteration_history.length > 0) {
+                    exportText += `📚 ITERACIONES HISTÓRICAS:\n\n`;
+                    
+                    fullAnalysis.iteration_history.forEach(histItem => {
+                        exportText += `  ┌─ 🔄 Iteración ${histItem.iteration} ─────────────────\n`;
+                        exportText += `  │ 📅 ${new Date(histItem.timestamp).toLocaleString('es-ES')}\n`;
+                        exportText += `  └─────────────────────────────────────\n\n`;
+                        
+                        const yamlConfig = histItem.yaml_generated || {};
+                        const answers = histItem.answers_provided || {};
+                        
+                        exportText += formatAnswersForExport(answers, yamlConfig, `    `);
+                        exportText += `\n`;
+                    });
+                }
+                
+                // Exportar iteración actual
+                exportText += `📝 ITERACIÓN ACTUAL (${fullAnalysis.iteration}):\n\n`;
+                exportText += formatAnswersForExport(fullAnalysis.answers, fullAnalysis.yaml_config, `  `);
+                exportText += `\n\n`;
+                
+            } catch (error) {
+                console.error('Error exportando análisis:', error);
+                exportText += `⚠️ Error exportando esta sesión: ${error.message}\n\n`;
+            }
+        }
+        
+        exportText += `${'='.repeat(80)}\n`;
+        exportText += `FIN DE LA EXPORTACIÓN\n`;
+        
+        // Mostrar modal de confirmación con preview
+        showExportPreview(exportText, project.name);
+        
+    } catch (error) {
+        console.error('Error exportando proyecto:', error);
+        alert('❌ Error: ' + error.message);
+    }
+}
+
+// Formatear respuestas para exportación
+function formatAnswersForExport(answers, yamlConfig, indent = '') {
+    if (!answers || Object.keys(answers).length === 0) {
+        return `${indent}(Sin respuestas)\n`;
+    }
+    
+    let text = '';
+    
+    // Crear mapa de preguntas
+    const questionsMap = {};
+    if (yamlConfig?.sections) {
+        yamlConfig.sections.forEach(section => {
+            if (section.questions) {
+                section.questions.forEach(q => {
+                    questionsMap[q.id] = { ...q, sectionTitle: section.title, sectionIcon: section.icon };
+                });
+            }
+        });
+    }
+    
+    // Formatear por sección si existe
+    if (yamlConfig?.sections) {
+        yamlConfig.sections.forEach(section => {
+            const sectionHasAnswers = section.questions?.some(q => answers[q.id] !== undefined);
+            if (sectionHasAnswers) {
+                text += `${indent}${section.icon || '📌'} ${section.title}\n`;
+                text += `${indent}${'-'.repeat(40)}\n`;
+                
+                section.questions.forEach(q => {
+                    const answer = answers[q.id];
+                    if (answer !== undefined) {
+                        text += `${indent}  ❓ ${q.label || q.question || q.id}\n`;
+                        if (Array.isArray(answer)) {
+                            answer.forEach(item => {
+                                text += `${indent}     • ${item}\n`;
+                            });
+                        } else {
+                            text += `${indent}     ✅ ${answer}\n`;
+                        }
+                        text += `\n`;
+                    }
+                });
+            }
+        });
+    } else {
+        // Sin secciones, listar todas las respuestas
+        for (const [key, value] of Object.entries(answers)) {
+            text += `${indent}❓ ${key}:\n`;
+            if (Array.isArray(value)) {
+                value.forEach(item => {
+                    text += `${indent}   • ${item}\n`;
+                });
+            } else {
+                text += `${indent}   ✅ ${value}\n`;
+            }
+            text += `\n`;
+        }
+    }
+    
+    return text;
+}
+
+// Mostrar preview de exportación
+function showExportPreview(content, projectName) {
+    const modal = document.createElement('div');
+    modal.innerHTML = `
+        <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 10002; display: flex; align-items: center; justify-content: center; padding: 20px;" onclick="this.remove()">
+            <div style="background: white; border-radius: 16px; max-width: 1200px; width: 100%; max-height: 90vh; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.3);" onclick="event.stopPropagation()">
+                
+                <!-- Header -->
+                <div style="background: linear-gradient(135deg, #27ae60 0%, #229954 100%); color: white; padding: 25px;">
+                    <h2 style="margin: 0; font-size: 1.5em;">📦 Exportación Completa del Proyecto</h2>
+                    <p style="margin: 10px 0 0 0; opacity: 0.9;">Proyecto: ${projectName}</p>
+                </div>
+                
+                <!-- Contenido -->
+                <div style="padding: 30px; overflow-y: auto; max-height: calc(90vh - 200px);">
+                    <div style="background: #e8f5e9; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #27ae60;">
+                        <p style="margin: 0; color: #155724;">
+                            <strong>✅ Exportación generada correctamente</strong><br>
+                            <span style="font-size: 0.9em;">Haz clic en el botón de abajo para copiar al portapapeles</span>
+                        </p>
+                    </div>
+                    
+                    <h3 style="margin: 0 0 15px 0;">📄 Preview del contenido exportado:</h3>
+                    <div style="background: #2c3e50; color: #ecf0f1; padding: 20px; border-radius: 8px; max-height: 400px; overflow-y: auto; font-family: 'Courier New', monospace; font-size: 0.85em; white-space: pre-wrap;">${content.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
+                    
+                    <div style="margin-top: 20px; padding: 15px; background: #fff3cd; border-left: 4px solid #ffc107; border-radius: 6px;">
+                        <p style="margin: 0; color: #856404;">💡 <strong>Sugerencia:</strong> Pega este contenido en un documento o directamente en Copilot para generar la documentación final.</p>
+                    </div>
+                </div>
+                
+                <!-- Footer -->
+                <div style="padding: 20px 30px; background: #f8f9fa; border-top: 1px solid #e0e0e0; display: flex; gap: 10px; justify-content: flex-end;">
+                    <button class="btn btn-success" onclick="copyExportToClipboard(this)">📋 Copiar al Portapapeles</button>
+                    <button class="btn btn-secondary" onclick="this.closest('[style*=fixed]').remove()">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Guardar el contenido en el modal
+    modal.querySelector('[style*="fixed"]').dataset.exportContent = content;
+    
+    document.body.appendChild(modal);
+}
+
+// Copiar al portapapeles desde el modal
+async function copyExportToClipboard(button) {
+    const modalWrapper = button.closest('[style*="fixed"]');
+    const content = modalWrapper.dataset.exportContent;
+    
+    try {
+        await navigator.clipboard.writeText(content);
+        
+        // Cambiar el botón temporalmente
+        const originalHTML = button.innerHTML;
+        button.innerHTML = '✅ ¡Copiado!';
+        button.disabled = true;
+        
+        setTimeout(() => {
+            button.innerHTML = originalHTML;
+            button.disabled = false;
+        }, 2000);
+        
+    } catch (error) {
+        console.error('Error copiando al portapapeles:', error);
+        alert('❌ Error al copiar al portapapeles. Por favor, selecciona y copia manualmente el texto.');
+    }
 }
 
 // Nueva Iteración - Con nuevo YAML de Copilot

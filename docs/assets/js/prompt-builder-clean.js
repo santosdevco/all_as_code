@@ -256,17 +256,16 @@ sections:
             <div class="pb-question">
                 <label class="pb-label" for="${q.id}">${q.label}</label>
                 ${q.help ? `<small class="pb-help">${q.help}</small>` : ''}
-                <select id="${q.id}" name="${q.id}" class="pb-select">
+                <select id="${q.id}" name="${q.id}" class="pb-select" onchange="document.getElementById('${q.id}_other').style.display=this.value==='__otro__'?'block':'none';">
                     ${options}
+                    <option value="__otro__">Otro...</option>
                 </select>
-                ${q.showOther ? `
-                    <input 
-                        type="text" 
-                        id="${q.id}_other" 
-                        placeholder="${q.otherPlaceholder || 'Especifica...'}" 
-                        class="pb-input pb-other-input" 
-                        style="display:none; margin-top:10px;">
-                ` : ''}
+                <input 
+                    type="text" 
+                    id="${q.id}_other" 
+                    placeholder="Especifica otra opción..." 
+                    class="pb-input pb-other-input" 
+                    style="display:none; margin-top:10px;">
             </div>
         `;
     }
@@ -282,7 +281,8 @@ sections:
                         type="radio" 
                         name="${q.id}" 
                         value="${opt.value}"
-                        ${opt.value === q.default ? 'checked' : ''}>
+                        ${opt.value === q.default ? 'checked' : ''}
+                        onchange="document.getElementById('${q.id}_other').style.display='none';">
                     <span>${opt.label}</span>
                 </label>
             `).join('');
@@ -293,6 +293,20 @@ sections:
                 ${q.help ? `<small class="pb-help">${q.help}</small>` : ''}
                 <div class="pb-radio-group">
                     ${options}
+                    <label class="pb-radio-label">
+                        <input 
+                            type="radio" 
+                            name="${q.id}" 
+                            value="__otro__"
+                            onchange="document.getElementById('${q.id}_other').style.display='block';">
+                        <span>Otro:</span>
+                        <input 
+                            type="text" 
+                            id="${q.id}_other" 
+                            placeholder="Especifica..." 
+                            class="pb-input" 
+                            style="display:none; margin-left:10px; width:200px;">
+                    </label>
                 </div>
             </div>
         `;
@@ -320,6 +334,20 @@ sections:
                 ${q.help ? `<small class="pb-help">${q.help}</small>` : ''}
                 <div class="pb-checkbox-group">
                     ${options}
+                    <label class="pb-checkbox-label">
+                        <input 
+                            type="checkbox" 
+                            id="${q.id}_other_check"
+                            onchange="document.getElementById('${q.id}_other').style.display=this.checked?'inline-block':'none';">
+                        <span>Otro:</span>
+                        <input 
+                            type="text" 
+                            id="${q.id}_other" 
+                            name="${q.id}_other"
+                            placeholder="Especifica..." 
+                            class="pb-input" 
+                            style="display:none; margin-left:10px; width:200px;">
+                    </label>
                 </div>
             </div>
         `;
@@ -334,6 +362,9 @@ sections:
         const data = {};
         
         for (let [key, value] of formData.entries()) {
+            // Saltar campos _other que se procesan después
+            if (key.endsWith('_other')) continue;
+            
             if (key.endsWith('[]')) {
                 const cleanKey = key.replace('[]', '');
                 if (!data[cleanKey]) data[cleanKey] = [];
@@ -348,6 +379,23 @@ sections:
             section.questions.forEach(q => {
                 if (q.type === 'checkbox' && !data[q.id]) {
                     data[q.id] = [];
+                }
+                
+                // Procesar campos "Otro"
+                if (q.type === 'select' || q.type === 'radio') {
+                    if (data[q.id] === '__otro__') {
+                        const otherInput = document.getElementById(`${q.id}_other`);
+                        if (otherInput && otherInput.value.trim()) {
+                            data[q.id] = otherInput.value.trim();
+                        }
+                    }
+                } else if (q.type === 'checkbox') {
+                    const otherCheck = document.getElementById(`${q.id}_other_check`);
+                    const otherInput = document.getElementById(`${q.id}_other`);
+                    if (otherCheck && otherCheck.checked && otherInput && otherInput.value.trim()) {
+                        if (!data[q.id]) data[q.id] = [];
+                        data[q.id].push(otherInput.value.trim());
+                    }
                 }
             });
         });
