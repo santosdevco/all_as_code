@@ -59,16 +59,16 @@ class PromptPageGenerator {
                 analysisPath: '/prompts/deployment/01-analisis/',
                 outputPath: '/prompts/deployment/02-salida/'
             },
-            'api': {
-                title: '9️⃣ Documentación de API (Legacy)',
-                description: 'Genera documentación completa de endpoints, autenticación y ejemplos',
-                analysisPath: '/prompts/api/01-analisis/',
-                outputPath: '/prompts/api/02-salida/'
+            'mkdocs-nav': {
+                title: '9️⃣ Navegación MkDocs',
+                description: 'Genera la configuración nav del mkdocs.yml basada en archivos generados',
+                analysisPath: '/prompts/mkdocs-nav/01-analisis/',
+                outputPath: '/prompts/mkdocs-nav/02-salida/'
             }
         };
         
         // Configuración inicial (deployment por defecto)
-        this.currentType = 'deployment';
+        this.currentType = 'vista-ejecutiva';
         this.config = this.documentTypes[this.currentType];
     }
 

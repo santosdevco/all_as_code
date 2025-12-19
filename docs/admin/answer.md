@@ -165,11 +165,34 @@ function renderAnalysisForm() {
             <div class="meta">
                 <p>${config.description || ''}</p>
                 <p><strong>Tipo de análisis:</strong> ${analysisData.analysis_type}</p>
-                <p><strong>Iteración:</strong> ${analysisData.current_iteration}</p>
+                <p><strong>Iteración Actual:</strong> ${analysisData.iteration} ${analysisData.iteration_history?.length > 0 ? `| Total Iteraciones: ${analysisData.iteration_history.length + 1}` : ''}</p>
                 <p><strong>Token (debug):</strong> <code>${currentToken}</code></p>
                 ${hasAnswers ? '<p style="background: #d4edda; color: #155724; padding: 10px; border-radius: 6px; margin-top: 10px;"><strong>✅ Ya hay respuestas guardadas.</strong> Puedes modificarlas y actualizar.</p>' : ''}
             </div>
         </div>
+        
+        <!-- Pestañas de Iteraciones Históricas -->
+        ${analysisData.iteration_history && analysisData.iteration_history.length > 0 ? `
+            <div style="background: #f8f9fa; padding: 20px; margin-bottom: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                <h3 style="margin: 0 0 15px 0; color: #2c3e50;">📚 Contexto de Iteraciones Anteriores</h3>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px;">
+                    ${analysisData.iteration_history.map((iter) => `
+                        <button class="iteration-history-btn" data-iteration="${iter.iteration}" 
+                                style="background: white; border: 2px solid #e0e0e0; padding: 8px 16px; border-radius: 8px; cursor: pointer; transition: all 0.3s;"
+                                onclick="showHistoricalIteration(${iter.iteration})">
+                            🔄 Iteración ${iter.iteration}
+                            ${iter.answers_provided && Object.keys(iter.answers_provided).length > 0 ? '<span style="color: #27ae60;">✓</span>' : '<span style="color: #95a5a6;">○</span>'}
+                        </button>
+                    `).join('')}
+                    <button class="iteration-history-btn active" data-iteration="${analysisData.iteration}" 
+                            style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: bold;"
+                            onclick="showCurrentIteration()">
+                        🔄 Iteración ${analysisData.iteration} (Actual)
+                    </button>
+                </div>
+                <div id="historical-iteration-content" style="display: none; background: white; padding: 20px; border-radius: 8px; border: 2px solid #3498db;"></div>
+            </div>
+        ` : ''}
     `;
     
     // Contenedor para el formulario
@@ -210,6 +233,115 @@ function renderAnalysisForm() {
         renderFallbackFormWithSubmit(formWrapper, config);
     }
 }
+
+// Mostrar iteración histórica
+window.showHistoricalIteration = function(iterationNumber) {
+    const historyItem = analysisData.iteration_history.find(h => h.iteration === iterationNumber);
+    if (!historyItem) {
+        console.error('No se encontró iteración', iterationNumber);
+        return;
+    }
+    
+    const contentDiv = document.getElementById('historical-iteration-content');
+    const formWrapper = document.getElementById('form-container-wrapper');
+    
+    // Ocultar formulario actual
+    formWrapper.style.display = 'none';
+    contentDiv.style.display = 'block';
+    
+    // Actualizar botones activos
+    document.querySelectorAll('.iteration-history-btn').forEach(btn => {
+        if (parseInt(btn.dataset.iteration) === iterationNumber) {
+            btn.style.background = 'linear-gradient(135deg, #3498db 0%, #2980b9 100%)';
+            btn.style.color = 'white';
+            btn.style.border = 'none';
+            btn.style.fontWeight = 'bold';
+        } else {
+            btn.style.background = 'white';
+            btn.style.color = '#2c3e50';
+            btn.style.border = '2px solid #e0e0e0';
+            btn.style.fontWeight = 'normal';
+        }
+    });
+    
+    // Renderizar contenido de la iteración histórica
+    const yamlConfig = historyItem.yaml_generated || {};
+    const answers = historyItem.answers_provided || {};
+    
+    let html = `
+        <h3 style="color: #2c3e50; margin: 0 0 15px 0;">📜 Iteración ${iterationNumber} (Histórica)</h3>
+        <p style="color: #7f8c8d; margin-bottom: 20px;"><strong>Fecha:</strong> ${new Date(historyItem.timestamp).toLocaleString('es-ES')}</p>
+    `;
+    
+    // Renderizar preguntas y respuestas
+    if (yamlConfig.sections) {
+        yamlConfig.sections.forEach(section => {
+            html += `
+                <div style="margin-bottom: 25px;">
+                    <h4 style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 10px 15px; border-radius: 8px; margin: 0 0 15px 0;">
+                        ${section.icon || '📌'} ${section.title}
+                    </h4>
+            `;
+            
+            section.questions.forEach(q => {
+                const answer = answers[q.id];
+                if (answer !== undefined) {
+                    const displayValue = Array.isArray(answer) ? 
+                        `<ul style="margin: 10px 0; padding-left: 20px;">${answer.map(v => `<li>${v}</li>`).join('')}</ul>` :
+                        `<p style="margin: 10px 0; color: #2c3e50;">${answer || '<em style="color: #95a5a6;">Sin respuesta</em>'}</p>`;
+                    
+                    html += `
+                        <div style="margin-bottom: 15px; padding: 15px; background: #f8f9fa; border-left: 4px solid #3498db; border-radius: 6px;">
+                            <strong style="color: #2c3e50;">${q.label || q.question || q.id}</strong>
+                            ${q.help ? `<p style="margin: 5px 0 10px 0; color: #7f8c8d; font-size: 0.9em;">${q.help}</p>` : ''}
+                            ${displayValue}
+                        </div>
+                    `;
+                }
+            });
+            
+            html += '</div>';
+        });
+    } else {
+        // Sin secciones, mostrar respuestas directamente
+        for (const [key, value] of Object.entries(answers)) {
+            const displayValue = Array.isArray(value) ? value.join(', ') : value;
+            html += `
+                <div style="margin-bottom: 15px; padding: 15px; background: #f8f9fa; border-left: 4px solid #3498db; border-radius: 6px;">
+                    <strong style="color: #2c3e50;">${key}:</strong>
+                    <p style="margin: 10px 0 0 0; color: #555;">${displayValue}</p>
+                </div>
+            `;
+        }
+    }
+    
+    contentDiv.innerHTML = html;
+};
+
+// Volver a mostrar iteración actual
+window.showCurrentIteration = function() {
+    const contentDiv = document.getElementById('historical-iteration-content');
+    const formWrapper = document.getElementById('form-container-wrapper');
+    
+    // Mostrar formulario actual
+    formWrapper.style.display = 'block';
+    contentDiv.style.display = 'none';
+    
+    // Actualizar botones activos
+    document.querySelectorAll('.iteration-history-btn').forEach(btn => {
+        if (parseInt(btn.dataset.iteration) === analysisData.iteration) {
+            btn.style.background = 'linear-gradient(135deg, #3498db 0%, #2980b9 100%)';
+            btn.style.color = 'white';
+            btn.style.border = 'none';
+            btn.style.fontWeight = 'bold';
+        } else {
+            btn.style.background = 'white';
+            btn.style.color = '#2c3e50';
+            btn.style.border = '2px solid #e0e0e0';
+            btn.style.fontWeight = 'normal';
+        }
+    });
+};
 
 // Pre-cargar respuestas existentes en el formulario
 function preloadAnswers(answers) {
@@ -395,6 +527,128 @@ async function handleSubmit(event) {
         submitBtn.textContent = hadPreviousAnswers ? '🔄 Actualizar Respuestas' : '✅ Enviar Respuestas';
     }
 }
+
+// Crear nueva iteración desde la página de respuestas - Con nuevo YAML
+window.createNewIterationFromAnswer = async function() {
+    if (!analysisData || !analysisData.id) {
+        alert('❌ No se pudo obtener el ID del análisis');
+        return;
+    }
+
+    // Mostrar modal para pegar el nuevo YAML
+    const modalHtml = `
+        <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px;" id="iteration-yaml-modal">
+            <div style="background: white; border-radius: 16px; max-width: 900px; width: 100%; max-height: 90vh; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.3);" onclick="event.stopPropagation()">
+                
+                <!-- Header -->
+                <div style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); color: white; padding: 25px;">
+                    <h2 style="margin: 0; font-size: 1.5em;">🔄 Nueva Iteración de Seguimiento</h2>
+                    <p style="margin: 10px 0 0 0; opacity: 0.9;">
+                        Iteración actual: ${analysisData.current_iteration} → Nueva: ${analysisData.current_iteration + 1}
+                    </p>
+                </div>
+                
+                <!-- Contenido -->
+                <div style="padding: 30px; overflow-y: auto; max-height: calc(90vh - 200px);">
+                    
+                    <!-- Explicación -->
+                    <div style="background: #e8f5e9; padding: 20px; border-radius: 12px; margin-bottom: 20px; border-left: 4px solid #27ae60;">
+                        <h3 style="margin: 0 0 10px 0; color: #27ae60;">💡 ¿Qué es una iteración?</h3>
+                        <p style="margin: 0; color: #555; line-height: 1.6;">
+                            Las iteraciones permiten hacer <strong>preguntas de seguimiento</strong> basadas en las respuestas anteriores.
+                            Usa el botón "📋 Copiar Respuestas", pégalas en Copilot, y genera un nuevo YAML con preguntas más específicas.
+                        </p>
+                    </div>
+                    
+                    <!-- Formulario YAML -->
+                    <div style="margin-bottom: 20px;">
+                        <label for="answer-iteration-yaml" style="display: block; margin-bottom: 8px; font-weight: 600; color: #2c3e50;">
+                            Nuevo YAML de Copilot *
+                            <span style="color: #7f8c8d; font-weight: normal; font-size: 0.9em;">
+                                (Preguntas de seguimiento generadas por Copilot)
+                            </span>
+                        </label>
+                        <textarea id="answer-iteration-yaml" rows="15" 
+                                  placeholder="Pega aquí el YAML generado por Copilot con las nuevas preguntas..."
+                                  style="width: 100%; padding: 15px; border: 2px solid #3498db; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 0.9em; box-sizing: border-box;"
+                                  required></textarea>
+                    </div>
+                </div>
+                
+                <!-- Footer -->
+                <div style="padding: 20px 30px; background: #f8f9fa; border-top: 1px solid #e0e0e0; display: flex; gap: 10px; justify-content: flex-end;">
+                    <button onclick="submitIterationFromAnswer()" style="background: #27ae60; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: bold; box-shadow: 0 2px 8px rgba(39, 174, 96, 0.3);">
+                        ✅ Crear Iteración ${analysisData.current_iteration + 1}
+                    </button>
+                    <button onclick="document.getElementById('iteration-yaml-modal').remove()" style="background: #95a5a6; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: bold;">
+                        Cancelar
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+};
+
+// Enviar nueva iteración desde answer.md
+window.submitIterationFromAnswer = async function() {
+    const yamlText = document.getElementById('answer-iteration-yaml').value.trim();
+    
+    if (!yamlText) {
+        alert('❌ Debes pegar el YAML generado por Copilot');
+        return;
+    }
+    
+    try {
+        // Parsear YAML para validar
+        const yamlConfig = jsyaml.load(yamlText);
+        
+        if (!yamlConfig.questions && !yamlConfig.sections) {
+            throw new Error('El YAML debe contener "questions" o "sections"');
+        }
+        
+        // Crear nueva iteración con el nuevo YAML
+        const response = await window.apiClient.put(
+            window.apiClient.endpoints.addIteration(analysisData.id),
+            { 
+                needs_more_info: true,
+                yaml_config: yamlConfig 
+            }
+        );
+
+        if (response.new_token) {
+            const newUrl = `${window.location.origin}/answer/?token=${response.new_token}`;
+            
+            // Cerrar modal de entrada
+            document.getElementById('iteration-yaml-modal').remove();
+            
+            // Mostrar modal de éxito
+            const successModalHtml = `
+                <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9999; display: flex; align-items: center; justify-content: center;" id="iteration-success-modal">
+                    <div style="background: white; padding: 30px; border-radius: 12px; max-width: 600px; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
+                        <h2 style="color: #27ae60; margin: 0 0 15px 0;">✅ Iteración ${response.current_iteration} creada</h2>
+                        <p style="margin: 0 0 15px 0; color: #555;">
+                            Se ha creado la nueva iteración con las preguntas de seguimiento.
+                        </p>
+                        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                            <strong style="color: #2c3e50;">🔗 URL para compartir:</strong>
+                            <input type="text" value="${newUrl}" readonly style="width: 100%; padding: 10px; border: 2px solid #3498db; border-radius: 5px; font-family: monospace; margin-top: 10px; box-sizing: border-box;">
+                        </div>
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <button onclick="navigator.clipboard.writeText('${newUrl}'); alert('URL copiada al portapapeles')" style="flex: 1; background: #3498db; color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: bold;">📋 Copiar URL</button>
+                            <button onclick="window.location.href='${newUrl}'" style="flex: 1; background: #27ae60; color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: bold;">🔗 Ir a iteración ${response.current_iteration}</button>
+                            <button onclick="document.getElementById('iteration-success-modal').remove()" style="background: #95a5a6; color: white; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer;">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.insertAdjacentHTML('beforeend', successModalHtml);
+        }
+    } catch (error) {
+        console.error('Error al crear iteración:', error);
+        alert('❌ Error al crear la iteración: ' + error.message);
+    }
+};
 
 // Iniciar al cargar
 document.addEventListener('DOMContentLoaded', loadAnalysisData);

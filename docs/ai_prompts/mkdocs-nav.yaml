@@ -1,0 +1,58 @@
+title: "Generador de Navegación MkDocs"
+description: "Configura la generación automática de la sección nav para MkDocs"
+icon: "🗺️"
+
+sections:
+  - icon: "📁"
+    title: "Información del Proyecto"
+    questions:
+      - id: proyecto_nombre
+        type: text
+        label: "Nombre del proyecto (sin espacios, ej: whatshelp)"
+        placeholder: "mi-proyecto"
+        required: true
+        help: "Este nombre debe coincidir con la carpeta en docs/projects/"
+
+      - id: proyecto_titulo
+        type: text
+        label: "Título completo del proyecto"
+        placeholder: "Sistema de Gestión WhatsApp"
+        required: true
+        help: "Nombre descriptivo que aparecerá en la navegación"
+
+  - icon: "📋"
+    title: "Documentación Generada"
+    questions:
+      - id: docs_generadas
+        type: checkbox
+        label: "¿Qué tipos de documentación has generado?"
+        options:
+          - Vista Ejecutiva
+          - Requerimientos
+          - Arquitectura
+          - ADR (Decisiones)
+          - Documentación Técnica
+          - Procesos de Negocio
+          - Infraestructura/Deployment
+          - API Reference (Swagger)
+        help: "Selecciona solo las que YA generaste y tienen archivos .md"
+
+  - icon: "🎨"
+    title: "Personalización (Opcional)"
+    questions:
+      - id: incluir_emojis
+        type: select
+        label: "¿Incluir emojis en la navegación?"
+        options:
+          - "Sí, usar emojis"
+          - "No, solo texto"
+        default: "Sí, usar emojis"
+
+      - id: nav_style
+        type: select
+        label: "Estilo de navegación"
+        options:
+          - "Jerárquico expandible (recomendado)"
+          - "Plano con subsecciones"
+        default: "Jerárquico expandible (recomendado)"
+        help: "Define cómo se organizarán las secciones en el menú lateral"

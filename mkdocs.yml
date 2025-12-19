@@ -40,7 +40,25 @@ plugins:
   - mermaid2:
       version: 11.12.0
       arguments:
-        theme: default
+        theme: 'base'
+        themeVariables:
+          primaryColor: '#d4d4d4'
+          primaryTextColor: '#000000'
+          primaryBorderColor: '#000000'
+          lineColor: '#4d4d4d'
+          secondaryColor: '#e8e8e8'
+          tertiaryColor: '#f5f5f5'
+          edgeLabelBackground: '#aba6a6'
+          clusterBkg: '#ffffff'
+          clusterBorder: '#000000'
+          titleColor: '#000000'
+          nodeBorder: '#000000'
+          mainBkg: '#d4d4d4'
+          secondBkg: '#e8e8e8'
+          tertiaryBorderColor: '#000000'
+          fontFamily: 'Trebuchet MS, Verdana, Arial, Sans-Serif'
+        flowchart:
+          curve: 'linear'
   - swagger-ui-tag:
       background: White
       docExpansion: none
@@ -103,6 +121,7 @@ nav:
       - 📁 Panel de Proyectos: admin/panel-proyectos.md
       - 🎯 Generador de Documentación: prompts/generador.md
       - 📝 Responder Preguntas: admin/answer.md
+      - 🔄 Flujo Completo del Sistema: guia-documentacion/14-flujo-completo.md
       - 🚀 Deployment:
           - Paso 1 - Análisis: prompts/deployment/01-analisis.md
           - Paso 2 - Salida: prompts/deployment/02-salida.md
@@ -130,6 +149,9 @@ nav:
       - 📚 Swagger/OpenAPI:
           - Paso 1 - Análisis: prompts/swagger/01-analisis.md
           - Paso 2 - Salida: prompts/swagger/02-salida.md
+      - 🗺️ Navegación MkDocs:
+          - Paso 1 - Análisis: prompts/mkdocs-nav/01-analisis.md
+          - Paso 2 - Salida: prompts/mkdocs-nav/02-salida.md
   - Proyectos:
     - Whatshelp:
       - 📊 Vista Ejecutiva:
@@ -181,14 +203,14 @@ extra:
     default: 1.5.0
 
 extra_css:
-  - stylesheets/extra.css
-  - javascripts/prompt-builder.css
+  - assets/css/extra.css
+  - assets/css/prompt-builder.css
 
 extra_javascript:
   - https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js
   - https://cdn.jsdelivr.net/npm/handlebars@4.7.8/dist/handlebars.min.js
-  - javascripts/api-client.js
-  - javascripts/documentation-flow.js
-  - javascripts/prompt-page-generator.js
-  - javascripts/prompt-helpers.js
-  - javascripts/prompt-builder-clean.js 
+  - assets/js/api-client.js
+  - assets/js/documentation-flow.js
+  - assets/js/prompt-page-generator.js
+  - assets/js/prompt-helpers.js
+  - assets/js/prompt-builder-clean.js 

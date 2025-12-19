@@ -114,7 +114,9 @@ sections:
                         <button class="pb-copy-answers-btn" onclick="promptBuilderInstances['${this.promptId}'].copyAnswers()" style="background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%); color: white; border: none; padding: 15px 30px; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 15px rgba(155, 89, 182, 0.4); transition: all 0.3s ease; flex: 1; min-width: 200px;">
                             📋 Copiar Respuestas
                         </button>
-                      
+                        <button class="pb-new-iteration-btn" onclick="window.createNewIterationFromAnswer && window.createNewIterationFromAnswer()" style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); color: white; border: none; padding: 15px 30px; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4); transition: all 0.3s ease; flex: 1; min-width: 200px;">
+                            🔄 Nueva Iteración
+                        </button>
                     </div>
                 </div>
                 
@@ -355,34 +357,55 @@ sections:
 
     /**
      * Copia solo las respuestas del formulario (para proceso iterativo)
+     * MEJORADO: Incluye preguntas + respuestas para mejor contexto
      */
     async copyAnswers() {
         const data = this.collectFormData();
         
-        // Construir sección de respuestas
-        let answersText = '# RESPUESTAS DEL USUARIO\n\n';
+        // Construir sección de respuestas con PREGUNTA + RESPUESTA
+        let answersText = `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+        answersText += `RESPUESTAS DEL EXPERTO\n`;
+        answersText += `Tipo: ${this.config.title || 'Cuestionario'}\n`;
+        answersText += `Fecha: ${new Date().toLocaleString('es-ES')}\n`;
+        answersText += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
         
-        // Agrupar respuestas por sección
+        // Agrupar respuestas por sección con PREGUNTA + RESPUESTA
         this.config.sections.forEach(section => {
-            answersText += `## ${section.icon} ${section.title}\n\n`;
+            answersText += `## ${section.icon || '📋'} ${section.title}\n\n`;
             
             section.questions.forEach(question => {
                 const value = data[question.id];
-                if (value && value.length > 0) {
-                    answersText += `**${question.label}**\n`;
+                
+                // Solo incluir preguntas que tengan respuesta
+                if (value && (Array.isArray(value) ? value.length > 0 : value.trim() !== '')) {
+                    // PREGUNTA
+                    answersText += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+                    answersText += `📌 PREGUNTA [${question.id}]:\n`;
+                    answersText += `${question.label || question.question}\n`;
+                    
+                    if (question.help) {
+                        answersText += `💡 Ayuda: ${question.help}\n`;
+                    }
+                    answersText += `\n`;
+                    
+                    // RESPUESTA
+                    answersText += `✅ RESPUESTA:\n`;
                     
                     if (Array.isArray(value)) {
-                        answersText += value.map(v => `- ${v}`).join('\n') + '\n\n';
+                        value.forEach(v => answersText += `  • ${v}\n`);
                     } else {
-                        answersText += `${value}\n\n`;
+                        answersText += `${value}\n`;
                     }
+                    answersText += '\n';
                 }
             });
         });
         
         // Agregar el mensaje para Copilot
-        answersText += '\n---\n\n';
-        answersText += '¿Tienes más dudas? Si es así, genera el YAML con las preguntas. Si no, solo responde: "todo ok"\n';
+        answersText += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n';
+        answersText += '🤖 INSTRUCCIONES PARA COPILOT:\n';
+        answersText += 'Si necesitas más información, genera un nuevo YAML con las preguntas adicionales.\n';
+        answersText += 'Si ya tienes toda la información necesaria, responde: "continuemos al siguiente paso"\n';
         
         // NUEVO: Guardar en backend si estamos en una URL pública
         const shareToken = this.getShareTokenFromURL();
@@ -406,29 +429,27 @@ sections:
         
         // Copiar al clipboard
         try {
-            navigator.clipboard.writeText(answersText).then(() => {
-                // Ocultar formulario y mostrar botón de "Mostrar Formulario"
-                const formContainer = document.getElementById(`pb-form-container-${this.promptId}`);
-                const showFormBtn = document.getElementById(`pb-show-form-${this.promptId}`);
-                
-                if (formContainer) {
-                    formContainer.style.display = 'none';
-                }
-                if (showFormBtn) {
-                    showFormBtn.style.display = 'block';
-                    showFormBtn.textContent = '📋 Mostrar Formulario (opcional)';
-                }
-                
-                // Mostrar confirmación
-                const message = shareToken 
-                    ? '✅ Respuestas guardadas y copiadas al portapapeles!\n\nPega esto en Copilot (mismo chat) y espera su respuesta.'
-                    : '✅ Respuestas copiadas al portapapeles!\n\nPega esto en Copilot (mismo chat) y espera su respuesta.';
-                
-                alert(message);
-            }).catch(error => {
-                console.error('Error al copiar:', error);
-                alert('Error al copiar. Intenta de nuevo.');
-            });
+            await navigator.clipboard.writeText(answersText);
+            
+            // Ocultar formulario y mostrar botón de "Mostrar Formulario"
+            const formContainer = document.getElementById(`pb-form-container-${this.promptId}`);
+            const showFormBtn = document.getElementById(`pb-show-form-${this.promptId}`);
+            
+            if (formContainer) {
+                formContainer.style.display = 'none';
+            }
+            if (showFormBtn) {
+                showFormBtn.style.display = 'block';
+                showFormBtn.textContent = '📋 Mostrar Formulario (opcional)';
+            }
+            
+            // Mostrar confirmación
+            const message = shareToken 
+                ? '✅ Respuestas guardadas y copiadas al portapapeles!\n\n✨ Incluye preguntas + respuestas para mejor contexto.\n\nPega esto en Copilot (mismo chat) y espera su respuesta.'
+                : '✅ Respuestas copiadas al portapapeles!\n\n✨ Incluye preguntas + respuestas para mejor contexto.\n\nPega esto en Copilot (mismo chat) y espera su respuesta.';
+            
+            alert(message);
+            
         } catch (error) {
             console.error('Error al copiar:', error);
             alert('Error al copiar. Intenta de nuevo.');

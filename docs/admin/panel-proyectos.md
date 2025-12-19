@@ -1034,11 +1034,14 @@ function renderAnalysisSessions(analyses) {
                             ${isIncomplete ? '⚠️ El experto respondió parcialmente' : '✅ El experto respondió las preguntas'}
                         </strong>
                         <div style="margin-top: 15px; display: flex; gap: 10px; flex-wrap: wrap;">
-                            <button class="btn btn-success" onclick="viewAnswersInModal('${analysis.id}')">
+                            <button class="btn btn-success" onclick="viewAnswersInModal('${analysis.share_token}')">
                                 👁️ Ver Respuestas
                             </button>
-                            <button class="btn" onclick="copyAnswersFormatted('${analysis.id}')">
+                            <button class="btn" onclick="copyAnswersFormatted('${analysis.share_token}')">
                                 📋 Copiar Respuestas
+                            </button>
+                            <button class="btn" onclick="createNewIteration('${analysis.id}')">
+                                🔄 Nueva Iteración
                             </button>
                             <button class="btn" onclick="copyOutputPrompt('${analysis.analysis_type}')">
                                 📄 Copiar Prompt de Salida
@@ -1090,15 +1093,15 @@ async function copyOutputPrompt(analysisType) {
     try {
         // Mapeo de tipos de análisis a rutas de prompts de salida
         const promptPaths = {
-            'requerimientos': '/prompts/requerimientos/02-salida.md',
-            'arquitectura': '/prompts/arquitectura/02-salida.md',
-            'tecnica': '/prompts/tecnica/02-salida.md',
-            'deployment': '/prompts/deployment/02-salida.md',
-            'api': '/prompts/api/02-salida.md',
-            'procesos-negocio': '/prompts/procesos-negocio/02-salida.md',
-            'vista-ejecutiva': '/prompts/vista-ejecutiva/02-salida.md',
-            'adr': '/prompts/adr/02-salida.md',
-            'swagger': '/prompts/swagger/02-salida.md'
+            'requerimientos': '/prompts/requerimientos/02-salida',
+            'arquitectura': '/prompts/arquitectura/02-salida',
+            'tecnica': '/prompts/tecnica/02-salida',
+            'deployment': '/prompts/deployment/02-salida',
+            'api': '/prompts/api/02-salida',
+            'procesos-negocio': '/prompts/procesos-negocio/02-salida',
+            'vista-ejecutiva': '/prompts/vista-ejecutiva/02-salida',
+            'adr': '/prompts/adr/02-salida',
+            'swagger': '/prompts/swagger/02-salida'
         };
         
         const promptPath = promptPaths[analysisType];
@@ -1134,15 +1137,19 @@ function copyShareURL(url) {
     });
 }
 
-async function viewAnswersInModal(analysisId) {
+async function viewAnswersInModal(token) {
     try {
-        const analysis = await window.apiClient.get(window.API_CONFIG.endpoints.getAnalysis(analysisId));
+        const analysis = await window.apiClient.get(window.API_CONFIG.endpoints.getPublicAnalysis(token));
+        
+        // Debug: Ver qué trae el backend
+        console.log('📊 Analysis completo:', analysis);
+        console.log('📚 Iteration history:', analysis.iteration_history);
         
         // Crear modal para mostrar respuestas
         const modal = document.createElement('div');
         modal.innerHTML = `
             <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 10001; display: flex; align-items: center; justify-content: center; padding: 20px;" onclick="this.remove()">
-                <div style="background: white; border-radius: 16px; max-width: 1000px; width: 100%; max-height: 90vh; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.3);" onclick="event.stopPropagation()">
+                <div style="background: white; border-radius: 16px; max-width: 1200px; width: 100%; max-height: 90vh; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.3);" onclick="event.stopPropagation()">
                     
                     <!-- Header -->
                     <div style="background: linear-gradient(135deg, #27ae60 0%, #229954 100%); color: white; padding: 25px;">
@@ -1151,12 +1158,33 @@ async function viewAnswersInModal(analysisId) {
                             <span class="analysis-type-badge" style="background: rgba(255,255,255,0.2);">
                                 ${analysis.analysis_type}
                             </span>
-                            Iteración ${analysis.iteration}
+                            Iteración Actual: ${analysis.iteration} ${analysis.iteration_history?.length > 0 ? `| Total Iteraciones: ${analysis.iteration_history.length + 1}` : ''}
                         </p>
                     </div>
                     
+                    <!-- Pestañas de Iteraciones -->
+                    ${analysis.iteration_history && analysis.iteration_history.length > 0 ? `
+                        <div style="padding: 20px 30px; background: #f8f9fa; border-bottom: 2px solid #e0e0e0; overflow-x: auto;">
+                            <div style="display: flex; gap: 10px; min-width: max-content;">
+                                ${analysis.iteration_history.map((iter, idx) => `
+                                    <button class="iteration-tab-btn" data-iteration="${iter.iteration}" 
+                                            style="background: white; border: 2px solid #e0e0e0; padding: 10px 20px; border-radius: 8px; cursor: pointer; transition: all 0.3s; white-space: nowrap;"
+                                            onclick="switchIterationView(${iter.iteration}, '${token}')">
+                                        🔄 Iteración ${iter.iteration}
+                                        ${iter.answers_provided ? '<span style="color: #27ae60;">✓</span>' : '<span style="color: #95a5a6;">○</span>'}
+                                    </button>
+                                `).join('')}
+                                <button class="iteration-tab-btn active" data-iteration="${analysis.iteration}" 
+                                        style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; white-space: nowrap;"
+                                        onclick="switchIterationView(${analysis.iteration}, '${token}')">
+                                    🔄 Iteración ${analysis.iteration} (Actual)
+                                </button>
+                            </div>
+                        </div>
+                    ` : ''}
+                    
                     <!-- Contenido -->
-                    <div style="padding: 30px; overflow-y: auto; max-height: calc(90vh - 200px);">
+                    <div style="padding: 30px; overflow-y: auto; max-height: calc(90vh - ${analysis.iteration_history?.length > 0 ? '320' : '200'}px);" id="iteration-content-${token}">
                         
                         <!-- Metadata -->
                         <div style="background: #f8f9fa; padding: 20px; border-radius: 12px; margin-bottom: 25px;">
@@ -1179,16 +1207,16 @@ async function viewAnswersInModal(analysisId) {
                         </div>
                         
                         <!-- Respuestas -->
-                        <h3 style="margin: 0 0 20px 0; color: #2c3e50;">📝 Respuestas Detalladas</h3>
+                        <h3 style="margin: 0 0 20px 0; color: #2c3e50;">📝 Respuestas de Iteración ${analysis.iteration}</h3>
                         ${renderAnswersContent(analysis.answers, analysis.yaml_config)}
                     </div>
                     
                     <!-- Footer -->
                     <div style="padding: 20px 30px; background: #f8f9fa; border-top: 1px solid #e0e0e0; display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap;">
-                        <button class="btn btn-success" onclick="copyAnswersJSON('${analysisId}')">
+                        <button class="btn btn-success" onclick="copyAnswersJSON('${token}')">
                             📋 Copiar JSON
                         </button>
-                        <button class="btn" onclick="copyAnswersFormatted('${analysisId}')">
+                        <button class="btn" onclick="copyAnswersFormatted('${token}')">
                             📝 Copiar Formateado
                         </button>
                         <button class="btn btn-secondary" onclick="this.closest('[style*=fixed]').remove()">
@@ -1201,14 +1229,104 @@ async function viewAnswersInModal(analysisId) {
         
         document.body.appendChild(modal);
         
+        // Guardar datos del análisis en el modal para cambio de iteraciones
+        // Buscar el div interno que tiene el onclick
+        const modalWrapper = modal.querySelector('[onclick*="this.remove()"]');
+        if (modalWrapper) {
+            modalWrapper.dataset.analysisData = JSON.stringify(analysis);
+        }
+        
     } catch (error) {
         console.error('Error cargando respuestas:', error);
         alert('❌ Error: ' + error.message);
     }
 }
 
-async function viewAnswers(analysisId) {
-    await viewAnswersInModal(analysisId);
+// Cambiar vista entre iteraciones
+async function switchIterationView(iterationNumber, token) {
+    const modalWrapper = document.querySelector(`[onclick*="this.remove()"]`);
+    if (!modalWrapper || !modalWrapper.dataset.analysisData) {
+        console.error('⚠️ No se encontró el modal o los datos de análisis');
+        return;
+    }
+    
+    const analysis = JSON.parse(modalWrapper.dataset.analysisData);
+    const contentDiv = document.getElementById(`iteration-content-${token}`);
+    
+    // Actualizar botones activos
+    modalWrapper.querySelectorAll('.iteration-tab-btn').forEach(btn => {
+        if (parseInt(btn.dataset.iteration) === iterationNumber) {
+            btn.style.background = 'linear-gradient(135deg, #3498db 0%, #2980b9 100%)';
+            btn.style.color = 'white';
+            btn.style.border = 'none';
+            btn.style.fontWeight = 'bold';
+        } else {
+            btn.style.background = 'white';
+            btn.style.color = '#2c3e50';
+            btn.style.border = '2px solid #e0e0e0';
+            btn.style.fontWeight = 'normal';
+        }
+    });
+    
+    // Encontrar datos de la iteración
+    let iterationData, iterationYaml, iterationAnswers;
+    
+    if (iterationNumber === analysis.iteration) {
+        // Iteración actual
+        iterationYaml = analysis.yaml_config;
+        iterationAnswers = analysis.answers;
+        iterationData = {
+            updated_at: analysis.updated_at,
+            created_by: analysis.created_by
+        };
+    } else {
+        // Iteración del historial
+        const historyItem = analysis.iteration_history.find(h => h.iteration === iterationNumber);
+        if (historyItem) {
+            console.log('📜 History item encontrado:', historyItem);
+            // Los campos son diccionarios directos
+            iterationYaml = historyItem.yaml_generated || {};
+            iterationAnswers = historyItem.answers_provided || {};
+            iterationData = {
+                updated_at: historyItem.timestamp || analysis.created_at,
+                created_by: analysis.created_by
+            };
+        } else {
+            console.warn(`⚠️ No se encontró iteración ${iterationNumber} en historial`);
+        }
+    }
+    
+    // Renderizar contenido de la iteración
+    contentDiv.innerHTML = `
+        <div style="background: #f8f9fa; padding: 20px; border-radius: 12px; margin-bottom: 25px;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                <div>
+                    <strong style="color: #7f8c8d; font-size: 0.85em;">📅 FECHA RESPUESTA</strong>
+                    <div style="margin-top: 5px; color: #2c3e50;">${formatDate(iterationData.updated_at)}</div>
+                </div>
+                <div>
+                    <strong style="color: #7f8c8d; font-size: 0.85em;">👤 ANALISTA</strong>
+                    <div style="margin-top: 5px; color: #2c3e50;">${iterationData.created_by || 'N/A'}</div>
+                </div>
+                <div>
+                    <strong style="color: #7f8c8d; font-size: 0.85em;">🎯 TOTAL RESPUESTAS</strong>
+                    <div style="margin-top: 5px; color: #2c3e50; font-size: 1.5em; font-weight: bold;">
+                        ${Object.keys(iterationAnswers || {}).length}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <h3 style="margin: 0 0 20px 0; color: #2c3e50;">
+            📝 Respuestas de Iteración ${iterationNumber}
+            ${iterationNumber < analysis.iteration ? '<span style="color: #7f8c8d; font-size: 0.8em; font-weight: normal;">(Histórica)</span>' : '<span style="color: #27ae60; font-size: 0.8em; font-weight: normal;">(Actual)</span>'}
+        </h3>
+        ${renderAnswersContent(iterationAnswers, iterationYaml)}
+    `;
+}
+
+async function viewAnswers(token) {
+    await viewAnswersInModal(token);
 }
 
 function renderAnswersContent(answers, yamlConfig) {
@@ -1281,9 +1399,9 @@ function renderAnswersContent(answers, yamlConfig) {
     return html;
 }
 
-async function copyAnswersJSON(analysisId) {
+async function copyAnswersJSON(token) {
     try {
-        const analysis = await window.apiClient.get(window.API_CONFIG.endpoints.getAnalysis(analysisId));
+        const analysis = await window.apiClient.get(window.API_CONFIG.endpoints.getPublicAnalysis(token));
         const text = JSON.stringify(analysis.answers, null, 2);
         await navigator.clipboard.writeText(text);
         alert('✅ Respuestas copiadas en formato JSON');
@@ -1292,33 +1410,88 @@ async function copyAnswersJSON(analysisId) {
     }
 }
 
-async function copyAnswersFormatted(analysisId) {
+async function copyAnswersFormatted(token) {
     try {
-        const analysis = await window.apiClient.get(window.API_CONFIG.endpoints.getAnalysis(analysisId));
+        const analysis = await window.apiClient.get(window.API_CONFIG.endpoints.getPublicAnalysis(token));
+        const config = analysis.yaml_config;
+        
         let text = `RESPUESTAS - ${analysis.analysis_type.toUpperCase()}\n`;
         text += `Iteración: ${analysis.iteration}\n`;
         text += `Fecha: ${formatDate(analysis.updated_at)}\n`;
-        text += '='.repeat(50) + '\n\n';
+        text += '='.repeat(80) + '\n\n';
         
-        for (const [key, value] of Object.entries(analysis.answers || {})) {
-            text += `${key}:\n`;
-            if (Array.isArray(value)) {
-                value.forEach(v => text += `  - ${v}\n`);
+        // Crear un mapa de preguntas por ID (buscar en todas las secciones)
+        const questionsMap = {};
+        if (config.sections) {
+            config.sections.forEach(section => {
+                if (section.questions) {
+                    section.questions.forEach(q => {
+                        questionsMap[q.id] = q;
+                    });
+                }
+            });
+        } else if (config.questions) {
+            // Fallback por si el YAML no tiene secciones
+            config.questions.forEach(q => {
+                questionsMap[q.id] = q;
+            });
+        }
+        
+        // Formatear respuestas con pregunta incluida
+        for (const [questionId, answer] of Object.entries(analysis.answers || {})) {
+            const question = questionsMap[questionId];
+            
+            // Título de la pregunta
+            text += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+            
+            if (question) {
+                text += `📌 PREGUNTA [${questionId}]:\n`;
+                // Usar label si existe, sino question, sino el id
+                const questionText = question.label || question.question || questionId;
+                text += `${questionText}\n`;
+                if (question.help) {
+                    text += `💡 Ayuda: ${question.help}\n`;
+                }
             } else {
-                text += `  ${value}\n`;
+                text += `📌 PREGUNTA [${questionId}]:\n`;
+                text += `(Pregunta no encontrada en configuración)\n`;
+            }
+            
+            text += `\n`;
+            
+            // Respuesta
+            text += `✅ RESPUESTA:\n`;
+            if (Array.isArray(answer)) {
+                answer.forEach(item => {
+                    if (typeof item === 'object') {
+                        // Si es un objeto, mostrarlo formateado
+                        text += `  • ${JSON.stringify(item, null, 2).split('\n').join('\n    ')}\n`;
+                    } else {
+                        text += `  • ${item}\n`;
+                    }
+                });
+            } else if (typeof answer === 'object') {
+                text += `${JSON.stringify(answer, null, 2)}\n`;
+            } else {
+                text += `${answer}\n`;
             }
             text += '\n';
         }
-        text += 'Si tienes mas preguntas coloca en el output del chat el yaml, si ya no tienes mas preguntas imprime: \'continuemos al siguiete paso\''
+        
+        text += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n';
+        text += '🤖 INSTRUCCIONES PARA COPILOT:\n';
+        text += 'Si necesitas más información, genera un nuevo YAML con las preguntas adicionales.\n';
+        text += 'Si ya tienes toda la información necesaria, responde: "continuemos al siguiente paso"\n';
+        
         await navigator.clipboard.writeText(text);
-        alert('✅ Respuestas copiadas en formato de texto');
+        alert('✅ Respuestas copiadas en formato de texto con preguntas incluidas');
     } catch (error) {
         alert('❌ Error: ' + error.message);
     }
 }
 
-async function copyAnswersToClipboard(analysisId) {
-    await copyAnswersJSON(analysisId);
+async function copyAnswersToClipboard(token) {
+    await copyAnswersJSON(token);
 }
 
 async function continueDocumentation(analysisId) {
@@ -1360,6 +1533,171 @@ function formatDate(dateString) {
         hour: '2-digit',
         minute: '2-digit'
     });
+}
+
+// Nueva Iteración - Con nuevo YAML de Copilot
+async function createNewIteration(analysisId) {
+    try {
+        // Obtener análisis actual
+        const analysis = await window.apiClient.get(window.API_CONFIG.endpoints.getAnalysis(analysisId));
+        
+        // Mostrar modal para pegar el nuevo YAML
+        const modal = document.createElement('div');
+        modal.innerHTML = `
+            <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 10001; display: flex; align-items: center; justify-content: center; padding: 20px;" id="iteration-modal-${analysisId}">
+                <div style="background: white; border-radius: 16px; max-width: 900px; width: 100%; max-height: 90vh; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.3);" onclick="event.stopPropagation()">
+                    
+                    <!-- Header -->
+                    <div style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); color: white; padding: 25px;">
+                        <h2 style="margin: 0; font-size: 1.5em;">🔄 Nueva Iteración de Seguimiento</h2>
+                        <p style="margin: 10px 0 0 0; opacity: 0.9;">
+                            Iteración actual: ${analysis.iteration} → Nueva: ${analysis.iteration + 1}
+                        </p>
+                    </div>
+                    
+                    <!-- Contenido -->
+                    <div style="padding: 30px; overflow-y: auto; max-height: calc(90vh - 200px);">
+                        
+                        <!-- Explicación -->
+                        <div style="background: #e8f5e9; padding: 20px; border-radius: 12px; margin-bottom: 25px; border-left: 4px solid #27ae60;">
+                            <h3 style="margin: 0 0 10px 0; color: #27ae60;">💡 ¿Qué es una iteración?</h3>
+                            <p style="margin: 0; color: #555; line-height: 1.6;">
+                                Las iteraciones permiten hacer <strong>preguntas de seguimiento</strong> basadas en las respuestas anteriores.
+                                Copilot analiza las respuestas previas y genera un nuevo YAML con preguntas más específicas.
+                            </p>
+                        </div>
+                        
+                        <!-- Instrucciones -->
+                        <div style="background: #fff3cd; padding: 20px; border-radius: 12px; margin-bottom: 25px; border-left: 4px solid #ffc107;">
+                            <h3 style="margin: 0 0 10px 0; color: #856404;">📋 Instrucciones</h3>
+                            <ol style="margin: 10px 0; padding-left: 20px; color: #555; line-height: 1.8;">
+                                <li>Copia las respuestas de la iteración anterior (ya lo hiciste con "📋 Copiar Respuestas")</li>
+                                <li>Pégalas en Copilot con el Prompt de Análisis correspondiente</li>
+                                <li>Copilot generará un nuevo YAML con preguntas de seguimiento</li>
+                                <li>Pega el nuevo YAML aquí abajo</li>
+                            </ol>
+                        </div>
+                        
+                        <!-- Formulario YAML -->
+                        <div class="form-group">
+                            <label for="iteration-yaml-${analysisId}">
+                                <strong>Nuevo YAML de Copilot *</strong>
+                                <span style="color: #7f8c8d; font-weight: normal; font-size: 0.9em;">
+                                    (Preguntas de seguimiento basadas en las respuestas anteriores)
+                                </span>
+                            </label>
+                            <textarea id="iteration-yaml-${analysisId}" rows="15" 
+                                      placeholder="Pega aquí el YAML generado por Copilot con las nuevas preguntas..."
+                                      style="font-family: 'Courier New', monospace; font-size: 0.9em; width: 100%; padding: 15px; border: 2px solid #3498db; border-radius: 8px;"
+                                      required></textarea>
+                        </div>
+                        
+                        <!-- Vista previa (opcional) -->
+                        <details style="margin-top: 20px;">
+                            <summary style="cursor: pointer; color: #3498db; font-weight: 600; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                                👁️ Ver respuestas de la iteración anterior
+                            </summary>
+                            <div style="margin-top: 15px; padding: 20px; background: #f8f9fa; border-radius: 8px; max-height: 300px; overflow-y: auto;">
+                                ${renderAnswersContent(analysis.answers, analysis.yaml_config)}
+                            </div>
+                        </details>
+                    </div>
+                    
+                    <!-- Footer -->
+                    <div style="padding: 20px 30px; background: #f8f9fa; border-top: 1px solid #e0e0e0; display: flex; gap: 10px; justify-content: flex-end;">
+                        <button class="btn btn-success" onclick="submitNewIteration('${analysisId}')">
+                            ✅ Crear Iteración ${analysis.iteration + 1}
+                        </button>
+                        <button class="btn btn-secondary" onclick="document.getElementById('iteration-modal-${analysisId}').remove()">
+                            Cancelar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        
+    } catch (error) {
+        console.error('Error abriendo modal de iteración:', error);
+        alert('❌ Error: ' + error.message);
+    }
+}
+
+// Enviar nueva iteración con YAML personalizado
+async function submitNewIteration(analysisId) {
+    const yamlText = document.getElementById(`iteration-yaml-${analysisId}`).value.trim();
+    
+    if (!yamlText) {
+        alert('❌ Debes pegar el YAML generado por Copilot');
+        return;
+    }
+    
+    try {
+        // Parsear YAML para validar
+        const yamlConfig = jsyaml.load(yamlText);
+        
+        if (!yamlConfig.questions && !yamlConfig.sections) {
+            throw new Error('El YAML debe contener "questions" o "sections"');
+        }
+        
+        // Obtener análisis actual
+        const analysis = await window.apiClient.get(window.API_CONFIG.endpoints.getAnalysis(analysisId));
+        
+        // Crear nueva iteración con el nuevo YAML
+        const newIteration = await window.apiClient.put(
+            window.API_CONFIG.endpoints.addIteration(analysisId),
+            { 
+                needs_more_info: true,
+                yaml_config: yamlConfig 
+            }
+        );
+        
+        // Cerrar modal de entrada
+        document.getElementById(`iteration-modal-${analysisId}`).remove();
+        
+        // Mostrar modal de éxito
+        const successModal = document.createElement('div');
+        successModal.innerHTML = `
+            <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 10002; display: flex; align-items: center; justify-content: center; padding: 20px;">
+                <div style="background: white; border-radius: 16px; max-width: 600px; width: 100%; padding: 0; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.3);" onclick="event.stopPropagation()">
+                    <div style="background: linear-gradient(135deg, #27ae60 0%, #229954 100%); color: white; padding: 25px;">
+                        <h2 style="margin: 0;">✅ Iteración ${newIteration.current_iteration} Creada</h2>
+                    </div>
+                    <div style="padding: 30px;">
+                        <p style="margin: 0 0 20px 0; color: #555;">
+                            Se ha creado la iteración <strong>${newIteration.current_iteration}</strong> con las nuevas preguntas de seguimiento.
+                        </p>
+                        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                            <strong style="color: #2c3e50;">🔗 URL para compartir con el experto:</strong>
+                            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                                <input type="text" readonly value="${newIteration.share_url}" 
+                                       style="flex: 1; padding: 10px; border: 2px solid #3498db; border-radius: 8px; font-family: monospace; font-size: 0.9em;">
+                                <button class="btn btn-success btn-small" onclick="copyShareURL('${newIteration.share_url}')">
+                                    📋 Copiar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="padding: 20px 30px; background: #f8f9fa; border-top: 1px solid #e0e0e0; display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap;">
+                        <button class="btn btn-success" onclick="window.open('${newIteration.share_url}', '_blank'); this.remove();">
+                            📝 Abrir Formulario
+                        </button>
+                        <button class="btn" onclick="this.closest('[style*=fixed]').remove(); viewProjectAnalysis('${analysis.project_id}');">
+                            🔄 Ver Todas las Sesiones
+                        </button>
+                        <button class="btn btn-secondary" onclick="this.closest('[style*=fixed]').remove();">
+                            Cerrar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(successModal);
+        
+    } catch (error) {
+        console.error('Error creando iteración:', error);
+        alert('❌ Error al crear iteración: ' + error.message);
+    }
 }
 
 console.log('✅ Panel de Proyectos: Script cargado');

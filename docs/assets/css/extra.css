@@ -131,10 +131,118 @@ table {
     animation: fadeInUp 0.8s ease-out;
 }
 
-/* Mejoras para diagramas mermaid */
+/* Estilos para diagramas Mermaid - Tema Redux */
 .mermaid {
     text-align: center;
     margin: 2rem 0;
+}
+
+/* Fuente Trebuchet MS para todo el diagrama */
+.mermaid svg {
+    font-family: 'Trebuchet MS', Verdana, Arial, sans-serif !important;
+}
+
+/* Sombras en las formas (nodos) */
+.mermaid .node rect,
+.mermaid .node circle,
+.mermaid .node ellipse,
+.mermaid .node polygon,
+.mermaid .node path {
+    filter: drop-shadow(3px 3px 4px rgba(0, 0, 0, 0.3)) !important;
+}
+
+/* Bordes más gruesos en las formas */
+.mermaid .node rect,
+.mermaid .node circle,
+.mermaid .node ellipse,
+.mermaid .node polygon {
+    stroke-width: 3px !important;
+}
+
+/* Flechas más gruesas con bordes redondeados */
+.mermaid .edgePath path.path {
+    stroke-width: 9.5px !important;
+    stroke-linejoin: round !important;
+    stroke-linecap: round !important;
+}
+
+/* Cabezas de flecha más gruesas */
+.mermaid marker path {
+    stroke-width: 1.5px !important;
+    stroke-linejoin: round !important;
+    stroke-linecap: round !important;
+}
+
+/* Fondo de las etiquetas de líneas */
+.mermaid .edgeLabel rect {
+    fill: #aba6a6 !important;
+    filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.2)) !important;
+}
+
+.mermaid .edgeLabel foreignObject {
+    overflow: visible !important;
+}
+
+.mermaid .edgeLabel .nodeLabel,
+.mermaid .edgeLabel span {
+    color: #000 !important;
+    font-family: 'Trebuchet MS', Verdana, Arial, sans-serif !important;
+}
+
+/* Texto de las etiquetas en SVG */
+.mermaid text.edgeLabel {
+    fill: #000 !important;
+    font-family: 'Trebuchet MS', Verdana, Arial, sans-serif !important;
+}
+
+/* Texto en nodos con fuente Trebuchet MS */
+.mermaid .nodeLabel,
+.mermaid text {
+    font-family: 'Trebuchet MS', Verdana, Arial, sans-serif !important;
+}
+
+/* Estilos para Mindmap - Colores personalizados */
+/* Nodo raíz (centro) */
+.mermaid .mindmap-node.section-root {
+    fill: #5b9bd5 !important;
+}
+
+/* Nodos nivel 1 - Colores variados */
+.mermaid .mindmap-node.section-1 {
+    fill: #70ad47 !important;
+}
+
+.mermaid .mindmap-node.section-2 {
+    fill: #ffc000 !important;
+}
+
+.mermaid .mindmap-node.section-3 {
+    fill: #ed7d31 !important;
+}
+
+.mermaid .mindmap-node.section-4 {
+    fill: #5b9bd5 !important;
+}
+
+.mermaid .mindmap-node.section-5 {
+    fill: #c55a5a !important;
+}
+
+.mermaid .mindmap-node.section-6 {
+    fill: #9b7bb5 !important;
+}
+
+.mermaid .mindmap-node.section-7 {
+    fill: #4bacc6 !important;
+}
+
+.mermaid .mindmap-node.section-8 {
+    fill: #f79646 !important;
+}
+
+/* Nodos nivel 2 - Tonos más claros */
+.mermaid .mindmap-node.section:not(.section-root):not(.section-1):not(.section-2):not(.section-3):not(.section-4):not(.section-5):not(.section-6):not(.section-7):not(.section-8) {
+    fill: #d4d4d4 !important;
 }
 
 /* Mejoras para navegación */
