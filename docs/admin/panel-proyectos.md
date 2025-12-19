@@ -262,6 +262,21 @@
 
 <!-- TAB: Lista de Proyectos -->
 <div id="tab-projects" class="tab-content active">
+    <!-- Buscador de Sesiones -->
+    <div class="project-card" style="margin-bottom: 20px; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);">
+        <div style="display: flex; gap: 15px; align-items: center;">
+            <input 
+                type="text" 
+                id="search-sessions" 
+                placeholder="🔍 Buscar sesiones por texto (ej: 'método de deployment', 'autenticación JWT'...)"
+                style="flex: 1; padding: 12px 20px; border: 2px solid #3498db; border-radius: 8px; font-size: 1em;"
+                oninput="handleSearch()"
+            >
+            <button class="btn" onclick="clearSearch()">❌ Limpiar</button>
+        </div>
+        <div id="search-results" style="margin-top: 15px; display: none;"></div>
+    </div>
+    
     <div id="projects-list">
         <p>Cargando proyectos...</p>
     </div>
@@ -1153,6 +1168,126 @@ function getStatusBadge(status) {
         'completed': '<span class="status-badge" style="background: #cce5ff; color: #004085;">🎯 Completado</span>',
         'archived': '<span class="status-badge" style="background: #e2e3e5; color: #383d41;">📦 Archivado</span>'
     };
+    return badges[status] || badges['active'];
+}
+
+// ============================================
+// BÚSQUEDA DE SESIONES
+// ============================================
+
+let searchTimeout;
+
+async function handleSearch() {
+    const searchInput = document.getElementById('search-sessions');
+    const searchResults = document.getElementById('search-results');
+    const query = searchInput.value.trim();
+    
+    // Limpiar timeout anterior
+    clearTimeout(searchTimeout);
+    
+    if (query.length < 3) {
+        searchResults.style.display = 'none';
+        return;
+    }
+    
+    // Debounce de 500ms
+    searchTimeout = setTimeout(async () => {
+        try {
+            searchResults.innerHTML = '<p>🔍 Buscando...</p>';
+            searchResults.style.display = 'block';
+            
+            const baseUrl = window.location.hostname === 'localhost' 
+                ? 'http://localhost:8000' 
+                : 'https://fast-documentation-ai.onrender.com';
+            
+            const response = await fetch(`${baseUrl}/api/search/analyses?q=${encodeURIComponent(query)}&limit=20`);
+            
+            if (!response.ok) {
+                throw new Error(`Error ${response.status}`);
+            }
+            
+            const sessions = await response.json();
+            
+            if (sessions.length === 0) {
+                searchResults.innerHTML = `
+                    <div style="padding: 20px; text-align: center; color: #7f8c8d;">
+                        <p>😕 No se encontraron sesiones que coincidan con "<strong>${query}</strong>"</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            searchResults.innerHTML = `
+                <div style="margin-bottom: 10px; padding: 10px; background: #e8f5e9; border-radius: 6px;">
+                    <strong>✨ ${sessions.length} resultado${sessions.length > 1 ? 's' : ''} encontrado${sessions.length > 1 ? 's' : ''}</strong>
+                </div>
+                ${sessions.map(session => `
+                    <div style="padding: 15px; margin-bottom: 10px; background: white; border: 1px solid #e0e0e0; border-radius: 8px;">
+                        <div style="display: flex; justify-content: space-between; align-items: start;">
+                            <div style="flex: 1;">
+                                <h4 style="margin: 0 0 5px 0; color: #2c3e50;">
+                                    ${getAnalysisTypeEmoji(session.analysis_type)} ${session.yaml_config?.title || 'Sin título'}
+                                </h4>
+                                <p style="margin: 0; color: #7f8c8d; font-size: 0.9em;">
+                                    📁 ${session.project_name} | 
+                                    📅 ${formatDate(session.updated_at)} |
+                                    🔄 Iteración ${session.iteration}
+                                </p>
+                            </div>
+                            <div>
+                                ${session.answers && Object.keys(session.answers).length > 0 
+                                    ? '<span style="background: #d4edda; color: #155724; padding: 4px 8px; border-radius: 4px; font-size: 0.8em;">✅ Respondida</span>'
+                                    : '<span style="background: #fff3cd; color: #856404; padding: 4px 8px; border-radius: 4px; font-size: 0.8em;">⏳ Pendiente</span>'
+                                }
+                            </div>
+                        </div>
+                        <div style="margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap;">
+                            <button class="btn btn-small" onclick="window.open('${session.share_url}', '_blank')">
+                                📝 Abrir Formulario
+                            </button>
+                            ${session.answers && Object.keys(session.answers).length > 0 ? `
+                                <button class="btn btn-small btn-secondary" onclick="viewAnswersInModal('${session.id}')">
+                                    👁️ Ver Respuestas
+                                </button>
+                                <button class="btn btn-small btn-secondary" onclick="copyOutputPrompt('${session.id}')">
+                                    📋 Copiar Prompt 2
+                                </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                `).join('')}
+            `;
+            
+        } catch (error) {
+            console.error('Error en búsqueda:', error);
+            searchResults.innerHTML = `
+                <div style="padding: 20px; background: #fff3cd; border-radius: 6px;">
+                    <p style="color: #856404; margin: 0;">⚠️ Error al buscar: ${error.message}</p>
+                </div>
+            `;
+        }
+    }, 500);
+}
+
+function clearSearch() {
+    document.getElementById('search-sessions').value = '';
+    document.getElementById('search-results').style.display = 'none';
+}
+
+function getAnalysisTypeEmoji(type) {
+    const emojis = {
+        'arquitectura': '🏗️',
+        'api': '🔌',
+        'deployment': '🚀',
+        'requerimientos': '📋',
+        'procesos-negocio': '💼',
+        'tecnica': '⚙️',
+        'vista-ejecutiva': '👔',
+        'adr': '📐',
+        'swagger': '📖'
+    };
+    return emojis[type] || '📄';
+}
     return badges[status] || `<span class="status-badge">${status}</span>`;
 }
 
