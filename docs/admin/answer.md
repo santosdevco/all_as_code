@@ -107,26 +107,38 @@ async function loadAnalysisData() {
     const container = document.getElementById('answer-page-container');
     currentToken = getTokenFromURL();
     
+    console.log('🔍 Token extraído de URL:', currentToken);
+    console.log('📍 URL completa:', window.location.href);
+    
     if (!currentToken) {
         container.innerHTML = `
             <div class="error-box">
                 <h2>❌ Token no encontrado</h2>
                 <p>Esta URL no es válida. Verifica que hayas copiado la URL completa.</p>
+                <p style="color: #666; font-size: 0.85em;">URL actual: ${window.location.href}</p>
             </div>
         `;
         return;
     }
     
     try {
+        console.log('📡 Solicitando datos para token:', currentToken);
         analysisData = await window.documentationFlow.getPublicAnalysis(currentToken);
+        console.log('✅ Datos recibidos:', {
+            type: analysisData.analysis_type,
+            title: analysisData.yaml_config.title,
+            token: currentToken
+        });
         renderAnalysisForm();
         
     } catch (error) {
+        console.error('❌ Error cargando análisis:', error);
         container.innerHTML = `
             <div class="error-box">
                 <h2>❌ Error cargando preguntas</h2>
                 <p>${error.message}</p>
                 <p style="color: #666; font-size: 0.9em;">Verifica que el backend esté corriendo y que el token sea válido.</p>
+                <p style="color: #666; font-size: 0.85em;">Token: ${currentToken}</p>
             </div>
         `;
     }
@@ -138,6 +150,14 @@ function renderAnalysisForm() {
     const config = analysisData.yaml_config;
     const hasAnswers = analysisData.answers && Object.keys(analysisData.answers).length > 0;
     
+    console.log('🎨 Renderizando formulario:', {
+        token: currentToken,
+        type: analysisData.analysis_type,
+        title: config.title,
+        iteration: analysisData.current_iteration,
+        hasAnswers: hasAnswers
+    });
+    
     // Header con info del análisis
     const headerHtml = `
         <div class="answer-header">
@@ -146,6 +166,7 @@ function renderAnalysisForm() {
                 <p>${config.description || ''}</p>
                 <p><strong>Tipo de análisis:</strong> ${analysisData.analysis_type}</p>
                 <p><strong>Iteración:</strong> ${analysisData.current_iteration}</p>
+                <p><strong>Token (debug):</strong> <code>${currentToken}</code></p>
                 ${hasAnswers ? '<p style="background: #d4edda; color: #155724; padding: 10px; border-radius: 6px; margin-top: 10px;"><strong>✅ Ya hay respuestas guardadas.</strong> Puedes modificarlas y actualizar.</p>' : ''}
             </div>
         </div>
@@ -165,7 +186,7 @@ function renderAnalysisForm() {
         const yamlText = jsyaml.dump(config);
         promptBuilder = new PromptBuilder('prompt-builder-container', 'answer', yamlText);
         promptBuilder.init().then(() => {
-            console.log('✅ Formulario generado con PromptBuilder');
+            console.log('✅ Formulario generado con PromptBuilder para token:', currentToken);
             
             // Pre-cargar respuestas si existen
             if (hasAnswers) {
@@ -377,4 +398,19 @@ async function handleSubmit(event) {
 
 // Iniciar al cargar
 document.addEventListener('DOMContentLoaded', loadAnalysisData);
+
+// 🔥 CRÍTICO: Detectar cambios de URL (navegación en MkDocs)
+// MkDocs es SPA, no recarga el script al navegar
+let lastToken = null;
+
+// Polling para detectar cambios de token en la URL
+setInterval(() => {
+    const newToken = getTokenFromURL();
+    if (newToken && newToken !== lastToken) {
+        console.log('🔄 Token cambió de', lastToken, 'a', newToken, '- Recargando...');
+        lastToken = newToken;
+        loadAnalysisData(); // Recargar datos
+    }
+}, 500); // Cada 500ms chequear si cambió la URL
+
 </script>

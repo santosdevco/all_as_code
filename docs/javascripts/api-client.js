@@ -53,7 +53,11 @@ class APIClient {
      * Método genérico para hacer requests
      */
     async request(endpoint, options = {}) {
-        const url = `${this.config.baseURL}${endpoint}`;
+        // 🔥 Agregar timestamp para evitar cache
+        const separator = endpoint.includes('?') ? '&' : '?';
+        const cacheBuster = `${separator}_t=${Date.now()}`;
+        const url = `${this.config.baseURL}${endpoint}${cacheBuster}`;
+        
         const headers = {
             ...this.config.defaultHeaders,
             ...(options.headers || {})
@@ -63,6 +67,8 @@ class APIClient {
             ...options,
             headers
         };
+        
+        console.log('📡 API Request:', url);
         
         try {
             const response = await fetch(url, config);
@@ -87,7 +93,10 @@ class APIClient {
     
     // Métodos HTTP
     async get(endpoint) {
-        return this.request(endpoint, { method: 'GET' });
+        return this.request(endpoint, { 
+            method: 'GET',
+            cache: 'no-store'  // 🔥 FORZAR NO CACHE
+        });
     }
     
     async post(endpoint, data) {
