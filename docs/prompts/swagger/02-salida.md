@@ -2,12 +2,14 @@
 Recibes:
 
 1. **Análisis del código** (endpoints, models, auth)
+
 2. **Respuestas del formulario YAML** (URLs, configuración)
 
 # TAREA
 Genera 2 archivos:
 
 1. **openapi.json** (raíz del proyecto) - Especificación OpenAPI 3.0 completa
+
 2. **ai_docs/08-api-reference.md** - Documentación complementaria en Markdown
 
 # GUÍAS DE IMPLEMENTACIÓN
@@ -56,10 +58,15 @@ Genera 2 archivos:
 **Requisitos Críticos:**
 
 - **Servers:** Solo incluir URLs válidas (excluir "a definir")
+
 - **Paths:** Extraer de controllers/routes del análisis
+
 - **Schemas:** Generar desde models/entities detectados
+
 - **Security:** Configurar según tipo de auth detectado
+
 - **Examples:** Incluir ejemplos realistas en requests/responses
+
 - **Usar $ref** para evitar duplicación
 
 ## Archivo 2: ai_docs/08-api-reference.md
@@ -92,8 +99,11 @@ Genera 2 archivos:
 ## Información General
 
 - **Nombre:** [nombre_api]
+
 - **Versión:** [version_api]
+
 - **Formato:** JSON
+
 - **Charset:** UTF-8
 
 ### Servidores Disponibles
@@ -153,6 +163,7 @@ Genera 2 archivos:
 ## Recursos Adicionales
 
 - [Especificación OpenAPI 3.0](https://swagger.io/specification/)
+
 - [Documentación técnica](./04-tecnico/03-apis.md)
 ```
 
@@ -161,30 +172,47 @@ Genera 2 archivos:
 **OpenAPI JSON:**
 
 1. Analiza TODOS los endpoints del código (no solo ejemplos)
+
 2. Genera schemas para TODAS las entidades detectadas
+
 3. Concatena URL base + base_path en cada servidor
+
 4. Excluye servidores con URL "a definir"
+
 5. Usa emojis en descripciones de servidores
+
 6. Headers dinámicos en components/parameters para reutilización
+
 7. Formato JSON válido (NO YAML)
+
 8. Incluye examples realistas en cada endpoint
 
 **Markdown:**
 
 1. Importa openapi.json con `<swagger-ui src="../openapi.json"/>`
+
 2. Lista solo servidores válidos (excluye "a definir")
+
 3. Genera ejemplos curl con URLs reales del formulario
+
 4. Tabla de headers globales desde formulario
+
 5. Explicación de autenticación según tipo detectado
+
 6. Usa admonitions (!!!info, !!!tip) para destacar información
 
 # PROCESO DE EJECUCIÓN
 
 1. **Parsear respuestas del formulario**
+
 2. **Combinar con análisis de código**
+
 3. **Generar openapi.json completo** con todos los endpoints
+
 4. **Validar JSON** (sintaxis correcta)
+
 5. **Generar markdown** complementario
+
 6. **Verificar importación** (`<swagger-ui>` apunta a ruta correcta)
 
 ## OUTPUT

@@ -66,9 +66,13 @@ plugins:
 ```
 
 **Temas disponibles:**
+
 - `default` - ⭐ **Recomendado** (igual que Mermaid Live)
+
 - `dark` - Para modo oscuro
+
 - `forest` - Verde/natural
+
 - `neutral` - Minimalista gris
 
 !!! tip "💡 Usa el tema default"
@@ -95,8 +99,11 @@ nav:
 **Explicación de las partes clave:**
 
 - `theme: material` → Tema moderno y profesional
+
 - `plugins: mermaid2` → Habilita diagramas Mermaid
+
 - `markdown_extensions` → Habilita tablas, admonitions, code fences
+
 - `nav:` → Menú de navegación
 
 ---
@@ -122,8 +129,8 @@ Este es un diagrama **embebido** con tabs (renderizado + código copiable):
     ```mermaid
     graph LR
         A[Usuario] --> B[Frontend]
-        B --> C[Backend API]
-        C --> D[(Base de Datos)]
+        B --> C["Backend API"]
+        C --> D["(Base de Datos)"]
     ```
 
 === "📋 Código Mermaid"
@@ -136,15 +143,20 @@ Este es un diagrama **embebido** con tabs (renderizado + código copiable):
     ```
 
 ## Explicación
+
 - El **tab "Diagrama"** muestra el diagrama renderizado
+
 - El **tab "Código"** tiene botón de copiar para pegar en Mermaid Live
 ````
 
 **Puntos clave:**
 
 1. Los diagramas van en bloques de código con ` ```mermaid `
+
 2. Usa tabs (`=== "Nombre"`) para mostrar diagrama + código
+
 3. El tab de código usa ` ```text ` para que tenga botón copiar
+
 4. Puedes mezclar todo con Markdown normal
 
 ---
@@ -160,8 +172,8 @@ Este es un diagrama **embebido** con tabs (renderizado + código copiable):
 ```mermaid
 graph TD
     A[Inicio] --> B{¿Tiene permiso?}
-    B -->|Sí| C[Mostrar Datos]
-    B -->|No| D[Error 403]
+    B -->|Sí| C["Mostrar Datos"]
+    B -->|No| D["Error 403"]
     C --> E[Fin]
     D --> E
 ```
@@ -197,10 +209,10 @@ sequenceDiagram
 ````markdown
 ```mermaid
 graph LR
-    Usuario[Usuario] --> App[Aplicación]
-    App --> API[API Gateway]
+    Usuario[Usuario] --> App["Aplicación"]
+    App --> API["API Gateway"]
     API --> DB[(Database)]
-    API --> Logs[Sistema de Logs]
+    API --> Logs["Sistema de Logs"]
     
     style Logs fill:#ffcccc,stroke:#ff0000
 ```
@@ -219,12 +231,12 @@ graph TB
     Admin((Admin))
     
     subgraph "Mi Sistema"
-        Web[Aplicación Web]
-        API[API Backend]
-        DB[(Base de Datos)]
+        Web["Aplicación Web"]
+        API["API Backend"]
+        DB["(Base de Datos)"]
     end
     
-    Stripe[Stripe Payment]
+    Stripe["Stripe Payment"]
     
     User --> Web
     Admin --> Web
@@ -290,8 +302,11 @@ mkdocs serve
 ```
 
 Esto:
+
 - Levanta un servidor local en http://127.0.0.1:8000
+
 - Se actualiza automáticamente cuando guardas cambios
+
 - Perfecto para escribir documentación
 
 ### Generar Sitio Estático
@@ -334,10 +349,15 @@ mi-proyecto/
 **Crea tu primera documentación:**
 
 1. Crea una carpeta nueva
+
 2. Ejecuta `mkdocs new test-docs && cd test-docs`
+
 3. Edita `mkdocs.yml` con la configuración de arriba
+
 4. Crea `docs/diagrama.md` con un diagrama de secuencia
+
 5. Ejecuta `mkdocs serve`
+
 6. Abre http://localhost:8000
 
 **¡Ya tienes documentación profesional!**
@@ -347,9 +367,13 @@ mi-proyecto/
 ## 🔗 Recursos Útiles
 
 - **Mermaid Live Editor:** [https://mermaid.live](https://mermaid.live) ⭐ **(Prueba diagramas en tiempo real)**
+
 - **Documentación MkDocs:** [https://www.mkdocs.org](https://www.mkdocs.org)
+
 - **Material Theme:** [https://squidfunk.github.io/mkdocs-material/](https://squidfunk.github.io/mkdocs-material/)
+
 - **Mermaid Docs:** [https://mermaid.js.org/intro/](https://mermaid.js.org/intro/)
+
 - **Mermaid Cheat Sheet:** [https://jojozhuang.github.io/tutorial/mermaid-cheat-sheet/](https://jojozhuang.github.io/tutorial/mermaid-cheat-sheet/)
 
 !!! tip "💡 Flujo de Trabajo Recomendado"
@@ -365,14 +389,20 @@ mi-proyecto/
 Usa esto cuando vayas a documentar un proyecto real:
 
 - [ ] Instalar MkDocs + Material + Mermaid2
+
 - [ ] Crear `mkdocs.yml` con configuración base
+
 - [ ] Crear estructura de carpetas `docs/`
+
 - [ ] Escribir `index.md` con introducción
+
 - [ ] Agregar diagramas según necesidad:
   - [ ] C4 para arquitectura general
   - [ ] Secuencia para análisis de rendimiento
   - [ ] DFD para seguridad/compliance
+
 - [ ] Configurar CI/CD para auto-deploy (GitHub Actions/GitLab CI)
+
 - [ ] Agregar `site/` al `.gitignore`
 
 ---

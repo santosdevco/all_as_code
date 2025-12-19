@@ -6,8 +6,11 @@
 Con la infomracion obtenida Genera 4 archivos de documentación técnica:
 
 1. `ai_docs/04-tecnica/01-stack-tecnologico.md`
+
 2. `ai_docs/04-tecnica/02-modelo-datos.md`
+
 3. `ai_docs/04-tecnica/03-apis.md`
+
 4. `ai_docs/04-tecnica/04-integraciones.md`
 
 ---
@@ -15,19 +18,29 @@ Con la infomracion obtenida Genera 4 archivos de documentación técnica:
 ## GUÍAS DE ESTILO
 
 ### Diagramas Mermaid
+
 - **ERD (Entity-Relationship)** para modelo de datos
+
 - **Flowcharts** para flujos de integración
+
 - **Sequence diagrams** para llamadas API complejas
+
 - **Labels con espacios** → Entre comillas dobles
 
 ### Tablas
+
 - Usa tablas para listar endpoints, campos, tecnologías
+
 - Headers claros y alineación consistente
+
 - Incluye ejemplos cuando sea relevante
 
 ### Código
+
 - **Ejemplos reales** del proyecto cuando sea posible
+
 - **Syntax highlighting** apropiado
+
 - **Request/Response examples** en JSON
 
 ---
@@ -52,6 +65,7 @@ Documentar todas las tecnologías utilizadas con versiones y justificaciones.
 **[Lenguaje]**: v[VERSION]
 
 - **Por qué**: [Del formulario o inferido del contexto]
+
 - **Versión soportada**: [Mínima y recomendada]
 
 ### Framework Web
@@ -59,6 +73,7 @@ Documentar todas las tecnologías utilizadas con versiones y justificaciones.
 **[Framework]**: v[VERSION]
 
 - **Por qué**: [Justificación]
+
 - **Configuración**: [Si hay particularidades]
 
 ### Base de Datos
@@ -66,7 +81,9 @@ Documentar todas las tecnologías utilizadas con versiones y justificaciones.
 **[DB]**: v[VERSION]
 
 - **Por qué**: [Justificación]
+
 - **Driver/ORM**: [Nombre] v[VERSION]
+
 - **Connection pool**: [Configuración si se conoce]
 
 ### Librerías Principales
@@ -88,13 +105,17 @@ Documentar todas las tecnologías utilizadas con versiones y justificaciones.
 ## 🛠️ Herramientas de Desarrollo
 
 **Testing:**
+
 - [Framework de tests] v[VERSION]
+
 - [Coverage tool] v[VERSION]
 
 **Linting/Formatting:**
+
 - [ESLint/Prettier] v[VERSION]
 
 **Build Tools:**
+
 - [Webpack/Vite] v[VERSION]
 
 ---
@@ -126,9 +147,13 @@ Documentar el esquema de base de datos completo del sistema.
 [Genera diagrama Mermaid ERD con TODAS las entidades detectadas]
 
 **Reglas:**
+
 - Incluir PK, FK, UK
+
 - Tipos de relaciones (||--o{, }o--||, etc.)
+
 - Cardinalidad correcta
+
 - Nombres descriptivos
 
 ```mermaid
@@ -139,7 +164,7 @@ erDiagram
         string campo1
         int campo2
     }
-    [Generar para TODAS las entidades]
+    ["Generar para TODAS las entidades"]
 ```
 
 ---
@@ -175,6 +200,7 @@ erDiagram
 [Del formulario si se especificaron reglas complejas]
 
 - [Regla 1]
+
 - [Regla 2]
 
 ---
@@ -236,9 +262,11 @@ Documentar todos los endpoints REST/GraphQL del sistema.
 #### Request
 
 **Path Parameters**:
+
 - `[param]`: [Descripción] - [Tipo]
 
 **Query Parameters**:
+
 - `[param]`: [Descripción] - [Tipo] - [Opcional/Requerido]
 
 **Body** (si aplica):
@@ -370,6 +398,7 @@ Documentar todas las integraciones con servicios y APIs externas.
 [Del formulario o investigado]
 
 - **Límite**: [N] requests / [período]
+
 - **Estrategia ante límite**: [Qué hace el sistema]
 
 #### Manejo de Errores
@@ -394,6 +423,7 @@ Documentar todas las integraciones con servicios y APIs externas.
 [Si se conocen]
 
 - **Plan**: [Free/Paid - tipo]
+
 - **Costo**: $[X]/mes o por uso
 
 ---
@@ -429,30 +459,47 @@ sequenceDiagram
 ## REGLAS DE IMPLEMENTACIÓN
 
 ### 1. Exhaustividad
+
 - **TODO** lo detectado en el análisis debe documentarse
+
 - No omitir endpoints, entidades o integraciones
+
 - Versiones **exactas** de package.json/pom.xml
 
 ### 2. Exactitud
+
 - **NO inventes** información que no esté en el código
+
 - **Ejemplos reales** del proyecto cuando sea posible
+
 - **Marca** como "[REQUIERE VERIFICACIÓN]" si algo no es claro
 
 ### 3. Diagramas
+
 - **ERD completo** en modelo de datos
+
 - **Sequence diagrams** para flujos de integración complejos
+
 - **Labels entre comillas** si tienen espacios
 
 ### 4. Formato
+
 - **Línea en blanco antes de listas**
+
 - **Tablas bien formadas**
+
 - **Code blocks** con syntax highlighting
+
 - **Ejemplos JSON** bien formateados
 
 ### 5. Creación de Archivos
+
 - **Ruta**: `ai_docs/04-tecnica/[nombre].md`
+
 - **Crear carpeta** si no existe
+
 - **4 archivos** exactamente
+
 - **Guardar automáticamente**
 
 ---
@@ -460,11 +507,14 @@ sequenceDiagram
 ## PROCESO DE EJECUCIÓN
 
 1. **Leer** análisis exhaustivo + respuestas del formulario
+
 2. **Generar los 4 archivos** con toda la información detectada
+
 3. **Verificar**:
    - Todas las tecnologías listadas con versiones
    - Todas las entidades documentadas
    - Todos los endpoints documentados
    - Todas las integraciones documentadas
    - Diagramas correctos
+
 4. **Guardar** en rutas especificadas

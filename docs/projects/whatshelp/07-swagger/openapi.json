@@ -1,0 +1,4631 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "api-watshelp-bdb",
+    "version": "1.5.0",
+    "description": "API backend desarrollada en Node.js/Express para el sistema de atención al cliente WhatsHelp de las entidades. Provee funcionalidades de chat multicanal con WhatsApp, Microsoft Teams y Watson Assistant.",
+    "contact": {
+      "name": "Equipo de Desarrollo IBM",
+      "email": "Daniel.Collazos@ibm.com"
+    },
+    "license": {
+      "name": "ISC",
+      "url": "https://opensource.org/licenses/ISC"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://banco-bogota-chat-api.1el8z9mf01yx.br-sao.codeengine.appdomain.cloud/api",
+      "description": "🚀 Producción"
+    },
+    {
+      "url": "https://ibm-watshelpqa-api.1js641d0bqq3.us-east.codeengine.appdomain.cloud/api",
+      "description": "🧪 Staging/QA"
+    },
+    {
+      "url": "http://localhost:8080/api",
+      "description": "💻 Desarrollo Local"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Health",
+      "description": "🏥 Endpoints de monitoreo y estado del sistema"
+    },
+    {
+      "name": "Auth",
+      "description": "🔐 Autenticación y gestión de sesiones"
+    },
+    {
+      "name": "Agents",
+      "description": "👨‍💼 Gestión de agentes de soporte"
+    },
+    {
+      "name": "Users",
+      "description": "👤 Gestión de usuarios finales"
+    },
+    {
+      "name": "Rooms",
+      "description": "💬 Salas de conversación"
+    },
+    {
+      "name": "Messages",
+      "description": "📨 Mensajes y comunicación"
+    },
+    {
+      "name": "Areas",
+      "description": "🏢 Áreas de atención"
+    },
+    {
+      "name": "Watson",
+      "description": "🤖 Integración con Watson Assistant"
+    },
+    {
+      "name": "Surveys",
+      "description": "📊 Encuestas de satisfacción"
+    },
+    {
+      "name": "Metrics",
+      "description": "📈 Métricas y reportes"
+    },
+    {
+      "name": "Alerts",
+      "description": "🚨 Alertas para los agentes"
+    },
+    {
+      "name": "Notifications",
+      "description": "🔔 Sistema de notificaciones"
+    },
+    {
+      "name": "Queue",
+      "description": "📋 Cola de atención"
+    },
+    {
+      "name": "MassAlerts",
+      "description": "📢 Alertas masivas"
+    },
+    {
+      "name": "ProtocolMessages",
+      "description": "📝 Mensajes de protocolo"
+    },
+    {
+      "name": "ClosureReasons",
+      "description": "🔚 Motivos de cierre"
+    },
+    {
+      "name": "Teams",
+      "description": "🟣 Integración Microsoft Teams"
+    },
+    {
+      "name": "WhatsApp",
+      "description": "💚 Integración WhatsApp"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "api-key",
+        "description": "Token JWT para autenticación. Obtener mediante login en /auth/login o /auth/agent/login"
+      }
+    },
+    "schemas": {
+      "Agent": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "ID único del agente",
+            "example": 1
+          },
+          "fullname": {
+            "type": "string",
+            "description": "Nombre completo del agente",
+            "example": "Juan Pérez García"
+          },
+          "username": {
+            "type": "string",
+            "description": "Nombre de usuario único",
+            "example": "juan.perez"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "Correo electrónico",
+            "example": "juan.perez@empresa.com"
+          },
+          "phone_number": {
+            "type": "string",
+            "description": "Número de teléfono",
+            "example": "3001234567"
+          },
+          "online": {
+            "type": "boolean",
+            "description": "Estado de conexión del agente",
+            "example": true
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "INACTIVE",
+              "PENDING"
+            ],
+            "description": "Estado del agente",
+            "example": "ACTIVE"
+          },
+          "rooms": {
+            "type": "integer",
+            "description": "Número máximo de salas simultáneas",
+            "example": 5
+          },
+          "active_rooms": {
+            "type": "integer",
+            "description": "Salas activas actualmente",
+            "example": 2
+          },
+          "admin": {
+            "type": "boolean",
+            "description": "Indica si es administrador",
+            "example": false
+          },
+          "bot": {
+            "type": "boolean",
+            "description": "Indica si es un bot",
+            "example": false
+          },
+          "provider": {
+            "type": "string",
+            "enum": [
+              "PASSWORD",
+              "NETWORK_RED"
+            ],
+            "description": "Proveedor de autenticación",
+            "example": "PASSWORD"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Fecha de creación"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Fecha de última actualización"
+          }
+        },
+        "required": [
+          "fullname",
+          "username",
+          "email"
+        ]
+      },
+      "AgentCreate": {
+        "type": "object",
+        "properties": {
+          "fullname": {
+            "type": "string",
+            "example": "Juan Pérez García"
+          },
+          "username": {
+            "type": "string",
+            "example": "juan.perez"
+          },
+          "password": {
+            "type": "string",
+            "format": "password",
+            "example": "SecurePass123!"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "juan.perez@empresa.com"
+          },
+          "phone_number": {
+            "type": "string",
+            "example": "3001234567"
+          },
+          "rooms": {
+            "type": "integer",
+            "example": 5
+          },
+          "admin": {
+            "type": "boolean",
+            "example": false
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "INACTIVE"
+            ],
+            "example": "ACTIVE"
+          }
+        },
+        "required": [
+          "fullname",
+          "username",
+          "password",
+          "email",
+          "phone_number",
+          "rooms",
+          "admin",
+          "status"
+        ]
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "ID único del usuario",
+            "example": 1
+          },
+          "fullname": {
+            "type": "string",
+            "description": "Nombre completo",
+            "example": "María López"
+          },
+          "username": {
+            "type": "string",
+            "description": "Nombre de usuario",
+            "example": "maria.lopez"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "maria.lopez@cliente.com"
+          },
+          "phone_number": {
+            "type": "string",
+            "example": "3109876543"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "INACTIVE",
+              "PENDING"
+            ],
+            "example": "ACTIVE"
+          },
+          "provider": {
+            "type": "string",
+            "enum": [
+              "PASSWORD",
+              "NETWORK_RED"
+            ],
+            "example": "PASSWORD"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "UserCreate": {
+        "type": "object",
+        "properties": {
+          "fullname": {
+            "type": "string",
+            "example": "María López"
+          },
+          "username": {
+            "type": "string",
+            "example": "maria.lopez"
+          },
+          "password": {
+            "type": "string",
+            "format": "password",
+            "example": "UserPass123!"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "maria.lopez@cliente.com"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "example": "3109876543"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "PENDING"
+            ],
+            "example": "ACTIVE"
+          }
+        },
+        "required": [
+          "fullname",
+          "username",
+          "password",
+          "email",
+          "phoneNumber",
+          "status"
+        ]
+      },
+      "Room": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "area_id": {
+            "type": "integer",
+            "description": "ID del área asignada",
+            "example": 1
+          },
+          "user_id": {
+            "type": "integer",
+            "description": "ID del usuario",
+            "example": 1
+          },
+          "user_online": {
+            "type": "boolean",
+            "description": "Estado de conexión del usuario",
+            "example": true
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "OPEN",
+              "CLOSED",
+              "QUEUE"
+            ],
+            "example": "OPEN"
+          },
+          "queue": {
+            "type": "string",
+            "description": "Posición en cola",
+            "example": "1"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Message": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "room_id": {
+            "type": "integer",
+            "example": 1
+          },
+          "from_model": {
+            "type": "string",
+            "enum": [
+              "users",
+              "agents",
+              "watson"
+            ],
+            "description": "Origen del mensaje",
+            "example": "users"
+          },
+          "from": {
+            "type": "integer",
+            "description": "ID del remitente",
+            "example": 1
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "text",
+              "file",
+              "image",
+              "document"
+            ],
+            "example": "text"
+          },
+          "body": {
+            "type": "string",
+            "description": "Contenido del mensaje",
+            "example": "Hola, necesito ayuda"
+          },
+          "status": {
+            "type": "string",
+            "example": "sent"
+          },
+          "read": {
+            "type": "boolean",
+            "example": false
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "MessageCreate": {
+        "type": "object",
+        "properties": {
+          "roomId": {
+            "type": "integer",
+            "example": 1
+          },
+          "fromModel": {
+            "type": "string",
+            "enum": [
+              "users",
+              "agents"
+            ],
+            "example": "users"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "text",
+              "file",
+              "image"
+            ],
+            "example": "text"
+          },
+          "body": {
+            "type": "string",
+            "example": "Hola, necesito ayuda con mi cuenta"
+          },
+          "read": {
+            "type": "boolean",
+            "example": false
+          },
+          "phone_number": {
+            "type": "string",
+            "example": "3001234567"
+          }
+        },
+        "required": [
+          "roomId",
+          "fromModel",
+          "type",
+          "body",
+          "read",
+          "phone_number"
+        ]
+      },
+      "Area": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "description": "Nombre del área",
+            "example": "Soporte Técnico"
+          },
+          "bot": {
+            "type": "boolean",
+            "description": "Indica si tiene bot asignado",
+            "example": true
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "INACTIVE"
+            ],
+            "example": "ACTIVE"
+          },
+          "assistant_id": {
+            "type": "string",
+            "description": "ID de Watson Assistant",
+            "example": "abc123-def456"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "AreaCreate": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Ventas"
+          },
+          "bot": {
+            "type": "boolean",
+            "example": true
+          }
+        },
+        "required": [
+          "name",
+          "bot"
+        ]
+      },
+      "Survey": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "room_id": {
+            "type": "integer",
+            "example": 1
+          },
+          "score": {
+            "type": "string",
+            "description": "Puntuación 0-10",
+            "example": "9"
+          },
+          "message": {
+            "type": "string",
+            "example": "Excelente atención"
+          },
+          "comment": {
+            "type": "string",
+            "example": "Muy amable el agente"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "SurveyCreate": {
+        "type": "object",
+        "properties": {
+          "score": {
+            "type": "string",
+            "example": "9"
+          },
+          "message": {
+            "type": "string",
+            "example": "Excelente atención"
+          }
+        },
+        "required": [
+          "score",
+          "message"
+        ]
+      },
+      "GeneralSurvey": {
+        "type": "object",
+        "properties": {
+          "room_id": {
+            "type": "integer",
+            "example": 1
+          },
+          "user_id": {
+            "type": "integer",
+            "example": 1
+          },
+          "agent_id": {
+            "type": "integer",
+            "example": 1
+          },
+          "answers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "question_cod": {
+                  "type": "integer"
+                },
+                "answer": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "room_id",
+          "user_id",
+          "agent_id",
+          "answers"
+        ]
+      },
+      "ProtocolMessage": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "position": {
+            "type": "integer",
+            "example": 1
+          },
+          "title": {
+            "type": "string",
+            "example": "Saludo inicial"
+          },
+          "message": {
+            "type": "string",
+            "example": "¡Hola! Bienvenido a nuestro servicio de atención."
+          },
+          "lvltwo": {
+            "type": "boolean",
+            "example": false
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ClosureReason": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "title": {
+            "type": "string",
+            "example": "Problema resuelto"
+          },
+          "message": {
+            "type": "string",
+            "example": "El usuario confirmó que su problema fue resuelto"
+          },
+          "lvltwo": {
+            "type": "boolean",
+            "example": false
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Notification": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "notificaciones@empresa.com"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "MassAlert": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "message": {
+            "type": "string",
+            "example": "Mantenimiento programado para las 10:00 PM"
+          },
+          "img": {
+            "type": "string",
+            "description": "URL de imagen adjunta",
+            "example": "https://storage.example.com/alert-image.png"
+          },
+          "created_by": {
+            "type": "integer",
+            "example": 1
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "deleted_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        }
+      },
+      "Queue": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "room_id": {
+            "type": "integer",
+            "example": 1
+          },
+          "area_id": {
+            "type": "integer",
+            "example": 1
+          },
+          "position": {
+            "type": "integer",
+            "example": 3
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Metrics": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "room_id": {
+            "type": "integer",
+            "example": 1
+          },
+          "agent_id": {
+            "type": "integer",
+            "example": 1
+          },
+          "user_id": {
+            "type": "integer",
+            "example": 1
+          },
+          "start_date_room": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "end_date_room_user": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "end_date_room_agent": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "transfer_date_room_bot": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "transfer_date_room_direct": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "state": {
+            "type": "string",
+            "example": "completed"
+          },
+          "area": {
+            "type": "string",
+            "example": "1"
+          }
+        }
+      },
+      "HealthCheck": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "healthy"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "instance": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "pid": {
+                "type": "integer"
+              },
+              "uptime": {
+                "type": "number"
+              },
+              "version": {
+                "type": "string",
+                "example": "1.5.0"
+              }
+            }
+          }
+        }
+      },
+      "LoginRequest": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "juan.perez"
+          },
+          "password": {
+            "type": "string",
+            "format": "password",
+            "example": "SecurePass123!"
+          }
+        },
+        "required": [
+          "username",
+          "password"
+        ]
+      },
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": "JWT Token para autenticación",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+          },
+          "user": {
+            "$ref": "#/components/schemas/Agent"
+          }
+        }
+      },
+      "WatsonMessage": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "type": "string",
+            "example": "Hola, necesito ayuda"
+          },
+          "sessionId": {
+            "type": "string",
+            "example": "session-abc123"
+          }
+        },
+        "required": [
+          "body",
+          "sessionId"
+        ]
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Descripción del error",
+            "example": "Unauthorized"
+          },
+          "code": {
+            "type": "string",
+            "description": "Código de error",
+            "example": "AUTH_FAILED"
+          },
+          "details": {
+            "type": "object",
+            "description": "Detalles adicionales del error"
+          }
+        }
+      },
+      "ValidationError": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "properties": {
+                "msg": {
+                  "type": "string"
+                },
+                "param": {
+                  "type": "string"
+                },
+                "location": {
+                  "type": "string"
+                }
+              }
+            },
+            "example": {
+              "username": {
+                "msg": "The field username is required",
+                "param": "username",
+                "location": "body"
+              }
+            }
+          }
+        }
+      },
+      "PaginatedResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {}
+          },
+          "page": {
+            "type": "integer",
+            "example": 1
+          },
+          "pageSize": {
+            "type": "integer",
+            "example": 20
+          },
+          "total": {
+            "type": "integer",
+            "example": 100
+          },
+          "totalPages": {
+            "type": "integer",
+            "example": 5
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/": {
+      "get": {
+        "tags": [
+          "Health"
+        ],
+        "summary": "Información de la API",
+        "description": "Retorna información básica de la API y versión",
+        "operationId": "getApiInfo",
+        "responses": {
+          "200": {
+            "description": "Información de la API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "teamDevelopment": {
+                      "type": "string",
+                      "example": "Transformation and Innovation Team"
+                    },
+                    "aplicationName": {
+                      "type": "string",
+                      "example": "API_CHAT"
+                    },
+                    "licence": {
+                      "type": "string",
+                      "example": "© 2025 All rights reserved"
+                    },
+                    "version": {
+                      "type": "string",
+                      "example": "1.5.0"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "tags": [
+          "Health"
+        ],
+        "summary": "Health check",
+        "description": "Verifica el estado de salud de la API y retorna información de la instancia",
+        "operationId": "healthCheck",
+        "responses": {
+          "200": {
+            "description": "Sistema saludable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthCheck"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cache/stats": {
+      "get": {
+        "tags": [
+          "Health"
+        ],
+        "summary": "Estadísticas de caché",
+        "description": "Retorna estadísticas del sistema de caché",
+        "operationId": "getCacheStats",
+        "responses": {
+          "200": {
+            "description": "Estadísticas de caché",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "cache": {
+                      "type": "object"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/instance": {
+      "get": {
+        "tags": [
+          "Health"
+        ],
+        "summary": "Información de instancia",
+        "description": "Retorna información detallada de la instancia del servidor",
+        "operationId": "getInstanceInfo",
+        "responses": {
+          "200": {
+            "description": "Información de la instancia",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "instance": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "pid": {
+                          "type": "integer"
+                        },
+                        "hostname": {
+                          "type": "string"
+                        },
+                        "platform": {
+                          "type": "string"
+                        },
+                        "arch": {
+                          "type": "string"
+                        },
+                        "nodeVersion": {
+                          "type": "string"
+                        },
+                        "uptime": {
+                          "type": "number"
+                        },
+                        "cpus": {
+                          "type": "integer"
+                        }
+                      }
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/publicKeyweb": {
+      "get": {
+        "tags": [
+          "Notifications"
+        ],
+        "summary": "Obtener clave pública VAPID",
+        "description": "Retorna la clave pública para notificaciones push",
+        "operationId": "getVapidPublicKey",
+        "responses": {
+          "200": {
+            "description": "Clave pública VAPID",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/webpush/subscribe": {
+      "post": {
+        "tags": [
+          "Notifications"
+        ],
+        "summary": "Suscribir a notificaciones push",
+        "description": "Registra una suscripción para recibir notificaciones push",
+        "operationId": "subscribeWebPush",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "subscription": {
+                    "type": "object",
+                    "properties": {
+                      "endpoint": {
+                        "type": "string"
+                      },
+                      "keys": {
+                        "type": "object",
+                        "properties": {
+                          "p256dh": {
+                            "type": "string"
+                          },
+                          "auth": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Suscripción registrada"
+          }
+        }
+      }
+    },
+    "/FileDonw/{filename}/{tokenfile}": {
+      "get": {
+        "tags": [
+          "Messages"
+        ],
+        "summary": "Descargar archivo externo",
+        "description": "Descarga un archivo mediante token de acceso (DEPRECATED)",
+        "operationId": "downloadFileExternal",
+        "deprecated": true,
+        "parameters": [
+          {
+            "name": "filename",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tokenfile",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Archivo descargado",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Archivo no encontrado"
+          }
+        }
+      }
+    },
+    "/public/banner": {
+      "get": {
+        "tags": [
+          "MassAlerts"
+        ],
+        "summary": "Obtener banner público",
+        "description": "Retorna el banner/alerta masiva activa actual",
+        "operationId": "getPublicBanner",
+        "responses": {
+          "200": {
+            "description": "Banner activo",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "isMsg": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "msg": {
+                      "type": "string",
+                      "example": "Mantenimiento programado"
+                    },
+                    "img": {
+                      "type": "string",
+                      "example": "https://storage.example.com/banner.png"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/watson/assistant/teams/messages": {
+      "post": {
+        "tags": [
+          "Teams"
+        ],
+        "summary": "Mensaje desde Microsoft Teams",
+        "description": "Recibe mensajes desde la integración con Microsoft Teams",
+        "operationId": "teamsMessage",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Mensaje procesado"
+          }
+        }
+      }
+    },
+    "/whatsapp/external": {
+      "post": {
+        "tags": [
+          "WhatsApp"
+        ],
+        "summary": "Mensaje desde WhatsApp",
+        "description": "Recibe mensajes desde la integración con WhatsApp (Axede)",
+        "operationId": "whatsappMessage",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Mensaje procesado"
+          }
+        }
+      }
+    },
+    "/external/log/{agent}/{type_log}": {
+      "post": {
+        "tags": [
+          "Alerts"
+        ],
+        "summary": "Guardar log externo de agente",
+        "description": "Registra un log de actividad del agente desde sistema externo",
+        "operationId": "saveExternalAgentLog",
+        "parameters": [
+          {
+            "name": "agent",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "type_log",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Log registrado"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Login de usuario",
+        "description": "Autentica un usuario y retorna un token JWT",
+        "operationId": "userLogin",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              },
+              "example": {
+                "username": "usuario.ejemplo",
+                "password": "MiContraseña123!"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login exitoso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciales inválidas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "User no found"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Usuario inactivo o pendiente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Status user is inactive or pending by validation"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error de validación",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/agent/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Login de agente",
+        "description": "Autentica un agente de soporte y retorna un token JWT",
+        "operationId": "agentLogin",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              },
+              "example": {
+                "username": "agente.soporte",
+                "password": "AgentPass123!"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login exitoso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciales inválidas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Agente inactivo",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/agent/logout/{agent}": {
+      "delete": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Logout de agente",
+        "description": "Cierra la sesión de un agente",
+        "operationId": "agentLogout",
+        "parameters": [
+          {
+            "name": "agent",
+            "in": "path",
+            "required": true,
+            "description": "ID del agente",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Logout exitoso"
+          }
+        }
+      }
+    },
+    "/auth/admin/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Login de administrador",
+        "description": "Autentica un administrador del sistema",
+        "operationId": "adminLogin",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login exitoso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciales inválidas"
+          },
+          "403": {
+            "description": "Sin permisos de administrador"
+          }
+        }
+      }
+    },
+    "/auth/request": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Solicitar registro de usuario",
+        "description": "Solicita la creación de un nuevo usuario (requiere aprobación). DEPRECATED",
+        "operationId": "requestUser",
+        "deprecated": true,
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "uid",
+                  "fullname",
+                  "password",
+                  "email",
+                  "phone_number"
+                ],
+                "properties": {
+                  "uid": {
+                    "type": "string",
+                    "example": "CC123456789"
+                  },
+                  "fullname": {
+                    "type": "string",
+                    "example": "Juan Pérez"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "juan.perez@email.com"
+                  },
+                  "phone_number": {
+                    "type": "string",
+                    "example": "3001234567"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Solicitud creada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "username": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/request/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Login con solicitud",
+        "description": "Login alternativo para usuarios de red interna",
+        "operationId": "requestLogin",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "uid",
+                  "fullname",
+                  "email",
+                  "area_id"
+                ],
+                "properties": {
+                  "uid": {
+                    "type": "string"
+                  },
+                  "fullname": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "area_id": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login exitoso"
+          },
+          "401": {
+            "description": "No autorizado"
+          }
+        }
+      }
+    },
+    "/auth/areas": {
+      "get": {
+        "tags": [
+          "Auth",
+          "Areas"
+        ],
+        "summary": "Listar áreas activas (público)",
+        "description": "Retorna las áreas activas disponibles para selección en login",
+        "operationId": "getActiveAreas",
+        "responses": {
+          "200": {
+            "description": "Lista de áreas activas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "areas": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Area"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/profile": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Obtener perfil del usuario autenticado",
+        "description": "Retorna la información del perfil del usuario o agente autenticado",
+        "operationId": "getProfile",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Perfil del usuario",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/Agent"
+                    },
+                    {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No autenticado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Unauthorized"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Usuario inactivo"
+          }
+        }
+      }
+    },
+    "/agents": {
+      "get": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Listar todos los agentes",
+        "description": "Retorna la lista completa de agentes registrados",
+        "operationId": "getAllAgents",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Número de página",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "Elementos por página",
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de agentes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "agents": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Agent"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No autenticado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Crear nuevo agente",
+        "description": "Registra un nuevo agente de soporte en el sistema",
+        "operationId": "createAgent",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AgentCreate"
+              },
+              "example": {
+                "fullname": "Carlos Rodríguez",
+                "username": "carlos.rodriguez",
+                "password": "SecurePass123!",
+                "email": "carlos.rodriguez@empresa.com",
+                "phone_number": "3001234567",
+                "rooms": 5,
+                "admin": false,
+                "status": "ACTIVE"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Agente creado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "agent": {
+                      "$ref": "#/components/schemas/Agent"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos inválidos"
+          },
+          "401": {
+            "description": "No autenticado"
+          }
+        }
+      }
+    },
+    "/agents/{id}": {
+      "put": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Actualizar agente",
+        "description": "Actualiza la información de un agente existente",
+        "operationId": "updateAgent",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "fullname",
+                  "username",
+                  "email",
+                  "phone_number",
+                  "status",
+                  "rooms",
+                  "admin",
+                  "lvltwo"
+                ],
+                "properties": {
+                  "fullname": {
+                    "type": "string"
+                  },
+                  "username": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "phone_number": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "ACTIVE",
+                      "INACTIVE"
+                    ]
+                  },
+                  "rooms": {
+                    "type": "integer"
+                  },
+                  "admin": {
+                    "type": "boolean"
+                  },
+                  "lvltwo": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Agente actualizado"
+          },
+          "404": {
+            "description": "Agente no encontrado"
+          }
+        }
+      }
+    },
+    "/agents/{id}/password": {
+      "put": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Cambiar contraseña de agente",
+        "description": "Actualiza la contraseña de un agente",
+        "operationId": "updateAgentPassword",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "password"
+                ],
+                "properties": {
+                  "password": {
+                    "type": "string",
+                    "format": "password",
+                    "minLength": 8
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Contraseña actualizada"
+          }
+        }
+      }
+    },
+    "/agents/{id}/history/rooms": {
+      "get": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Historial de salas del agente",
+        "description": "Retorna el historial de salas atendidas por un agente",
+        "operationId": "getAgentRoomHistory",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Historial de salas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "rooms": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Room"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/agents/admin/active": {
+      "get": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Agentes activos (admin)",
+        "description": "Retorna lista de agentes actualmente conectados",
+        "operationId": "getActiveAgents",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Agentes activos"
+          }
+        }
+      }
+    },
+    "/agents/admin/tmo": {
+      "get": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "TMO de agentes",
+        "description": "Retorna el Tiempo Medio de Operación de los agentes",
+        "operationId": "getAgentsTMO",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Métricas TMO"
+          }
+        }
+      }
+    },
+    "/admin/agents/{id}": {
+      "get": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Obtener agente por ID (admin)",
+        "description": "Retorna información detallada de un agente específico",
+        "operationId": "getAgentById",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Información del agente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Agent"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Agente no encontrado"
+          }
+        }
+      }
+    },
+    "/agents/debug/{id}": {
+      "put": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Actualizar agente (debug)",
+        "description": "Actualización simplificada de agente para debugging",
+        "operationId": "updateAgentDebug",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "fullname",
+                  "username",
+                  "email"
+                ],
+                "properties": {
+                  "fullname": {
+                    "type": "string"
+                  },
+                  "username": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Agente actualizado"
+          }
+        }
+      }
+    },
+    "/agents/{agent_id}/area/{area_id}/join": {
+      "put": {
+        "tags": [
+          "Agents",
+          "Areas"
+        ],
+        "summary": "Asignar agente a área",
+        "description": "Asocia un agente a un área de atención",
+        "operationId": "joinAgentToArea",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "agent_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "area_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Agente asignado al área"
+          }
+        }
+      }
+    },
+    "/agents/{agent_id}/area/{area_id}/leave": {
+      "delete": {
+        "tags": [
+          "Agents",
+          "Areas"
+        ],
+        "summary": "Remover agente de área",
+        "description": "Desasocia un agente de un área de atención",
+        "operationId": "leaveAgentFromArea",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "agent_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "area_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Agente removido del área"
+          }
+        }
+      }
+    },
+    "/agents/rooms": {
+      "get": {
+        "tags": [
+          "Agents",
+          "Rooms"
+        ],
+        "summary": "Salas del agente actual",
+        "description": "Retorna las salas activas asignadas al agente autenticado",
+        "operationId": "getAgentRooms",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Salas del agente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "rooms": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Room"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/online/agents": {
+      "put": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Cambiar estado online",
+        "description": "Cambia el estado de conexión del agente",
+        "operationId": "changeAgentOnline",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Estado actualizado"
+          }
+        }
+      }
+    },
+    "/request/agents": {
+      "put": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Solicitar desconexión",
+        "description": "El agente solicita desconexión (requiere aprobación)",
+        "operationId": "requestAgentDisconnection",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Solicitud registrada"
+          }
+        }
+      }
+    },
+    "/agents/areas": {
+      "get": {
+        "tags": [
+          "Agents",
+          "Areas"
+        ],
+        "summary": "Áreas para transferencia",
+        "description": "Retorna las áreas disponibles para transferir salas",
+        "operationId": "getAgentTransferAreas",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Áreas disponibles"
+          }
+        }
+      }
+    },
+    "/agents/logs/line": {
+      "get": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Logs de conexión",
+        "description": "Retorna los logs de conexión/desconexión del agente",
+        "operationId": "getAgentOnlineLogs",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Logs de conexión"
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Listar todos los usuarios",
+        "description": "Retorna la lista completa de usuarios finales",
+        "operationId": "getAllUsers",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Número de página",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "Elementos por página",
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de usuarios",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "users": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/User"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No autenticado"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Crear nuevo usuario",
+        "description": "Registra un nuevo usuario en el sistema",
+        "operationId": "createUser",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserCreate"
+              },
+              "example": {
+                "fullname": "María García",
+                "username": "maria.garcia",
+                "password": "UserPass123!",
+                "email": "maria.garcia@cliente.com",
+                "phoneNumber": "3109876543",
+                "status": "ACTIVE"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Usuario creado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos inválidos"
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Actualizar usuario",
+        "description": "Actualiza la información de un usuario existente",
+        "operationId": "updateUser",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "fullname",
+                  "email",
+                  "phone_number",
+                  "status"
+                ],
+                "properties": {
+                  "fullname": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "phone_number": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "ACTIVE",
+                      "INACTIVE",
+                      "PENDING"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Usuario actualizado"
+          },
+          "404": {
+            "description": "Usuario no encontrado"
+          }
+        }
+      }
+    },
+    "/users/{id}/password": {
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Cambiar contraseña de usuario",
+        "description": "Actualiza la contraseña de un usuario",
+        "operationId": "updateUserPassword",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "password"
+                ],
+                "properties": {
+                  "password": {
+                    "type": "string",
+                    "format": "password",
+                    "minLength": 8
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Contraseña actualizada"
+          }
+        }
+      }
+    },
+    "/users/{id}/activate": {
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Activar usuario",
+        "description": "Activa un usuario pendiente de aprobación",
+        "operationId": "activateUser",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuario activado"
+          }
+        }
+      }
+    },
+    "/users/{id}/history/rooms": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Historial de salas del usuario",
+        "description": "Retorna el historial de conversaciones de un usuario",
+        "operationId": "getUserRoomHistory",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Historial de salas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "rooms": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Room"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/status/pending": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Usuarios pendientes",
+        "description": "Retorna usuarios con estado pendiente de aprobación",
+        "operationId": "getPendingUsers",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuarios pendientes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "users": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/User"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rooms": {
+      "get": {
+        "tags": [
+          "Rooms"
+        ],
+        "summary": "Listar salas activas",
+        "description": "Retorna las salas de conversación activas (solo agentes)",
+        "operationId": "getAllRooms",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Número de página",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "Elementos por página",
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de salas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "rooms": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Room"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No autenticado"
+          }
+        }
+      }
+    },
+    "/rooms/{id}": {
+      "get": {
+        "tags": [
+          "Rooms"
+        ],
+        "summary": "Obtener sala por ID",
+        "description": "Retorna información detallada de una sala específica",
+        "operationId": "getRoomById",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Información de la sala",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Room"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Sala no encontrada"
+          }
+        }
+      }
+    },
+    "/rooms/{id}/close": {
+      "delete": {
+        "tags": [
+          "Rooms"
+        ],
+        "summary": "Cerrar sala",
+        "description": "Cierra una sala de conversación",
+        "operationId": "closeRoom",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sala cerrada"
+          },
+          "404": {
+            "description": "Sala no encontrada"
+          }
+        }
+      }
+    },
+    "/rooms/{id}/messages": {
+      "get": {
+        "tags": [
+          "Rooms",
+          "Messages"
+        ],
+        "summary": "Mensajes de una sala",
+        "description": "Retorna todos los mensajes de una sala específica",
+        "operationId": "getRoomMessages",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de mensajes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "messages": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Message"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rooms/assistant/all": {
+      "get": {
+        "tags": [
+          "Rooms"
+        ],
+        "summary": "Salas con asistente",
+        "description": "Retorna salas que están siendo atendidas por Watson Assistant",
+        "operationId": "getAssistantRooms",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Salas con asistente"
+          }
+        }
+      }
+    },
+    "/rooms/user/transfer/{area_id}": {
+      "put": {
+        "tags": [
+          "Rooms"
+        ],
+        "summary": "Transferir sala a área",
+        "description": "Transfiere una sala a otra área de atención",
+        "operationId": "transferRoomToArea",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "area_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sala transferida"
+          }
+        }
+      }
+    },
+    "/user/rooms/close": {
+      "delete": {
+        "tags": [
+          "Rooms"
+        ],
+        "summary": "Cerrar sala de usuario",
+        "description": "Cierra la sala activa del usuario autenticado",
+        "operationId": "closeUserRoom",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sala cerrada"
+          }
+        }
+      }
+    },
+    "/admin/rooms/counts": {
+      "get": {
+        "tags": [
+          "Rooms"
+        ],
+        "summary": "Conteo de salas (admin)",
+        "description": "Retorna estadísticas de salas por estado",
+        "operationId": "getRoomCounts",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Conteos de salas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "open": {
+                      "type": "integer"
+                    },
+                    "closed": {
+                      "type": "integer"
+                    },
+                    "queue": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rooms/search/tickets": {
+      "post": {
+        "tags": [
+          "Rooms"
+        ],
+        "summary": "Buscar salas por tickets",
+        "description": "Busca salas por lista de IDs de tickets",
+        "operationId": "searchRoomsByTickets",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "tickets"
+                ],
+                "properties": {
+                  "tickets": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "example": [
+                      "TICKET-001",
+                      "TICKET-002"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Salas encontradas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "rooms": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Room"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/agents/rooms/area/{area_id}/transfer": {
+      "put": {
+        "tags": [
+          "Rooms",
+          "Agents"
+        ],
+        "summary": "Transferir sala desde agente",
+        "description": "El agente transfiere una sala a otra área",
+        "operationId": "agentTransferRoom",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "area_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "roomId"
+                ],
+                "properties": {
+                  "roomId": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sala transferida"
+          }
+        }
+      }
+    },
+    "/messages": {
+      "post": {
+        "tags": [
+          "Messages"
+        ],
+        "summary": "Enviar mensaje",
+        "description": "Envía un mensaje de texto a una sala",
+        "operationId": "sendMessage",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MessageCreate"
+              },
+              "example": {
+                "roomId": 1,
+                "fromModel": "agents",
+                "type": "text",
+                "body": "¡Hola! ¿En qué puedo ayudarte?",
+                "read": false,
+                "phone_number": "3001234567"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Mensaje enviado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "$ref": "#/components/schemas/Message"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos inválidos"
+          },
+          "401": {
+            "description": "No autenticado"
+          }
+        }
+      }
+    },
+    "/messages/file": {
+      "post": {
+        "tags": [
+          "Messages"
+        ],
+        "summary": "Enviar archivo",
+        "description": "Envía un archivo (imagen, PDF) a una sala",
+        "operationId": "sendFileMessage",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "file"
+                ],
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Archivo a enviar (max 5MB). Tipos permitidos: image/*, application/pdf"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Archivo enviado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "$ref": "#/components/schemas/Message"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Archivo inválido o muy grande"
+          },
+          "423": {
+            "description": "Tipo de archivo no permitido"
+          }
+        }
+      }
+    },
+    "/room/{roomId}/messages/file/download/{path}": {
+      "get": {
+        "tags": [
+          "Messages"
+        ],
+        "summary": "Descargar archivo de mensaje",
+        "description": "Descarga un archivo adjunto de un mensaje",
+        "operationId": "downloadMessageFile",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "roomId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "path",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Archivo descargado",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "image/*": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "application/pdf": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Archivo no encontrado"
+          }
+        }
+      }
+    },
+    "/areas": {
+      "get": {
+        "tags": [
+          "Areas"
+        ],
+        "summary": "Listar todas las áreas",
+        "description": "Retorna la lista completa de áreas de atención",
+        "operationId": "getAllAreas",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de áreas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "areas": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Area"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Areas"
+        ],
+        "summary": "Crear nueva área",
+        "description": "Registra una nueva área de atención",
+        "operationId": "createArea",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AreaCreate"
+              },
+              "example": {
+                "name": "Soporte Técnico",
+                "bot": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Área creada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "area": {
+                      "$ref": "#/components/schemas/Area"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos inválidos"
+          }
+        }
+      }
+    },
+    "/areas/{id}": {
+      "put": {
+        "tags": [
+          "Areas"
+        ],
+        "summary": "Actualizar área",
+        "description": "Actualiza la información de un área existente",
+        "operationId": "updateArea",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "bot",
+                  "status"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "bot": {
+                    "type": "boolean"
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "ACTIVE",
+                      "INACTIVE"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Área actualizada"
+          },
+          "404": {
+            "description": "Área no encontrada"
+          }
+        }
+      }
+    },
+    "/watson/assistant/request-session": {
+      "post": {
+        "tags": [
+          "Watson"
+        ],
+        "summary": "Solicitar sesión Watson",
+        "description": "Solicita una nueva sesión con Watson Assistant",
+        "operationId": "requestWatsonSession",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sesión creada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "sessionId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/watson/assistant/create-session": {
+      "post": {
+        "tags": [
+          "Watson"
+        ],
+        "summary": "Crear sesión Watson",
+        "description": "Crea una nueva sesión con Watson Assistant",
+        "operationId": "createWatsonSession",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sesión creada"
+          }
+        }
+      }
+    },
+    "/watson/assistant/messages": {
+      "post": {
+        "tags": [
+          "Watson"
+        ],
+        "summary": "Enviar mensaje a Watson",
+        "description": "Envía un mensaje al asistente Watson y obtiene respuesta",
+        "operationId": "sendWatsonMessage",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WatsonMessage"
+              },
+              "example": {
+                "body": "Necesito ayuda con mi cuenta",
+                "sessionId": "session-abc123-def456"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Respuesta del asistente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "output": {
+                      "type": "object",
+                      "properties": {
+                        "generic": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "response_type": {
+                                "type": "string"
+                              },
+                              "text": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/watson/assistant/messages/file": {
+      "post": {
+        "tags": [
+          "Watson"
+        ],
+        "summary": "Enviar archivo a Watson",
+        "description": "Envía un archivo al asistente Watson",
+        "operationId": "sendWatsonFile",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "file"
+                ],
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Archivo procesado"
+          }
+        }
+      }
+    },
+    "/surveys": {
+      "get": {
+        "tags": [
+          "Surveys"
+        ],
+        "summary": "Listar encuestas",
+        "description": "Retorna la lista de encuestas de satisfacción",
+        "operationId": "getAllSurveys",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de encuestas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "surveys": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Survey"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Surveys"
+        ],
+        "summary": "Guardar encuesta",
+        "description": "Registra una nueva encuesta de satisfacción",
+        "operationId": "saveSurvey",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SurveyCreate"
+              },
+              "example": {
+                "score": "9",
+                "message": "Excelente atención"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Encuesta guardada"
+          }
+        }
+      }
+    },
+    "/general/survey": {
+      "post": {
+        "tags": [
+          "Surveys"
+        ],
+        "summary": "Guardar encuesta general",
+        "description": "Registra una encuesta general con múltiples preguntas",
+        "operationId": "saveGeneralSurvey",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GeneralSurvey"
+              },
+              "example": {
+                "room_id": 1,
+                "user_id": 1,
+                "agent_id": 1,
+                "answers": [
+                  {
+                    "question_cod": 1,
+                    "answer": "9"
+                  },
+                  {
+                    "question_cod": 2,
+                    "answer": "sí"
+                  },
+                  {
+                    "question_cod": 3,
+                    "answer": "5"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Encuesta guardada"
+          }
+        }
+      }
+    },
+    "/metrics": {
+      "get": {
+        "tags": [
+          "Metrics"
+        ],
+        "summary": "Obtener métricas",
+        "description": "Retorna métricas generales del sistema",
+        "operationId": "getAllMetrics",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Métricas del sistema",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "metrics": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Metrics"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/metricsTopics": {
+      "get": {
+        "tags": [
+          "Metrics"
+        ],
+        "summary": "Métricas por temas",
+        "description": "Retorna métricas agrupadas por temas/áreas",
+        "operationId": "getMetricsByTopics",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Métricas por temas"
+          }
+        }
+      }
+    },
+    "/metricsOptionsReports": {
+      "get": {
+        "tags": [
+          "Metrics"
+        ],
+        "summary": "Opciones de reportes",
+        "description": "Retorna opciones disponibles para generación de reportes",
+        "operationId": "getMetricsReportOptions",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Opciones de reportes"
+          }
+        }
+      }
+    },
+    "/metricsLoginLogout": {
+      "get": {
+        "tags": [
+          "Metrics"
+        ],
+        "summary": "Métricas de login/logout",
+        "description": "Retorna métricas de sesiones de agentes",
+        "operationId": "getLoginLogoutMetrics",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Métricas de sesiones"
+          }
+        }
+      }
+    },
+    "/metricsGeneralConfiguration": {
+      "get": {
+        "tags": [
+          "Metrics"
+        ],
+        "summary": "Configuración general",
+        "description": "Retorna la configuración general de métricas",
+        "operationId": "getGeneralConfiguration",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Configuración"
+          }
+        }
+      }
+    },
+    "/setGeneralConfiguration": {
+      "post": {
+        "tags": [
+          "Metrics"
+        ],
+        "summary": "Establecer configuración",
+        "description": "Actualiza la configuración general de métricas",
+        "operationId": "setGeneralConfiguration",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Configuración actualizada"
+          }
+        }
+      }
+    },
+    "/home/agents": {
+      "get": {
+        "tags": [
+          "Alerts"
+        ],
+        "summary": "Últimas desconexiones de agentes",
+        "description": "Retorna los últimos agentes que se desconectaron",
+        "operationId": "getLastDisconnectedAgents",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Agentes desconectados"
+          }
+        }
+      }
+    },
+    "/home/messages": {
+      "get": {
+        "tags": [
+          "Alerts"
+        ],
+        "summary": "Mensajes sin responder",
+        "description": "Retorna mensajes que no han sido respondidos",
+        "operationId": "getUnansweredMessages",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Mensajes sin responder"
+          }
+        }
+      }
+    },
+    "/home/alert": {
+      "post": {
+        "tags": [
+          "Alerts"
+        ],
+        "summary": "Enviar alerta a agente",
+        "description": "Envía una alerta/notificación a un agente específico",
+        "operationId": "sendAlertToAgent",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Alerta enviada"
+          }
+        }
+      }
+    },
+    "/home/agent": {
+      "post": {
+        "tags": [
+          "Alerts"
+        ],
+        "summary": "Notificar desconexión",
+        "description": "Notifica la desconexión de un agente",
+        "operationId": "notifyAgentDisconnection",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Notificación enviada"
+          }
+        }
+      }
+    },
+    "/home/queue": {
+      "post": {
+        "tags": [
+          "Alerts",
+          "Queue"
+        ],
+        "summary": "Enviar mensaje a cola",
+        "description": "Envía un mensaje/alerta a la cola de atención",
+        "operationId": "sendMessageToQueue",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Mensaje enviado"
+          }
+        }
+      }
+    },
+    "/pmessages": {
+      "get": {
+        "tags": [
+          "ProtocolMessages"
+        ],
+        "summary": "Listar mensajes de protocolo",
+        "description": "Retorna los mensajes de protocolo configurados",
+        "operationId": "getAllProtocolMessages",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de mensajes de protocolo",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "pmessages": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ProtocolMessage"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "ProtocolMessages"
+        ],
+        "summary": "Crear mensaje de protocolo",
+        "description": "Registra un nuevo mensaje de protocolo",
+        "operationId": "createProtocolMessage",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "position",
+                  "title",
+                  "message",
+                  "lvltwo"
+                ],
+                "properties": {
+                  "position": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "title": {
+                    "type": "string",
+                    "example": "Saludo inicial"
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "¡Bienvenido! ¿En qué puedo ayudarte?"
+                  },
+                  "lvltwo": {
+                    "type": "boolean",
+                    "example": false
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Mensaje creado"
+          }
+        }
+      }
+    },
+    "/pmessages/{id}": {
+      "put": {
+        "tags": [
+          "ProtocolMessages"
+        ],
+        "summary": "Actualizar mensaje de protocolo",
+        "description": "Actualiza un mensaje de protocolo existente",
+        "operationId": "updateProtocolMessage",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "position",
+                  "title",
+                  "message",
+                  "lvltwo"
+                ],
+                "properties": {
+                  "position": {
+                    "type": "integer"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "message": {
+                    "type": "string"
+                  },
+                  "lvltwo": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Mensaje actualizado"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "ProtocolMessages"
+        ],
+        "summary": "Eliminar mensaje de protocolo",
+        "description": "Elimina un mensaje de protocolo",
+        "operationId": "deleteProtocolMessage",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Mensaje eliminado"
+          }
+        }
+      }
+    },
+    "/closure_reasons": {
+      "get": {
+        "tags": [
+          "ClosureReasons"
+        ],
+        "summary": "Listar motivos de cierre",
+        "description": "Retorna los motivos de cierre configurados",
+        "operationId": "getAllClosureReasons",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de motivos de cierre",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "closure_reasons": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ClosureReason"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "ClosureReasons"
+        ],
+        "summary": "Crear motivo de cierre",
+        "description": "Registra un nuevo motivo de cierre",
+        "operationId": "createClosureReason",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "title",
+                  "message",
+                  "lvltwo"
+                ],
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "example": "Problema resuelto"
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "El cliente confirmó que su problema fue resuelto"
+                  },
+                  "lvltwo": {
+                    "type": "boolean",
+                    "example": false
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Motivo creado"
+          }
+        }
+      }
+    },
+    "/closure_reasons/{id}": {
+      "put": {
+        "tags": [
+          "ClosureReasons"
+        ],
+        "summary": "Actualizar motivo de cierre",
+        "description": "Actualiza un motivo de cierre existente",
+        "operationId": "updateClosureReason",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "title",
+                  "message",
+                  "lvltwo"
+                ],
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "message": {
+                    "type": "string"
+                  },
+                  "lvltwo": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Motivo actualizado"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "ClosureReasons"
+        ],
+        "summary": "Eliminar motivo de cierre",
+        "description": "Elimina un motivo de cierre",
+        "operationId": "deleteClosureReason",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Motivo eliminado"
+          }
+        }
+      }
+    },
+    "/notifications": {
+      "get": {
+        "tags": [
+          "Notifications"
+        ],
+        "summary": "Listar notificaciones",
+        "description": "Retorna la lista de emails registrados para notificaciones",
+        "operationId": "getAllNotifications",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de notificaciones",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "notifications": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Notification"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Notifications"
+        ],
+        "summary": "Registrar email para notificaciones",
+        "description": "Agrega un email a la lista de notificaciones",
+        "operationId": "createNotification",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "notificaciones@empresa.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Email registrado"
+          },
+          "400": {
+            "description": "Email inválido"
+          }
+        }
+      }
+    },
+    "/notifications/{id}": {
+      "delete": {
+        "tags": [
+          "Notifications"
+        ],
+        "summary": "Eliminar notificación",
+        "description": "Elimina un email de la lista de notificaciones",
+        "operationId": "deleteNotification",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Notificación eliminada"
+          }
+        }
+      }
+    },
+    "/queue": {
+      "get": {
+        "tags": [
+          "Queue"
+        ],
+        "summary": "Obtener cola de atención",
+        "description": "Retorna la cola de salas esperando atención",
+        "operationId": "getQueue",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cola de atención",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "queue": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Queue"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mass-alerts": {
+      "get": {
+        "tags": [
+          "MassAlerts"
+        ],
+        "summary": "Listar alertas masivas",
+        "description": "Retorna la lista de alertas masivas",
+        "operationId": "getAllMassAlerts",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de alertas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "alerts": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/MassAlert"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "MassAlerts"
+        ],
+        "summary": "Crear alerta masiva",
+        "description": "Crea una nueva alerta masiva con opción de imagen",
+        "operationId": "createMassAlert",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "message"
+                ],
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "description": "Texto de la alerta",
+                    "example": "Mantenimiento programado para las 10:00 PM"
+                  },
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Imagen opcional para la alerta (max 5MB)"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Alerta creada"
+          }
+        }
+      }
+    },
+    "/mass-alerts/{id}": {
+      "put": {
+        "tags": [
+          "MassAlerts"
+        ],
+        "summary": "Actualizar alerta masiva",
+        "description": "Actualiza el mensaje de una alerta masiva",
+        "operationId": "updateMassAlert",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "message"
+                ],
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Alerta actualizada"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "MassAlerts"
+        ],
+        "summary": "Eliminar alerta masiva",
+        "description": "Elimina (soft delete) una alerta masiva",
+        "operationId": "deleteMassAlert",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Alerta eliminada"
+          }
+        }
+      }
+    }
+  }
+}

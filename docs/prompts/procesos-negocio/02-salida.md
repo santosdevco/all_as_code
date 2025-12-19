@@ -3,7 +3,9 @@
 ## CONTEXTO
 
 Recibirás:
+
 1. **Análisis automático** (casos de uso y flujos detectados del código)
+
 2. **Respuestas del formulario** (prioridades, reglas adicionales, escenarios)
 
 ---
@@ -13,6 +15,7 @@ Recibirás:
 Genera 2 archivos de procesos de negocio:
 
 1. `ai_docs/05-procesos-negocio/01-casos-uso.md`
+
 2. `ai_docs/05-procesos-negocio/02-flujos-funcionales.md`
 
 ---
@@ -20,21 +23,33 @@ Genera 2 archivos de procesos de negocio:
 ## GUÍAS DE ESTILO
 
 ### Casos de Uso
+
 - **Lenguaje de negocio** → Entendible por no-técnicos
+
 - **Formato estructurado** → Actores, Precondiciones, Flujo, Postcondiciones
+
 - **Completo** → Happy path + flujos alternativos + excepciones
 
 ### Diagramas de Secuencia
+
 - **Mermaid sequenceDiagram** para flujos funcionales
+
 - **Participantes claros** → Usuario, Sistema, APIs externas
+
 - **Flechas sólidas** (->>) para llamadas síncronas
+
 - **Flechas punteadas** (-->>) para respuestas
+
 - **Notas** para validaciones y errores
+
 - **Labels con espacios** → Entre comillas dobles
 
 ### Reglas de Negocio
+
 - **Explícitas** → Documentar todas las detectadas
+
 - **Justificadas** → Por qué existe la regla
+
 - **Validables** → Cómo se verifica
 
 ---
@@ -72,15 +87,21 @@ Documentar los casos de uso principales del sistema desde perspectiva de negocio
 **Descripción**: [Qué hace este caso de uso en lenguaje de negocio]
 
 **Actores**:
+
 - **Primario**: [Usuario/Admin/Sistema que inicia]
+
 - **Secundarios**: [Otros participantes]
 
 **Precondiciones**:
+
 - [Condición 1 que debe cumplirse antes]
+
 - [Condición 2]
 
 **Trigger**: [Qué inicia este caso de uso]
+
 - Evento: [POST /api/resource o evento específico]
+
 - Origen: [Usuario, sistema, cron job]
 
 ---
@@ -88,10 +109,15 @@ Documentar los casos de uso principales del sistema desde perspectiva de negocio
 #### Flujo Principal (Happy Path)
 
 1. [Actor] [acción en lenguaje de negocio]
+
 2. Sistema valida [qué valida]
+
 3. Sistema [procesa/calcula/guarda] [qué]
+
 4. Sistema [acción] con [sistema externo si aplica]
+
 5. Sistema confirma/notifica a [actor]
+
 6. **Postcondición**: [Estado resultante]
 
 ---
@@ -129,6 +155,7 @@ Xa. Si [error ocurre]:
 [Detectadas del código + adicionales del formulario]
 
 - **RN-001**: [Regla] - [Justificación]
+
 - **RN-002**: [Regla] - [Justificación]
 
 ---
@@ -136,10 +163,13 @@ Xa. Si [error ocurre]:
 #### Postcondiciones
 
 **Éxito**:
+
 - [Estado 1 del sistema]
+
 - [Estado 2 del sistema]
 
 **Fallo**:
+
 - [Estado si falla]
 
 ---
@@ -163,24 +193,31 @@ Xa. Si [error ocurre]:
 ### Por Criticidad
 
 **Alta (Críticos para el negocio)**:
+
 - CU-001: [Nombre]
+
 - CU-002: [Nombre]
 
 **Media (Importantes)**:
+
 - CU-XXX: [Nombre]
 
 **Baja (Auxiliares)**:
+
 - CU-YYY: [Nombre]
 
 ### Por Actor
 
 **Usuario**:
+
 - [Lista de CUs]
 
 **Administrador**:
+
 - [Lista de CUs]
 
 **Sistema**:
+
 - [Lista de CUs]
 
 ---
@@ -233,7 +270,7 @@ sequenceDiagram
     participant DB as "Base de Datos"
     participant External as "API Externa"
     
-    Usuario->>Frontend: [Acción]
+    Usuario->>Frontend: ["Acción"]
     Frontend->>API: POST /api/resource<br/>{datos}
     
     Note over API: Validación de autenticación
@@ -264,18 +301,27 @@ sequenceDiagram
 #### Descripción Detallada del Flujo
 
 **Paso 1: Inicio**
+
 - [Qué sucede al inicio]
+
 - **Validaciones**: [Qué se valida]
 
 **Paso 2: [Nombre del paso]**
+
 - [Descripción de la acción]
+
 - **Validaciones**: [Reglas de negocio aplicadas]
+
 - **Datos procesados**: [Qué datos se manejan]
 
 **Paso 3: Integración con [Sistema Externo]**
+
 - [Para qué se llama]
+
 - **Datos enviados**: [Qué se envía]
+
 - **Respuesta esperada**: [Qué se recibe]
+
 - **Manejo de errores**: [Qué pasa si falla]
 
 [... continuar con todos los pasos del flujo]
@@ -293,12 +339,17 @@ sequenceDiagram
 #### Casos de Error y Manejo
 
 **Error 1: [Tipo de error]**
+
 - **Causa**: [Por qué ocurre]
+
 - **Manejo**: [Cómo se maneja]
+
 - **Mensaje al usuario**: [Qué se muestra]
+
 - **Rollback**: [Sí/No - qué se reversa]
 
 **Error 2: [Otro error común]**
+
 - [Del formulario si se especificó]
 
 ---
@@ -308,7 +359,9 @@ sequenceDiagram
 [Si existen caminos alternativos importantes]
 
 **Escenario 1: [Nombre]**
+
 - **Condición**: [Cuándo ocurre]
+
 - **Flujo**: [Qué cambia]
 
 ---
@@ -323,18 +376,18 @@ sequenceDiagram
 
 ```mermaid
 flowchart TB
-    Start([Usuario Ingresa]) --> Login{¿Autenticado?}
-    Login -->|No| AuthFlow[Proceso de Autenticación]
-    Login -->|Sí| Dashboard[Dashboard Principal]
+    Start(["Usuario Ingresa"]) --> Login{¿Autenticado?}
+    Login -->|No| AuthFlow["Proceso de Autenticación"]
+    Login -->|Sí| Dashboard["Dashboard Principal"]
     
     AuthFlow --> Dashboard
     
-    Dashboard --> Proceso1[Proceso 1:<br/>Nombre]
-    Dashboard --> Proceso2[Proceso 2:<br/>Nombre]
-    Dashboard --> Proceso3[Proceso 3:<br/>Nombre]
+    Dashboard --> Proceso1["Proceso 1:<br/>Nombre"]
+    Dashboard --> Proceso2["Proceso 2:<br/>Nombre"]
+    Dashboard --> Proceso3["Proceso 3:<br/>Nombre"]
     
-    Proceso1 --> Integration1[Integración Externa 1]
-    Proceso2 --> Integration2[Integración Externa 2]
+    Proceso1 --> Integration1["Integración Externa 1"]
+    Proceso2 --> Integration2["Integración Externa 2"]
     
     style Start fill:#667eea,color:#fff
     style Dashboard fill:#42a5f5,color:#fff
@@ -358,33 +411,53 @@ flowchart TB
 ## REGLAS DE IMPLEMENTACIÓN
 
 ### 1. Casos de Uso
+
 - **Top 5-10** más importantes (del formulario)
+
 - **Estructura completa** → Precondiciones, flujo, postcondiciones, excepciones
+
 - **Lenguaje de negocio** → No tecnicismos
+
 - **Todos los flujos** → Principal, alternativos, excepciones
 
 ### 2. Diagramas de Secuencia
+
 - **Basados en código REAL** → Sigue las llamadas reales
+
 - **Participantes claros** → Usuario, Frontend, API, Services, DB, External APIs
+
 - **Validaciones visibles** → Notas en puntos de validación
+
 - **Alt/Opt blocks** → Para flujos condicionales
+
 - **Labels entre comillas** si tienen espacios
 
 ### 3. Reglas de Negocio
+
 - **Todas documentadas** → Las del código + adicionales del formulario
+
 - **Justificadas** → Por qué existe cada regla
+
 - **Referenciadas** → En qué paso del flujo aplican
 
 ### 4. Formato
+
 - **Línea en blanco antes de listas**
+
 - **Tablas bien formadas**
+
 - **Diagramas correctos**
+
 - **Lenguaje claro**
 
 ### 5. Creación de Archivos
+
 - **Ruta**: `ai_docs/05-procesos-negocio/[nombre].md`
+
 - **Crear carpeta** si no existe
+
 - **2 archivos** exactamente
+
 - **Guardar automáticamente**
 
 ---
@@ -392,13 +465,17 @@ flowchart TB
 ## PROCESO DE EJECUCIÓN
 
 1. **Leer** análisis + respuestas del formulario
+
 2. **Priorizar** casos de uso según formulario
+
 3. **Generar los 2 archivos**:
    - Casos de uso detallados
    - Flujos con diagramas de secuencia
+
 4. **Verificar**:
    - Casos de uso completos (todos los campos)
    - Diagramas de secuencia basados en código real
    - Reglas de negocio documentadas
    - Lenguaje de negocio (no técnico)
+
 5. **Guardar** en rutas especificadas

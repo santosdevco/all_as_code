@@ -7,12 +7,19 @@
 ## ✨ Características
 
 - ✅ **Configuración JSON** - Define preguntas y opciones en un archivo JSON
+
 - ✅ **Tipos de preguntas** - Text, radio, select, checkbox, textarea
+
 - ✅ **Validaciones** - Campos requeridos y opcionales
+
 - ✅ **Campos condicionales** - Muestra campos "Otro" cuando es necesario
+
 - ✅ **Templates personalizados** - Define cómo se genera el prompt final
+
 - ✅ **Copia al portapapeles** - Un clic para copiar el prompt generado
+
 - ✅ **Responsive** - Funciona en desktop y móvil
+
 - ✅ **Dark mode** - Compatible con tema claro/oscuro de MkDocs
 
 ---
@@ -32,9 +39,13 @@ Donde `"07"` es el ID del prompt definido en `prompts-config.yaml`.
 ### 2. El sistema automáticamente:
 
 1. ✅ Carga la configuración del prompt desde JSON
+
 2. ✅ Renderiza el formulario con todas las preguntas
+
 3. ✅ Valida las respuestas
+
 4. ✅ Genera el prompt personalizado
+
 5. ✅ Permite copiar al portapapeles
 
 ---
@@ -69,9 +80,13 @@ template: |
 ```
 
 **Ventajas de YAML**:
+
 - ✅ Saltos de línea naturales (no `\n`)
+
 - ✅ Fácil de leer y mantener
+
 - ✅ Soporta comentarios con `#`
+
 - ✅ Sin escape de comillas
 
 ### Estructura del YAML
@@ -111,6 +126,7 @@ template: |
 ### 1️⃣ Text Input (Texto simple)
 
 ```yaml
+
 - id: projectName
   type: text
   label: "Nombre del Proyecto:"
@@ -120,9 +136,13 @@ template: |
 ```
 
 **Genera:**
+
 - Input de texto simple
+
 - Placeholder opcional
+
 - Validación de campo requerido
+
 - Texto de ayuda debajo
 
 ---
@@ -130,6 +150,7 @@ template: |
 ### 2️⃣ Radio Buttons (Selección única)
 
 ```yaml
+
 - id: hasDockerfile
   type: radio
   label: "¿El proyecto tiene Dockerfile?"
@@ -143,11 +164,15 @@ template: |
 ```
 
 **Genera:**
+
 - Grupo de radio buttons
+
 - Opción por defecto seleccionada
+
 - Texto de ayuda
 
 **Variables generadas:**
+
 - `{{hasDockerfile}}` → `"si"` o `"no"`
 
 ---
@@ -155,6 +180,7 @@ template: |
 ### 3️⃣ Select Dropdown (Lista desplegable)
 
 ```yaml
+
 - id: deployPlatform
   type: select
   label: "¿Dónde se despliega en PRODUCCIÓN?"
@@ -174,12 +200,17 @@ template: |
 ```
 
 **Genera:**
+
 - Dropdown con todas las opciones
+
 - Si `showOther: true` → muestra campo de texto cuando se selecciona "otro"
+
 - Campo "otro" se oculta/muestra automáticamente
 
 **Variables generadas:**
+
 - `{{deployPlatform}}` → Valor seleccionado
+
 - `{{deployPlatform_other}}` → Texto ingresado en "otro" (si aplica)
 
 ---
@@ -187,6 +218,7 @@ template: |
 ### 4️⃣ Checkboxes (Selección múltiple)
 
 ```yaml
+
 - id: environments
   type: checkbox
   label: "¿Qué ambientes existen?"
@@ -206,12 +238,17 @@ template: |
 ```
 
 **Genera:**
+
 - Lista de checkboxes
+
 - Opciones pre-seleccionadas con `checked: true`
+
 - Campo "otro" opcional
 
 **Variables generadas:**
+
 - `{{environments}}` → Array de valores: `["local", "prod"]`
+
 - `{{environments_other}}` → Texto ingresado (si aplica)
 
 ---
@@ -219,6 +256,7 @@ template: |
 ### 5️⃣ Textarea (Texto multilínea)
 
 ```yaml
+
 - id: additionalNotes
   type: textarea
   label: "Notas adicionales:"
@@ -228,8 +266,11 @@ template: |
 ```
 
 **Genera:**
+
 - Área de texto multilínea
+
 - Tamaño configurable con `rows`
+
 - Redimensionable verticalmente
 
 ---
@@ -264,7 +305,9 @@ template: |
 ### Variables disponibles:
 
 - `{{nombreVariable}}` → Se reemplaza con el valor del campo
+
 - Para arrays (checkboxes): `{{environments}}` → `"local, prod"`
+
 - Para "otro": `{{campo_other}}` → Texto ingresado
 
 ---
@@ -414,15 +457,25 @@ Si necesitas lógica más compleja para generar el prompt, puedes extender la cl
 ## 📋 Checklist para Crear un Nuevo Prompt
 
 - [ ] Definir ID único del prompt
+
 - [ ] Escribir título y descripción claros
+
 - [ ] Identificar secciones lógicas
+
 - [ ] Listar todas las preguntas necesarias
+
 - [ ] Elegir el tipo de input adecuado para cada pregunta
+
 - [ ] Agregar textos de ayuda (`help`) donde sea necesario
+
 - [ ] Definir valores por defecto razonables
+
 - [ ] Incluir opciones "Otro" donde aplique
+
 - [ ] Escribir el template del prompt
+
 - [ ] Probar con datos reales
+
 - [ ] Documentar el prompt en esta guía
 
 ---
@@ -432,18 +485,23 @@ Si necesitas lógica más compleja para generar el prompt, puedes extender la cl
 ### El formulario no se muestra
 
 1. Verifica que el ID en `data-prompt="XX"` existe en `prompts-config.yaml`
+
 2. Abre la consola del navegador (F12) y busca errores
+
 3. Verifica que `prompt-builder.js` se está cargando correctamente
 
 ### Las variables no se reemplazan
 
 - Asegúrate de usar `{{nombreVariable}}` con llaves dobles
+
 - El `id` del campo debe coincidir con el nombre de la variable
+
 - Los arrays (checkboxes) se convierten automáticamente a string separado por comas
 
 ### El campo "Otro" no aparece
 
 - Verifica que `showOther: true` esté en la pregunta
+
 - El valor de la opción debe ser exactamente `"otro"` (minúsculas)
 
 ---
@@ -461,10 +519,15 @@ Si necesitas lógica más compleja para generar el prompt, puedes extender la cl
 ## 🚀 Próximas Mejoras
 
 - [ ] Validaciones personalizadas (ej: formato de email, URL)
+
 - [ ] Campos dependientes (mostrar pregunta B solo si respuesta A es X)
+
 - [ ] Exportar/importar respuestas (JSON)
+
 - [ ] Guardar respuestas en localStorage
+
 - [ ] Preview del prompt en tiempo real
+
 - [ ] Soporte para i18n (internacionalización)
 
 ---

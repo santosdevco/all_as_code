@@ -414,8 +414,172 @@
 </div>
 
 <script>
+// ============================================
+// DECLARACIÓN DE FUNCIONES GLOBALES (antes de DOMContentLoaded)
+// ============================================
+
+// Variables globales
 let currentProjectForAnalysis = null;
 let currentAnalysisType = 'arquitectura';
+let searchTimeout;
+
+// Navegación por pestañas
+window.switchTab = function(tabName) {
+    console.log('switchTab called:', tabName);
+    
+    document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    
+    document.querySelectorAll('.tabs-container .tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    
+    const tabContent = document.getElementById('tab-' + tabName);
+    if (tabContent) {
+        tabContent.classList.add('active');
+        console.log('✅ Tab activada:', tabName);
+    } else {
+        console.error('❌ Tab no encontrada:', 'tab-' + tabName);
+    }
+    
+    document.querySelectorAll('.tabs-container .tab-btn').forEach(btn => {
+        const onclick = btn.getAttribute('onclick');
+        if (onclick && onclick.includes("switchTab('" + tabName + "')")) {
+            btn.classList.add('active');
+        }
+    });
+}
+
+// Búsqueda de sesiones
+window.handleSearch = async function() {
+    console.log('🔍 handleSearch called');
+    const searchInput = document.getElementById('search-sessions');
+    const searchResults = document.getElementById('search-results');
+    
+    if (!searchInput || !searchResults) {
+        console.error('❌ Elementos de búsqueda no encontrados');
+        return;
+    }
+    
+    const query = searchInput.value.trim();
+    console.log('Query:', query);
+    
+    clearTimeout(searchTimeout);
+    
+    if (query.length < 3) {
+        searchResults.style.display = 'none';
+        return;
+    }
+    
+    searchTimeout = setTimeout(async () => {
+        try {
+            searchResults.innerHTML = '<p>🔍 Buscando...</p>';
+            searchResults.style.display = 'block';
+            
+            const baseUrl = window.location.hostname === 'localhost' 
+                ? 'http://localhost:8000' 
+                : 'https://fastdocumentationai-backend-1.onrender.com';
+            
+            console.log('Buscando en:', `${baseUrl}/api/search/analyses?q=${encodeURIComponent(query)}`);
+            const response = await fetch(`${baseUrl}/api/search/analyses?q=${encodeURIComponent(query)}&limit=20`);
+            
+            if (!response.ok) {
+                throw new Error(`Error ${response.status}`);
+            }
+            
+            const sessions = await response.json();
+            console.log('✅ Sesiones encontradas:', sessions.length);
+            
+            if (sessions.length === 0) {
+                searchResults.innerHTML = `
+                    <div style="padding: 20px; text-align: center; color: #7f8c8d;">
+                        <p>😕 No se encontraron sesiones que coincidan con "<strong>${query}</strong>"</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            const getAnalysisTypeEmoji = (type) => {
+                const emojis = {
+                    'arquitectura': '🏗️', 'api': '🔌', 'deployment': '🚀',
+                    'requerimientos': '📋', 'procesos-negocio': '💼', 'tecnica': '⚙️',
+                    'vista-ejecutiva': '👔', 'adr': '📐', 'swagger': '📖'
+                };
+                return emojis[type] || '📄';
+            };
+            
+            const formatDate = (dateString) => {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('es-ES', { 
+                    year: 'numeric', month: 'long', day: 'numeric',
+                    hour: '2-digit', minute: '2-digit'
+                });
+            };
+            
+            searchResults.innerHTML = `
+                <div style="margin-bottom: 10px; padding: 10px; background: #e8f5e9; border-radius: 6px;">
+                    <strong>✨ ${sessions.length} resultado${sessions.length > 1 ? 's' : ''} encontrado${sessions.length > 1 ? 's' : ''}</strong>
+                </div>
+                ${sessions.map(session => `
+                    <div style="padding: 15px; margin-bottom: 10px; background: white; border: 1px solid #e0e0e0; border-radius: 8px;">
+                        <div style="display: flex; justify-content: space-between; align-items: start;">
+                            <div style="flex: 1;">
+                                <h4 style="margin: 0 0 5px 0; color: #2c3e50;">
+                                    ${getAnalysisTypeEmoji(session.analysis_type)} ${session.yaml_config?.title || 'Sin título'}
+                                </h4>
+                                <p style="margin: 0; color: #7f8c8d; font-size: 0.9em;">
+                                    📁 ${session.project_name} | 
+                                    📅 ${formatDate(session.updated_at)} |
+                                    🔄 Iteración ${session.iteration}
+                                </p>
+                            </div>
+                            <div>
+                                ${session.answers && Object.keys(session.answers).length > 0 
+                                    ? '<span style="background: #d4edda; color: #155724; padding: 4px 8px; border-radius: 4px; font-size: 0.8em;">✅ Respondida</span>'
+                                    : '<span style="background: #fff3cd; color: #856404; padding: 4px 8px; border-radius: 4px; font-size: 0.8em;">⏳ Pendiente</span>'
+                                }
+                            </div>
+                        </div>
+                        <div style="margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap;">
+                            <button class="btn btn-small" onclick="window.open('${session.share_url}', '_blank')">
+                                📝 Abrir Formulario
+                            </button>
+                            ${session.answers && Object.keys(session.answers).length > 0 ? `
+                                <button class="btn btn-small btn-secondary" onclick="viewAnswersInModal('${session.id}')">
+                                    👁️ Ver Respuestas
+                                </button>
+                                <button class="btn btn-small btn-secondary" onclick="copyOutputPrompt('${session.id}')">
+                                    📋 Copiar Prompt 2
+                                </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                `).join('')}
+            `;
+            
+        } catch (error) {
+            console.error('Error en búsqueda:', error);
+            searchResults.innerHTML = `
+                <div style="padding: 20px; background: #fff3cd; border-radius: 6px;">
+                    <p style="color: #856404; margin: 0;">⚠️ Error al buscar: ${error.message}</p>
+                </div>
+            `;
+        }
+    }, 500);
+}
+
+// Limpiar búsqueda
+window.clearSearch = function() {
+    console.log('🧹 clearSearch called');
+    const searchInput = document.getElementById('search-sessions');
+    const searchResults = document.getElementById('search-results');
+    
+    if (searchInput) searchInput.value = '';
+    if (searchResults) searchResults.style.display = 'none';
+}
+
+console.log('✅ Funciones globales cargadas');
 
 // Prompts de análisis disponibles
 const ANALYSIS_PROMPTS = {
@@ -432,9 +596,10 @@ const ANALYSIS_PROMPTS = {
 
 // Cargar proyectos al iniciar
 document.addEventListener('DOMContentLoaded', async () => {
-    console.log('DOMContentLoaded - Panel de Proyectos');
+    console.log('✅ DOMContentLoaded - Panel de Proyectos');
     console.log('window.documentationFlow:', window.documentationFlow);
     console.log('window.apiClient:', window.apiClient);
+    console.log('switchTab function:', typeof window.switchTab);
     
     // Esperar a que los scripts se carguen
     let attempts = 0;
@@ -445,54 +610,29 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     
     if (!window.documentationFlow) {
-        console.error('window.documentationFlow no está disponible');
-        document.getElementById('projects-list').innerHTML = `
-            <div class="project-card" style="background: #fff3cd; border-color: #ffc107;">
-                <h3 style="color: #856404; margin-top: 0;">⚠️ Error cargando dependencias</h3>
-                <p>Los scripts necesarios no se cargaron correctamente.</p>
-                <p style="color: #666; font-size: 0.9em;">Recarga la página (Ctrl+R)</p>
-            </div>
-        `;
+        console.error('❌ window.documentationFlow no está disponible');
+        const projectsList = document.getElementById('projects-list');
+        if (projectsList) {
+            projectsList.innerHTML = `
+                <div class="project-card" style="background: #fff3cd; border-color: #ffc107;">
+                    <h3 style="color: #856404; margin-top: 0;">⚠️ Error cargando dependencias</h3>
+                    <p>Los scripts necesarios no se cargaron correctamente.</p>
+                    <p style="color: #666; font-size: 0.9em;">Recarga la página (Ctrl+R)</p>
+                </div>
+            `;
+        }
         return;
     }
     
+    console.log('✅ Cargando proyectos y biblioteca...');
     await loadProjects();
     await loadPromptsLibrary();
+    console.log('✅ Panel de proyectos inicializado');
 });
 
 // ============================================
-// NAVEGACIÓN POR PESTAÑAS
+// FUNCIONES DE ANÁLISIS Y MODALES
 // ============================================
-
-function switchTab(tabName) {
-    console.log('switchTab:', tabName);
-    
-    // Ocultar todas las pestañas
-    document.querySelectorAll('.tab-content').forEach(tab => {
-        tab.classList.remove('active');
-    });
-    
-    // Desactivar todos los botones
-    document.querySelectorAll('.tabs-container .tab-btn').forEach(btn => {
-        btn.classList.remove('active');
-    });
-    
-    // Activar pestaña seleccionada
-    const tabContent = document.getElementById('tab-' + tabName);
-    if (tabContent) {
-        tabContent.classList.add('active');
-    } else {
-        console.error('Tab not found:', 'tab-' + tabName);
-    }
-    
-    // Activar botón correspondiente (buscar por onclick)
-    document.querySelectorAll('.tabs-container .tab-btn').forEach(btn => {
-        const onclick = btn.getAttribute('onclick');
-        if (onclick && onclick.includes("switchTab('" + tabName + "')")) {
-            btn.classList.add('active');
-        }
-    });
-}
 
 function switchAnalysisTab(tabName) {
     // Ocultar todas las pestañas del modal
@@ -1196,109 +1336,6 @@ function getStatusBadge(status) {
     return badges[status] || badges['active'];
 }
 
-// ============================================
-// BÚSQUEDA DE SESIONES
-// ============================================
-
-let searchTimeout;
-
-async function handleSearch() {
-    const searchInput = document.getElementById('search-sessions');
-    const searchResults = document.getElementById('search-results');
-    const query = searchInput.value.trim();
-    
-    // Limpiar timeout anterior
-    clearTimeout(searchTimeout);
-    
-    if (query.length < 3) {
-        searchResults.style.display = 'none';
-        return;
-    }
-    
-    // Debounce de 500ms
-    searchTimeout = setTimeout(async () => {
-        try {
-            searchResults.innerHTML = '<p>🔍 Buscando...</p>';
-            searchResults.style.display = 'block';
-            
-            const baseUrl = window.location.hostname === 'localhost' 
-                ? 'http://localhost:8000' 
-                : 'https://fastdocumentationai-backend-1.onrender.com';
-            
-            const response = await fetch(`${baseUrl}/api/search/analyses?q=${encodeURIComponent(query)}&limit=20`);
-            
-            if (!response.ok) {
-                throw new Error(`Error ${response.status}`);
-            }
-            
-            const sessions = await response.json();
-            
-            if (sessions.length === 0) {
-                searchResults.innerHTML = `
-                    <div style="padding: 20px; text-align: center; color: #7f8c8d;">
-                        <p>😕 No se encontraron sesiones que coincidan con "<strong>${query}</strong>"</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            searchResults.innerHTML = `
-                <div style="margin-bottom: 10px; padding: 10px; background: #e8f5e9; border-radius: 6px;">
-                    <strong>✨ ${sessions.length} resultado${sessions.length > 1 ? 's' : ''} encontrado${sessions.length > 1 ? 's' : ''}</strong>
-                </div>
-                ${sessions.map(session => `
-                    <div style="padding: 15px; margin-bottom: 10px; background: white; border: 1px solid #e0e0e0; border-radius: 8px;">
-                        <div style="display: flex; justify-content: space-between; align-items: start;">
-                            <div style="flex: 1;">
-                                <h4 style="margin: 0 0 5px 0; color: #2c3e50;">
-                                    ${getAnalysisTypeEmoji(session.analysis_type)} ${session.yaml_config?.title || 'Sin título'}
-                                </h4>
-                                <p style="margin: 0; color: #7f8c8d; font-size: 0.9em;">
-                                    📁 ${session.project_name} | 
-                                    📅 ${formatDate(session.updated_at)} |
-                                    🔄 Iteración ${session.iteration}
-                                </p>
-                            </div>
-                            <div>
-                                ${session.answers && Object.keys(session.answers).length > 0 
-                                    ? '<span style="background: #d4edda; color: #155724; padding: 4px 8px; border-radius: 4px; font-size: 0.8em;">✅ Respondida</span>'
-                                    : '<span style="background: #fff3cd; color: #856404; padding: 4px 8px; border-radius: 4px; font-size: 0.8em;">⏳ Pendiente</span>'
-                                }
-                            </div>
-                        </div>
-                        <div style="margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap;">
-                            <button class="btn btn-small" onclick="window.open('${session.share_url}', '_blank')">
-                                📝 Abrir Formulario
-                            </button>
-                            ${session.answers && Object.keys(session.answers).length > 0 ? `
-                                <button class="btn btn-small btn-secondary" onclick="viewAnswersInModal('${session.id}')">
-                                    👁️ Ver Respuestas
-                                </button>
-                                <button class="btn btn-small btn-secondary" onclick="copyOutputPrompt('${session.id}')">
-                                    📋 Copiar Prompt 2
-                                </button>
-                            ` : ''}
-                        </div>
-                    </div>
-                `).join('')}
-            `;
-            
-        } catch (error) {
-            console.error('Error en búsqueda:', error);
-            searchResults.innerHTML = `
-                <div style="padding: 20px; background: #fff3cd; border-radius: 6px;">
-                    <p style="color: #856404; margin: 0;">⚠️ Error al buscar: ${error.message}</p>
-                </div>
-            `;
-        }
-    }, 500);
-}
-
-function clearSearch() {
-    document.getElementById('search-sessions').value = '';
-    document.getElementById('search-results').style.display = 'none';
-}
-
 function getAnalysisTypeEmoji(type) {
     const emojis = {
         'arquitectura': '🏗️',
@@ -1313,8 +1350,6 @@ function getAnalysisTypeEmoji(type) {
     };
     return emojis[type] || '📄';
 }
-    return badges[status] || `<span class="status-badge">${status}</span>`;
-}
 
 function formatDate(dateString) {
     const date = new Date(dateString);
@@ -1326,4 +1361,10 @@ function formatDate(dateString) {
         minute: '2-digit'
     });
 }
+
+console.log('✅ Panel de Proyectos: Script cargado');
+console.log('switchTab:', typeof window.switchTab);
+console.log('handleSearch:', typeof window.handleSearch);
+console.log('clearSearch:', typeof window.clearSearch);
 </script>
+

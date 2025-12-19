@@ -75,8 +75,11 @@ Ve a **🎮 Demos → Swagger UI Interactivo** en el menú lateral.
 ### 4. Probar la API Interactiva
 
 1. Expande `POST /auth/login`
+
 2. Haz clic en "Try it out"
+
 3. Haz clic en "Execute"
+
 4. ¡Ve la respuesta!
 
 ---
@@ -86,24 +89,31 @@ Ve a **🎮 Demos → Swagger UI Interactivo** en el menú lateral.
 ### Para Documentar Tu Propia API:
 
 1. **Genera `openapi.yaml`** usando **Prompt 10** de la guía
+
 2. **Copia el archivo** al hub de documentación:
    ```bash
    cp tu-proyecto/openapi.yaml docs/proyectos/tu-api/
    ```
+
 3. **Crea una página** como `docs/proyectos/tu-api/api-reference.md`:
    ```markdown
    # API Reference
    
    <swagger-ui src="../openapi.yaml"/>
    ```
+
 4. **Actualiza la navegación** en `mkdocs.yml`
 
 ### Referencia Completa
 
 Consulta la [Guía de Integración Swagger](../guia-documentacion/11-integracion-swagger.md) para:
+
 - Configuración avanzada
+
 - Personalización de temas
+
 - Troubleshooting
+
 - Ejemplos completos
 
 ---
@@ -111,12 +121,19 @@ Consulta la [Guía de Integración Swagger](../guia-documentacion/11-integracion
 ## ✅ Checklist
 
 - [x] Plugin instalado
+
 - [x] `mkdocs.yml` configurado
+
 - [x] `requirements.txt` actualizado
+
 - [x] Demo funcional en `/ejemplos/swagger-demo/`
+
 - [ ] Generar `openapi.yaml` para tu proyecto (Prompt 10)
+
 - [ ] Copiar al hub de docs
+
 - [ ] Crear página de API Reference
+
 - [ ] Probar localmente
 
 ---

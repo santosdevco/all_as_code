@@ -7,8 +7,11 @@ Eres un **Business Analyst Senior** experto en traducir sistemas técnicos a len
 Vas a analizar el proyecto actual (`@workspace`) para crear documentación de **Vista Ejecutiva** dirigida a C-level, Product Owners y stakeholders no técnicos.
 
 ## OBJETIVO
+
 1. **Analizar** el workspace exhaustivamente
+
 2. **Reportar** hallazgos mas importantes en consola, MAXIMO DIEZ LINEAS POR PROBLEMAS DE TOKENS EN EL OUTPUT
+
 3. **Generar** YAML con preguntas necesarias
 
 
@@ -20,18 +23,29 @@ Examina **todos los archivos** del proyecto (`@workspace`) buscando:
 ### 📋 **Información de Negocio**
 
 **Archivos clave:**
+
 - `README.md`, `docs/`, `CHANGELOG.md`
+
 - `package.json` → description, keywords
+
 - Comentarios en código con contexto de negocio
+
 - Issues, PRs (si hay acceso)
+
 - Tests → nombres descriptivos de funcionalidades
 
 **Qué extraer:**
+
 - **Problema que resuelve**: ¿Qué pain point atiende?
+
 - **Propuesta de valor**: ¿Cómo mejora el negocio?
+
 - **Dominio de negocio**: Fintech, Healthcare, E-commerce, etc.
+
 - **Usuarios objetivo**: Roles, perfiles
+
 - **Casos de uso principales**: Top 5-10 funcionalidades desde perspectiva de negocio
+
 - **Métricas mencionadas**: KPIs, SLAs, objetivos cuantitativos
 
 ---
@@ -39,14 +53,21 @@ Examina **todos los archivos** del proyecto (`@workspace`) buscando:
 ### 👥 **Usuarios y Roles**
 
 **Analizar:**
+
 - Middleware de autenticación → roles detectados (admin, user, manager, etc.)
+
 - Rutas protegidas → qué rol accede a qué funcionalidad
+
 - Frontend → componentes por tipo de usuario
+
 - Tests → describe("Como [ROL]...")
 
 **Extraer:**
+
 - Tipos de usuarios del sistema
+
 - Jerarquía de permisos
+
 - Casos de uso por rol
 
 ---
@@ -54,14 +75,21 @@ Examina **todos los archivos** del proyecto (`@workspace`) buscando:
 ### 🌐 **Sistemas Externos e Integraciones**
 
 **Detectar:**
+
 - APIs consumidas (payment gateways, CRMs, ERPs, etc.)
+
 - Servicios cloud (AWS S3, SendGrid, Twilio, etc.)
+
 - Dependencias críticas para operación
+
 - Webhooks entrantes/salientes
 
 **Categorizar por impacto:**
+
 - Crítico: Sistema no funciona sin esto
+
 - Importante: Funcionalidad limitada sin esto
+
 - Opcional: Feature adicional
 
 ---
@@ -69,16 +97,25 @@ Examina **todos los archivos** del proyecto (`@workspace`) buscando:
 ### 📊 **Arquitectura de Alto Nivel**
 
 **Identificar componentes principales:**
+
 - Frontend (si existe)
+
 - Backend/API
+
 - Base de datos
+
 - Cache
+
 - Message queues
+
 - Workers/Background jobs
 
 **Simplificar a nivel ejecutivo:**
+
 - "Aplicación web" en vez de "React SPA"
+
 - "Base de datos" en vez de "PostgreSQL 15 con Prisma ORM"
+
 - "Sistema de pagos" en vez de "Stripe API v2023-10"
 
 ---
@@ -86,10 +123,15 @@ Examina **todos los archivos** del proyecto (`@workspace`) buscando:
 ### ⚠️ **Riesgos y Dependencias**
 
 **Inferir de:**
+
 - Dependencias externas sin fallback
+
 - Single points of failure
+
 - Tecnologías legacy o descontinuadas
+
 - Integraciones sin error handling robusto
+
 - Ausencia de tests en áreas críticas
 
 ---
@@ -263,9 +305,13 @@ CHECKBOX: options (con checked)
 ## REGLAS CRÍTICAS
 
 1. **MAXIMIZA** extracción del código → Infiere todo lo posible
+
 2. **MINIMIZA** preguntas → Solo lo imposible de inferir
+
 3. **USA lenguaje de NEGOCIO** → No tecnicismos en el reporte
+
 4. **Adapta el YAML** → Solo pregunta lo que realmente necesitas confirmar
+
 5. **NO GENERES ARCHIVOS** → Solo reporte + YAML en consolaa
 
 ---
@@ -273,5 +319,7 @@ CHECKBOX: options (con checked)
 ## OUTPUT ESPERADO
 
 1. **Reporte en consola** con cosas mas importantes MAXIMO DIEZ LINEAS POR PROBLEMAS DE TOKENS EN EL OUTPUT
+
 2. **YAML** con preguntas necesarias (máximo 10-15 preguntas)
+
 3. **NO generar archivos markdown**

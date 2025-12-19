@@ -5,8 +5,11 @@
 Los diagramas de secuencia son **la herramienta ideal** para visualizar:
 
 - ⏱️ **TIEMPO:** Duración de operaciones
+
 - 🔒 **BLOQUEOS:** Llamadas síncronas que frenan el sistema
+
 - 🔄 **DEPENDENCIAS:** Servicios externos que afectan performance
+
 - 📊 **ORDEN:** Secuencia exacta de eventos
 
 ### Cuándo Usarlos
@@ -95,8 +98,11 @@ Los diagramas de secuencia son **la herramienta ideal** para visualizar:
 ### ¿Qué Revela el Diagrama?
 
 1. **Paso 3:** Llamada SÍNCRONA a servicio externo (AFIP)
+
 2. **Bloqueo:** El usuario espera mientras AFIP responde
+
 3. **Sin control:** La latencia depende de un tercero
+
 4. **Impacto:** Si AFIP cae, TODO el sistema se frena
 
 ---
@@ -206,7 +212,7 @@ Los diagramas de secuencia son **la herramienta ideal** para visualizar:
         Note over API, DB: ❌ ANTI-PATRÓN: N+1 Queries
 
         API->>DB: SELECT * FROM users LIMIT 10
-        DB-->>API: [10 usuarios]
+        DB-->>API: ["10 usuarios"]
 
         loop Por cada usuario (10 veces)
             API->>DB: SELECT * FROM orders WHERE user_id = ?
@@ -333,7 +339,9 @@ Los diagramas de secuencia son **la herramienta ideal** para visualizar:
 **Estrategias:**
 
 - **Cache warming:** Precalentar cache en deploy
+
 - **Cache aside:** Actualizar cache en escrituras
+
 - **Stale-while-revalidate:** Servir cache viejo mientras actualizas
 
 ---
@@ -380,8 +388,11 @@ sequenceDiagram
 
 ### 1. Resalta el Problema
 Usa colores para indicar zonas problemáticas:
+
 - 🔴 Rojo (`rgb(255, 200, 200)`) → Cuello de botella
+
 - 🟢 Verde (`rgb(200, 255, 200)`) → Solución
+
 - 🟡 Amarillo (`rgb(255, 255, 200)`) → Advertencia
 
 ### 2. Anota Tiempos
@@ -434,8 +445,11 @@ No más de 5-6 servicios por diagrama. Si es complejo, divídelo.
 ## 📚 Recursos Adicionales
 
 - **Mermaid Sequence Diagram Docs:** https://mermaid.js.org/syntax/sequenceDiagram.html
+
 - **Patrón CQRS:** Command Query Responsibility Segregation
+
 - **Event-Driven Architecture:** Para desacoplar servicios
+
 - **Circuit Breaker Pattern:** Resiliencia ante fallos de terceros
 
 ---

@@ -67,9 +67,13 @@ O con botón on-demand:
 ```
 
 **Problemas:**
+
 - ❌ Código duplicado en cada prompt
+
 - ❌ Difícil de mantener
+
 - ❌ Cambios requieren editar múltiples archivos
+
 - ❌ No reutilizable
 
 ### ✅ Ahora (Sistema Modular):
@@ -91,10 +95,15 @@ O con botón on-demand:
 ```
 
 **Ventajas:**
+
 - ✅ 1 línea de código en cada página
+
 - ✅ Configuración centralizada en JSON
+
 - ✅ Fácil de crear nuevos formularios
+
 - ✅ Mantenimiento simple
+
 - ✅ Reutilizable en todos los prompts
 
 ## 📚 Crear un Nuevo Formulario
@@ -144,8 +153,11 @@ O con botón on-demand:
 ```
 
 ¡Eso es todo! El sistema automáticamente:
+
 - Carga la configuración
+
 - Renderiza el formulario
+
 - Genera el prompt con las variables reemplazadas
 
 ## 🔧 Tipos de Preguntas Soportados
@@ -159,9 +171,13 @@ O con botón on-demand:
 | `checkbox` | Selección múltiple | Herramientas de monitoreo |
 
 **Opciones especiales:**
+
 - `showOther: true` - Agrega campo "Otro" para texto libre
+
 - `required: true` - Campo obligatorio
+
 - `help: "..."` - Texto de ayuda debajo del campo
+
 - `default: "value"` - Valor por defecto
 
 ## 🎨 Personalización
@@ -194,6 +210,7 @@ loadPromptForm('07');
 ```
 
 **Parámetros:**
+
 - `promptId` (string): ID del prompt (nombre del archivo sin .yaml)
 
 **Uso en HTML:**
@@ -213,8 +230,11 @@ loadPromptFromYAML('yaml-input', 'output-div', 'my-unique-id');
 ```
 
 **Parámetros:**
+
 - `textareaId` (string): ID del textarea con el YAML
+
 - `containerId` (string): ID del div donde renderizar el formulario
+
 - `instanceId` (string): ID único para esta instancia del formulario
 
 **Uso en HTML:**
@@ -227,8 +247,11 @@ loadPromptFromYAML('yaml-input', 'output-div', 'my-unique-id');
 ```
 
 **Validaciones:**
+
 - ✅ Verifica que el YAML sea válido antes de cargar
+
 - ✅ Muestra error descriptivo si el YAML es inválido
+
 - ✅ Valida que textarea y container existan
 
 ---
@@ -254,24 +277,35 @@ Resultado: "cloudwatch, datadog"
 Ver `/docs/guia-documentacion/12-formularios-interactivos.md` para:
 
 - 📝 Guía completa de configuración
+
 - 🎯 Mejores prácticas
+
 - 🔧 Troubleshooting
+
 - 📚 Ejemplos avanzados
 
 Ver `/docs/guia-documentacion/test_aiprompt.md` para:
 
 - 🔍 Sistema de 2 Fases (Análisis + Formulario)
+
 - 📋 Cómo usar YAML generado dinámicamente
+
 - 🚀 Workflow completo de generación de docs
 
 ## 🚀 Próximas Mejoras
 
 - [ ] Validaciones personalizadas (email, URL, regex)
+
 - [ ] Campos condicionales (mostrar B solo si A es X)
+
 - [ ] Exportar/importar respuestas (JSON)
+
 - [ ] LocalStorage para guardar progreso
+
 - [ ] Preview en tiempo real
+
 - [ ] i18n (internacionalización)
+
 - [x] ✅ Cargar YAML desde texto directo (implementado)
 
 ## 💡 Contribuir
@@ -279,7 +313,9 @@ Ver `/docs/guia-documentacion/test_aiprompt.md` para:
 Para agregar un nuevo formulario:
 
 1. Define la configuración en `prompts-config.json`
+
 2. Usa `<div data-prompt="ID"></div>` en markdown
+
 3. Documenta en `12-formularios-interactivos.md`
 
 ---

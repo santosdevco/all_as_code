@@ -5,8 +5,11 @@
 Los **Data Flow Diagrams** son ideales para:
 
 - 🔍 **Auditar:** ¿Dónde viajan datos sensibles?
+
 - 🛡️ **Compliance:** GDPR, PCI-DSS, ISO 27001
+
 - 🚨 **Threat Modeling:** Identificar vectores de ataque
+
 - 📋 **Trazabilidad:** ¿Qué datos se loguean?
 
 ### Cuándo Usarlos
@@ -38,10 +41,10 @@ Los **Data Flow Diagrams** son ideales para:
     ```mermaid
     graph LR
         %% Definición de Nodos
-        User((Usuario Final))
-        WebApp[Aplicación Web]
-        LogSys[Sistema de Logs<br/>Datadog/Splunk]
-        DB[(Base de Datos<br/>Usuarios)]
+        User(("Usuario Final"))
+        WebApp["Aplicación Web"]
+        LogSys["Sistema de Logs<br/>Datadog/Splunk"]
+        DB["(Base de Datos<br/>Usuarios)"]
         
         %% Estilos para resaltar el peligro
         classDef danger fill:#ffcccc,stroke:#ff0000,stroke-width:2px,color:#000;
@@ -60,7 +63,7 @@ Los **Data Flow Diagrams** son ideales para:
         end
 
         %% Anotación del problema
-        Note[🔥 ALERTA DE SEGURIDAD<br/>Password en texto plano en logs<br/>Violación ISO 27001]
+        Note["🔥 ALERTA DE SEGURIDAD<br/>Password en texto plano en logs<br/>Violación ISO 27001"]
         
         LogSys -.-> Note
         
@@ -112,8 +115,11 @@ Los **Data Flow Diagrams** son ideales para:
 ### ¿Qué Revela el Diagrama?
 
 1. ✅ **Zona Segura:** Password se hashea ANTES de guardar en BD
+
 2. ❌ **Zona de Riesgo:** Request body completo va a logs externos
+
 3. 🚨 **Impacto:** Logs en texto plano accesibles por DevOps, vendors, etc.
+
 4. ⚖️ **Compliance:** Violación de GDPR, PCI-DSS, ISO 27001
 
 ---
@@ -127,10 +133,10 @@ Los **Data Flow Diagrams** son ideales para:
     ```mermaid
     graph LR
         User((Usuario))
-        WebApp[Aplicación Web]
-        Sanitizer[Filtro de Logs<br/>Middleware]
-        LogSys[Sistema de Logs]
-        DB[(Base de Datos)]
+        WebApp["Aplicación Web"]
+        Sanitizer["Filtro de Logs<br/>Middleware"]
+        LogSys["Sistema de Logs"]
+        DB["(Base de Datos)"]
         
         classDef safe fill:#ccffcc,stroke:#006600,stroke-width:2px,color:#000;
         classDef neutral fill:#e0e0e0,stroke:#666,color:#000;
@@ -143,7 +149,7 @@ Los **Data Flow Diagrams** son ideales para:
             Sanitizer -- "4. JSON sanitizado:<br/>{user: 'john', pass: '***'}" --> LogSys
         end
         
-        Note[✅ SOLUCIÓN:<br/>Middleware elimina campos sensibles<br/>ANTES de loguear]
+        Note["✅ SOLUCIÓN:<br/>Middleware elimina campos sensibles<br/>ANTES de loguear"]
         Sanitizer -.- Note
         
         class WebApp,Sanitizer,DB,LogSys safe;
@@ -214,9 +220,9 @@ app.use(sanitizeLog);
 
     ```mermaid
     graph LR
-        Mobile[App Móvil]
-        LB[Load Balancer]
-        API[API Server]
+        Mobile["App Móvil"]
+        LB["Load Balancer"]
+        API["API Server"]
         DB[(Database)]
         
         classDef encrypted fill:#ccffcc,stroke:#006600,stroke-width:2px,color:#000;
@@ -226,9 +232,9 @@ app.use(sanitizeLog);
         LB -- "HTTP (Interno)" --> API
         API -- "TLS/SSL" --> DB
         
-        Note1[✅ Encriptado]
-        Note2[⚠️ Red interna<br/>¿VPC privada?]
-        Note3[✅ Encriptado]
+        Note1["✅ Encriptado"]
+        Note2["⚠️ Red interna<br/>¿VPC privada?"]
+        Note3["✅ Encriptado"]
     ```
 
 === "📋 Código"
@@ -272,13 +278,13 @@ app.use(sanitizeLog);
 
     ```mermaid
     graph TB
-        User[Usuario EU]
-        App[Aplicación]
-        API[API Gateway]
-        Auth[Servicio Auth]
-        UserDB[(Users DB<br/>PII Data)]
+        User["Usuario EU"]
+        App["Aplicación"]
+        API["API Gateway"]
+        Auth["Servicio Auth"]
+        UserDB["(Users DB<br/>PII Data)"]
         Analytics["(Analytics DB<br/>Anonymized)"]
-        Logs[Audit Logs]
+        Logs["Audit Logs"]
         
         classDef pii fill:#ffcccc,stroke:#ff0000,stroke-width:2px,color:#000;
         classDef anonymized fill:#ccffcc,stroke:#006600,stroke-width:2px,color:#000;
@@ -293,7 +299,7 @@ app.use(sanitizeLog);
         API -->|7. Registrar acceso| Logs
         API -->|8. Query anónimo| Analytics
         
-        Note[🔒 GDPR Compliance:<br/>- PII solo en UserDB<br/>- Analytics anonimizado<br/>- Audit log de todos los accesos]
+        Note["🔒 GDPR Compliance:<br/>- PII solo en UserDB<br/>- Analytics anonimizado<br/>- Audit log de todos los accesos"]
         
         UserDB -.-> Note
         
@@ -335,8 +341,11 @@ app.use(sanitizeLog);
     ```
 
 **Casos de Uso:**
+
 - Right to be Forgotten (GDPR Art. 17)
+
 - Data Portability (GDPR Art. 20)
+
 - Auditorías de compliance
 
 ---
@@ -347,10 +356,10 @@ app.use(sanitizeLog);
 
     ```mermaid
     graph LR
-        Attacker((🔴 Atacante))
-        WAF[Web App Firewall]
-        App[Aplicación]
-        DB[(Base de Datos)]
+        Attacker(("🔴 Atacante"))
+        WAF["Web App Firewall"]
+        App["Aplicación"]
+        DB["(Base de Datos)"]
         
         classDef blocked fill:#ccffcc,stroke:#006600,stroke-width:2px,color:#000;
         classDef vulnerable fill:#ffcccc,stroke:#ff0000,stroke-width:2px,color:#000;
@@ -361,8 +370,8 @@ app.use(sanitizeLog);
         WAF -- "Input sanitizado" --> App
         App -- "Query parametrizada" --> DB
         
-        Note1[✅ Defensa 1: WAF<br/>Detecta patrones maliciosos]
-        Note2[✅ Defensa 2: Prepared Statements<br/>Previene inyección]
+        Note1["✅ Defensa 1: WAF<br/>Detecta patrones maliciosos"]
+        Note2["✅ Defensa 2: Prepared Statements<br/>Previene inyección"]
         
         WAF -.-> Note1
         App -.-> Note2
@@ -406,8 +415,8 @@ app.use(sanitizeLog);
 ```markdown
 ```mermaid
 graph LR
-    A[Componente A] --> B[Componente B]
-    B --> C[(Base de Datos)]
+    A["Componente A"] --> B["Componente B"]
+    B --> C["(Base de Datos)"]
     
     %% Estilos personalizados
     classDef danger fill:#ffcccc,stroke:#ff0000;
@@ -444,23 +453,35 @@ class ComponenteSospechoso warning;
 Usa DFDs para validar:
 
 ### Datos en Tránsito
+
 - [ ] ¿Todos los flujos usan HTTPS/TLS?
+
 - [ ] ¿Las APIs internas están en VPC privada?
+
 - [ ] ¿Se valida el certificado SSL?
 
 ### Datos en Reposo
+
 - [ ] ¿Los passwords están hasheados (bcrypt/argon2)?
+
 - [ ] ¿Los datos sensibles tienen encriptación at-rest?
+
 - [ ] ¿Las claves están en secretos (no en código)?
 
 ### Logs y Auditoría
+
 - [ ] ¿Se sanitizan datos sensibles ANTES de loguear?
+
 - [ ] ¿Los logs están en storage seguro (no público)?
+
 - [ ] ¿Hay audit trail de accesos a PII?
 
 ### Autenticación/Autorización
+
 - [ ] ¿Dónde se validan los tokens?
+
 - [ ] ¿Qué servicios tienen acceso a datos sensibles?
+
 - [ ] ¿Hay rate limiting en endpoints críticos?
 
 ---
@@ -473,14 +494,18 @@ Cuando analices un flujo, documenta:
 ## Análisis de Seguridad: [Nombre del Flujo]
 
 ### Datos Sensibles Involucrados
+
 - Passwords
+
 - Tokens de sesión
+
 - PII (emails, teléfonos)
+
 - Datos financieros
 
 ### Diagrama de Flujo de Datos
 ```mermaid
-[Tu diagrama aquí]
+["Tu diagrama aquí"]
 ```
 
 ### Hallazgos
@@ -490,8 +515,11 @@ Cuando analices un flujo, documenta:
 | 🟡 Medio | HTTP interno | LB → API | Migrar a HTTPS |
 
 ### Cumplimiento
+
 - [ ] GDPR compliant
+
 - [ ] PCI-DSS compliant
+
 - [ ] ISO 27001 compliant
 ````
 
@@ -519,8 +547,11 @@ Cuando analices un flujo, documenta:
 ## 📚 Recursos de Seguridad
 
 - **OWASP Top 10:** https://owasp.org/www-project-top-ten/
+
 - **STRIDE Threat Model:** Microsoft's threat modeling framework
+
 - **GDPR Compliance Checklist:** https://gdpr.eu/checklist/
+
 - **PCI-DSS Requirements:** https://www.pcisecuritystandards.org/
 
 ---
@@ -546,7 +577,9 @@ jobs:
 ### Integración con SIEM
 
 - Exportar logs sanitizados a Splunk/Datadog
+
 - Alertas automáticas si se detectan patrones sensibles
+
 - Dashboards de compliance en tiempo real
 
 ---

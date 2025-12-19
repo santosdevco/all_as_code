@@ -8,8 +8,11 @@
 Todos hemos estado ahí:
 
 - 🧠 **"Todo está en mi cabeza"** - Y cuando te vas, el proyecto se paraliza
+
 - 💸 **"Nadie revisó mi decisión"** - Y ahora tenemos un servidor de $40,000 que no necesitamos
+
 - 😰 **"Solo yo sé cómo funciona esto"** - Y estás atrapado en el proyecto para siempre
+
 - 📞 **"Me llaman en vacaciones"** - Porque no hay documentación
 
 ### La Solución Es Cultural, No Solo Técnica
@@ -17,9 +20,13 @@ Todos hemos estado ahí:
 **Documentar no es perder tiempo, es multiplicar tu impacto.**
 
 Cuando documentas con diagramas:
+
 - ✅ Compartes el conocimiento → El equipo es autónomo
+
 - ✅ Validas decisiones → Evitas errores costosos
+
 - ✅ Te haces reemplazable → Puedes crecer profesionalmente
+
 - ✅ Dejas legado → Tu conocimiento sobrevive
 
 > **"El mejor desarrollador no es el que resuelve todo solo, es el que hace que su equipo resuelva sin él."**
@@ -29,14 +36,21 @@ Cuando documentas con diagramas:
 ## 🎯 Lo que Aprendimos Hoy
 
 ### 1. Tipos de Diagramas y Cuándo Usarlos
+
 - **C4 Model:** Para stakeholders y vista general
+
 - **Diagramas de Secuencia:** Para analizar rendimiento y bloqueos
+
 - **DFD (Flujo de Datos):** Para auditar seguridad y compliance
+
 - **La clave:** Elegir el nivel de abstracción según la audiencia
 
 ### 2. Herramientas Prácticas
+
 - **MkDocs:** Documentación como código
+
 - **Mermaid:** Diagramas que viven con el código
+
 - **Git:** Versionado de documentación
 
 ### 3. Beneficios Reales
@@ -109,17 +123,25 @@ git commit -m "docs: Agregar documentación con MkDocs"
 ### Do's ✅
 
 1. **Commitea la documentación junto con el código**
+
 2. **Incluye diagramas en los Pull Requests**
+
 3. **Automatiza el deploy con CI/CD**
+
 4. **Usa links relativos entre documentos**
+
 5. **Versiona la documentación con Git tags**
 
 ### Don'ts ❌
 
 1. ❌ No dupliques información
+
 2. ❌ No uses capturas de pantalla de diagramas
+
 3. ❌ No hagas diagramas demasiado complejos
+
 4. ❌ No olvides el `.gitignore` para `site/`
+
 5. ❌ No mezcles niveles de abstracción
 
 ---
@@ -156,9 +178,13 @@ Sí. Guárdalas en `docs/img/` y refiérelas normalmente.
 ## ✅ Checklist: ¿Listo para Implementar?
 
 - [ ] Entiendo C4, Secuencia y DFD
+
 - [ ] Sé instalar MkDocs y Mermaid2
+
 - [ ] Puedo crear diagramas básicos
+
 - [ ] Entiendo cómo hacer deploy
+
 - [ ] Tengo un proyecto en mente para documentar
 
 ---
@@ -172,8 +198,11 @@ Sí. Guárdalas en `docs/img/` y refiérelas normalmente.
 No esperes el sistema perfecto. Empieza hoy:
 
 1. **Hoy:** Instala MkDocs (`pip install mkdocs-material`)
+
 2. **Mañana:** Documenta UN diagrama del proyecto en el que trabajas
+
 3. **Esta semana:** Compártelo en tu próximo Pull Request
+
 4. **Este mes:** Haz que sea el estándar del equipo
 
 ### Recuerda

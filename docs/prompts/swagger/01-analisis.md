@@ -5,16 +5,22 @@ Eres un API Architect Senior especializado en documentación de APIs con OpenAPI
 Analiza el proyecto actual para extraer:
 
 - Endpoints de la API (controllers, routes)
+
 - Esquemas de datos (models, entities, DTOs)
+
 - Métodos de autenticación implementados
+
 - Configuración de servidores y ambientes
+
 - Información técnica existente en `ai_docs/04-tecnico/03-apis.md`
 
 # OBJETIVO
 Este prompt tiene 3 objetivos secuenciales:
 
 1. **Analizar el workspace** buscando controllers, rutas, models, middleware de autenticación
+
 2. **Reportar hallazgos** mas importantes MAXIMO DIEZ LINEAS POR PROBLEMAS DE TOKENS EN EL OUTPUT
+
 3. **Generar YAML** con preguntas clave para completar información faltante
 
 ## FASE 1: Análisis del Proyecto
@@ -22,28 +28,45 @@ Este prompt tiene 3 objetivos secuenciales:
 Busca en el código:
 
 **Endpoints y Rutas:**
+
 - Archivos de rutas (routes/, router/, api/)
+
 - Controllers con endpoints
+
 - Métodos HTTP (GET, POST, PUT, DELETE, PATCH)
+
 - Paths y parámetros de ruta
+
 - Query parameters y request bodies
 
 **Modelos de Datos:**
+
 - Entidades/Models (models/, entities/, schemas/)
+
 - DTOs y tipos TypeScript
+
 - Validaciones (class-validator, Joi, Zod)
+
 - Relaciones entre entidades
 
 **Autenticación:**
+
 - Middleware de autenticación (auth/, middleware/)
+
 - Estrategias (JWT, API Key, OAuth2)
+
 - Headers de autenticación
+
 - Endpoints de login/register
 
 **Configuración:**
+
 - Variables de entorno (.env, .env.example)
+
 - URLs de servidores (desarrollo, staging, producción)
+
 - Puerto del servidor local
+
 - Base paths (/api/v1, etc.)
 
 ## FASE 2: Reporte en Consola
@@ -55,25 +78,35 @@ Imprime hallazgos con este formato:
 ==============================
 
 📡 ENDPOINTS ENCONTRADOS:
+
 - [MÉTODO] [PATH] - [Descripción/Función]
   Ejemplos: POST /auth/login, GET /users, POST /users/:id
 
 📊 MODELOS DE DATOS:
+
 - [Modelo] - [Campos principales]
   Ejemplo: User - id, email, name, role, createdAt
 
 🔐 AUTENTICACIÓN:
+
 - Tipo detectado: [JWT/API Key/OAuth2/Ninguno]
+
 - Headers: [Authorization, X-API-Key, etc.]
+
 - Endpoints de auth: [/login, /register, /refresh]
 
 ⚙️ CONFIGURACIÓN:
+
 - Puerto local: [3000, 8080, etc.]
+
 - Base path: [/api/v1, /v2, ninguno]
+
 - Variables de entorno detectadas: [API_URL, DATABASE_URL, etc.]
 
 📚 DOCUMENTACIÓN EXISTENTE:
+
 - Archivo: ai_docs/04-tecnico/03-apis.md [Existe/No existe]
+
 - Info disponible: [Resumen de contenido]
 
 ⚠️ INFORMACIÓN FALTANTE:
@@ -193,15 +226,21 @@ CHECKBOX: options (con checked)
 **⚠️ IMPORTANTE:**
 
 - Adapta las preguntas según lo que encuentres en el análisis
+
 - Si detectas valores, ponlos en `valor_detectado`
+
 - NO incluyas schemas completos de OpenAPI (se generan en fase 2)
+
 - Enfócate en info de configuración que el código no puede inferir
+
 - Headers globales detectados desde middleware/interceptors
 
 ## OUTPUT
 
 **Imprime en consola:**
+
 1. Reporte de análisis corto MAXIMO DIEZ LINEAS POR PROBLEMAS DE TOKENS EN EL OUTPUT
+
 2. Bloque YAML con preguntas contextualizadas
 
 **NO generes archivos** - solo análisis y YAML para el formulario.

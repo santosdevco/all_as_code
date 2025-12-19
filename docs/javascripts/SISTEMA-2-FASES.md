@@ -3,39 +3,57 @@
 ## ✅ Completado
 
 ### 1. **Prompt de Análisis Inicial** (`00-analyzer.yaml`)
+
 - ✅ Prompt que analiza @workspace completo
+
 - ✅ Detecta automáticamente:
   - Docker (Dockerfile, compose, imágenes, puertos)
   - CI/CD (GitHub Actions, GitLab CI, Jenkins, etc.)
   - Cloud Providers (AWS, IBM, GCP, Azure)
   - Base de datos (PostgreSQL, MySQL, MongoDB + ORMs)
   - Monitoreo (Prometheus, Datadog, CloudWatch, etc.)
+
 - ✅ Genera YAML personalizado con:
   - `auto_extracted`: Info encontrada
   - `sections`: SOLO preguntas faltantes
   - `template`: Pre-llenado con condicionales Handlebars
 
 ### 2. **PromptBuilder.js Actualizado**
+
 - ✅ Soporte para sección `auto_extracted`
+
 - ✅ Renderiza info auto-extraída en caja verde destacada
+
 - ✅ Muestra items con ✓ Detectado / ✗ No detectado
+
 - ✅ Integración con Handlebars para templates condicionales
+
 - ✅ Fallback a reemplazo simple si Handlebars no está disponible
+
 - ✅ Combina `auto_extracted` + `formData` en template
 
 ### 3. **Estilos CSS**
+
 - ✅ `.pb-auto-extracted`: Caja verde con borde
+
 - ✅ `.pb-ae-grid`: Grid responsive para items
+
 - ✅ `.pb-ae-item`: Items individuales con estados
+
 - ✅ `.detected` / `.not-detected`: Estilos para booleanos
+
 - ✅ Dark mode compatible
 
 ### 4. **Handlebars CDN**
+
 - ✅ Agregado a `mkdocs.yml`
+
 - ✅ Carga desde CDN antes de PromptBuilder.js
+
 - ✅ Soporte para `{{#if}}`, `{{#each}}`, `{{else}}`
 
 ### 5. **Documentación**
+
 - ✅ **13-sistema-dos-fases.md**: Guía completa
   - Flujo con diagrama Mermaid
   - Paso a paso detallado
@@ -43,13 +61,16 @@
   - Comparación antes/después
   - Casos de uso
   - Tips y mejores prácticas
+
 - ✅ **05-prompts.md**: Actualizado con nueva sección
   - Botones para Fase 1 y Fase 2
   - Explicación de ventajas
   - Fallback a formulario tradicional
+
 - ✅ **mkdocs.yml**: Nueva página en navegación
 
 ### 6. **YAML de Ejemplo**
+
 - ✅ **07-generated.yaml**: Ejemplo real generado
   - Basado en proyecto `fast-documentation-ai`
   - Auto-detecta Docker (Python 3.11-slim)
@@ -88,20 +109,31 @@
 ## 📊 Resultados
 
 ### Antes (Sistema Tradicional)
+
 - 📋 **50+ preguntas** genéricas
+
 - ⏱️ **15-20 minutos** completar formulario
+
 - ❌ Información duplicada (código vs respuestas)
+
 - ❌ Propenso a errores y contradicciones
 
 ### Después (Sistema de 2 Fases)
+
 - 📋 **2-10 preguntas** (solo faltantes)
+
 - ⏱️ **2-3 minutos** completar formulario
+
 - ✅ Código como fuente de verdad
+
 - ✅ Preciso y sin duplicación
 
 ### Mejora
+
 - 🚀 **80% menos preguntas**
+
 - ⚡ **85% más rápido**
+
 - 🎯 **100% precisión** (usa código real)
 
 ## 🔧 Archivos Modificados
@@ -162,12 +194,19 @@ simpleTemplateReplace(template, data) {
 ### Para Usuarios
 
 1. Abrir: **Guía de Documentación → Sistema de 2 Fases**
+
 2. Click: **"🔍 1. Cargar Prompt de Análisis Inicial"**
+
 3. Copiar y pegar en Copilot con `@workspace`
+
 4. Guardar YAML generado en `ai_prompts/07-generated.yaml`
+
 5. Click: **"📋 2. Cargar Cuestionario Personalizado"**
+
 6. Responder solo preguntas faltantes
+
 7. Generar prompt final
+
 8. Ejecutar en Copilot → docs completas
 
 ### Para Desarrolladores

@@ -5,9 +5,13 @@
 Aprender a integrar documentación de API interactiva (Swagger UI) en MkDocs para que los equipos puedan:
 
 - ✅ Ver documentación de APIs renderizada profesionalmente
+
 - ✅ **Probar endpoints directamente desde la documentación**
+
 - ✅ Ejecutar requests POST, PUT, DELETE sin Postman
+
 - ✅ Configurar headers dinámicamente
+
 - ✅ Mantener la documentación de API sincronizada con el código
 
 ---
@@ -41,8 +45,11 @@ plugins:
 **Opciones importantes:**
 
 - `tryItOutEnabled: true` → **CRÍTICO** para permitir ejecutar requests
+
 - `docExpansion: none` → Endpoints colapsados (más limpio)
+
 - `docExpansion: list` → Mostrar solo tags
+
 - `docExpansion: full` → Todo expandido
 
 ---
@@ -103,8 +110,11 @@ Crea un archivo `docs/proyectos/mi-api/api-reference.md`:
 ## Información General
 
 - **URL Base (Producción)**: https://api.ecommerce.com/v1
+
 - **URL Base (Staging)**: https://api-staging.ecommerce.com/v1
+
 - **Versión**: 1.0.0
+
 - **Autenticación**: Bearer Token (JWT)
 
 ## Autenticación Rápida
@@ -112,8 +122,11 @@ Crea un archivo `docs/proyectos/mi-api/api-reference.md`:
 Para probar la API:
 
 1. **Obtén un token** usando el endpoint `/auth/login`
+
 2. **Haz clic en "Authorize"** en Swagger UI (botón verde arriba a la derecha)
+
 3. **Ingresa**: `Bearer {tu-token-aqui}`
+
 4. **Prueba cualquier endpoint** haciendo clic en "Try it out"
 
 ---
@@ -131,18 +144,27 @@ Usa la interfaz de abajo para explorar y probar todos los endpoints:
 ### Ejecutar un Request GET
 
 1. **Expande el endpoint** haciendo clic en él (ej: `GET /users`)
+
 2. Haz clic en **"Try it out"**
+
 3. **Configura parámetros** (query params, headers)
+
 4. Haz clic en **"Execute"**
+
 5. **Ve la respuesta** debajo
 
 ### Ejecutar un Request POST
 
 1. **Expande el endpoint** (ej: `POST /users`)
+
 2. Haz clic en **"Try it out"**
+
 3. **Edita el JSON** del Request Body
+
 4. **Configura headers** si es necesario
+
 5. Haz clic en **"Execute"**
+
 6. **Ve la respuesta** (201 Created, 400 Error, etc.)
 
 ### Configurar Headers Dinámicamente
@@ -150,17 +172,25 @@ Usa la interfaz de abajo para explorar y probar todos los endpoints:
 Si tu API requiere headers personalizados:
 
 1. **Expande el endpoint**
+
 2. Busca la sección **"Parameters"**
+
 3. Los headers configurables aparecen listados (ej: `X-Client-Version`)
+
 4. **Ingresa el valor** deseado
+
 5. Ejecuta la request
 
 ### Autorización con Bearer Token
 
 1. Haz clic en **"Authorize"** (botón con candado verde)
+
 2. En el modal que aparece, ingresa: `Bearer eyJhbG...`
+
 3. Haz clic en **"Authorize"**
+
 4. Haz clic en **"Close"**
+
 5. Ahora todas las requests incluirán el header `Authorization`
 
 ---
@@ -242,7 +272,9 @@ plugins:
 ```
 
 - `none`: Todo colapsado
+
 - `list`: Tags expandidos, endpoints colapsados
+
 - `full`: Todo expandido
 
 ### Deshabilitar "Try it out" (solo lectura)
@@ -292,8 +324,11 @@ plugins:
 Si expones Swagger UI en producción:
 
 - ✅ Usa HTTPS siempre
+
 - ✅ Implementa rate limiting
+
 - ✅ No muestres errores detallados
+
 - ✅ Requiere autenticación para la documentación (básico o OAuth)
 
 ---
@@ -343,8 +378,11 @@ mkdocs build
 **Problema:** La página muestra el tag `<swagger-ui>` como texto plano.
 
 **Solución:**
+
 1. Verifica que instalaste el plugin: `pip install mkdocs-swagger-ui-tag`
+
 2. Confirma que está en `mkdocs.yml` bajo `plugins:`
+
 3. Reinicia `mkdocs serve`
 
 ### Error: "Failed to load API definition"
@@ -352,8 +390,11 @@ mkdocs build
 **Problema:** Swagger UI no puede cargar el archivo YAML.
 
 **Solución:**
+
 1. Verifica la ruta del archivo: `<swagger-ui src="../openapi.yaml"/>`
+
 2. Asegúrate de que `openapi.yaml` esté en la ubicación correcta
+
 3. Si usas URL remota, verifica CORS
 
 ### Error: "Try it out" no funciona
@@ -361,8 +402,11 @@ mkdocs build
 **Problema:** El botón "Execute" no hace nada.
 
 **Solución:**
+
 1. Verifica `tryItOutEnabled: true` en `mkdocs.yml`
+
 2. Revisa la consola del navegador (F12)
+
 3. Confirma que la URL del servidor sea accesible
 
 ### CORS Error al ejecutar requests
@@ -388,7 +432,9 @@ app.use(cors({
 ## 📚 Recursos Adicionales
 
 - [mkdocs-swagger-ui-tag - GitHub](https://github.com/blueswen/mkdocs-swagger-ui-tag)
+
 - [OpenAPI Specification](https://swagger.io/specification/)
+
 - [Swagger UI Configuration](https://swagger.io/docs/open-source-tools/swagger-ui/usage/configuration/)
 
 ---
@@ -396,13 +442,21 @@ app.use(cors({
 ## ✅ Checklist de Implementación
 
 - [ ] Plugin `mkdocs-swagger-ui-tag` instalado
+
 - [ ] Configuración agregada a `mkdocs.yml`
+
 - [ ] Archivo `openapi.yaml` generado (Prompt 10)
+
 - [ ] Archivo `openapi.yaml` copiado al hub de docs
+
 - [ ] Página markdown creada con tag `<swagger-ui>`
+
 - [ ] Navegación actualizada en `mkdocs.yml`
+
 - [ ] Probado localmente con `mkdocs serve`
+
 - [ ] CORS configurado en la API (si aplica)
+
 - [ ] Documentación publicada
 
 ---

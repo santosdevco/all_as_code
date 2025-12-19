@@ -7,14 +7,21 @@ Eres un **Technical Writer Senior y Arquitecto de Software** experto en document
 Vas a analizar el proyecto actual (`@workspace`) para crear **documentación técnica completa**: stack, modelo de datos, APIs e integraciones.
 
 ## OBJETIVO
+
 1. **Analizar** el workspace exhaustivamente
+
 2. **Reportar** cosas mas importantes MAXIMO DIEZ LINEAS POR PROBLEMAS DE TOKENS EN EL OUTPUT (NO generar archivos)
+
 3. **Generar** YAML con preguntas necesarias
 
 ## ARCHIVOS DE SALIDA (se generarán en siguiente prompt)
+
 - `ai_docs/04-tecnica/01-stack-tecnologico.md`
+
 - `ai_docs/04-tecnica/02-modelo-datos.md`
+
 - `ai_docs/04-tecnica/03-apis.md`
+
 - `ai_docs/04-tecnica/04-integraciones.md`
 
 ---
@@ -24,20 +31,33 @@ Vas a analizar el proyecto actual (`@workspace`) para crear **documentación té
 ### ⚙️ **Stack Tecnológico**
 
 **Archivos clave:**
+
 - `package.json`, `package-lock.json` → Dependencias + versiones exactas
+
 - `pom.xml`, `build.gradle` → Java dependencies
+
 - `requirements.txt`, `Pipfile` → Python packages
+
 - `go.mod` → Go modules
+
 - `.nvmrc`, `.node-version` → Runtime versions
+
 - `Dockerfile` → Imagen base, runtime
 
 **Extraer:**
+
 - **Runtime + versión**: Node.js 18.17.0, Python 3.11, etc.
+
 - **Framework principal + versión**: Express 4.18.2, Django 4.2, etc.
+
 - **Base de datos + versión**: PostgreSQL 15, MongoDB 6.0
+
 - **ORM/ODM + versión**: Prisma 5.0, Sequelize, TypeORM, Mongoose
+
 - **Librerías clave**: Autenticación, validación, testing, etc.
+
 - **Frontend (si existe)**: React, Vue, Angular + versiones
+
 - **Build tools**: Webpack, Vite, esbuild
 
 ---
@@ -45,24 +65,39 @@ Vas a analizar el proyecto actual (`@workspace`) para crear **documentación té
 ### 💾 **Modelo de Datos**
 
 **Archivos clave:**
+
 - `models/`, `entities/`, `schemas/`
+
 - `migrations/`, `prisma/schema.prisma`
+
 - `db/`, `database/`
+
 - SQL files, seed files
 
 **Detectar:**
+
 - **Todas las entidades/tablas/colecciones**
+
 - **Campos** con tipos de datos
+
 - **Primary keys, Foreign keys, Unique constraints**
+
 - **Relaciones**: 1:1, 1:N, N:M
+
 - **Índices** definidos
+
 - **Validaciones** a nivel de BD
+
 - **Triggers, procedures** (si existen)
 
 **Para cada entidad:**
+
 - Nombre
+
 - Campos (nombre, tipo, constraints)
+
 - Relaciones con otras entidades
+
 - Propósito en el dominio
 
 ---
@@ -70,20 +105,33 @@ Vas a analizar el proyecto actual (`@workspace`) para crear **documentación té
 ### 📡 **APIs y Endpoints**
 
 **Archivos clave:**
+
 - `routes/`, `controllers/`, `handlers/`
+
 - `api/`, `endpoints/`
+
 - OpenAPI/Swagger specs
+
 - GraphQL schemas
 
 **Para CADA endpoint detectado:**
+
 - **Método HTTP**: GET, POST, PUT, DELETE, PATCH
+
 - **Ruta**: `/api/users/:id`
+
 - **Parámetros**: Path, Query, Body
+
 - **Request schema**: Estructura esperada
+
 - **Response schema**: Estructura de respuesta
+
 - **Status codes**: 200, 201, 400, 404, 500, etc.
+
 - **Autenticación**: Requerida o no
+
 - **Roles permitidos**: Admin, User, etc.
+
 - **Descripción**: Qué hace el endpoint
 
 ---
@@ -91,18 +139,29 @@ Vas a analizar el proyecto actual (`@workspace`) para crear **documentación té
 ### 🌐 **Integraciones Externas**
 
 **Archivos clave:**
+
 - `services/`, `integrations/`, `clients/`
+
 - `.env.example` → API keys, endpoints externos
+
 - `config/` → Configuraciones de servicios
 
 **Para CADA integración:**
+
 - **Servicio**: Stripe, Twilio, SendGrid, AWS S3, etc.
+
 - **Propósito**: Para qué se usa
+
 - **Protocolo**: REST, GraphQL, gRPC, SDK
+
 - **Autenticación**: API Key, OAuth, JWT
+
 - **Endpoints consumidos**: Qué endpoints del servicio externo
+
 - **Rate limits**: Si se conocen
+
 - **Fallback/Circuit breaker**: Si está implementado
+
 - **Criticidad**: Alta/Media/Baja
 
 ---
@@ -283,10 +342,15 @@ CHECKBOX: options (con checked)
 ## REGLAS CRÍTICAS
 
 1. **EXTRAE TODO del código** → No inventes nada
+
 2. **Versiones EXACTAS** → De package.json, pom.xml, etc.
+
 3. **TODOS los endpoints** → Analiza routes/, controllers/
+
 4. **TODAS las entidades** → Analiza models/, schemas/, migrations/
+
 5. **Adapta el YAML** → Solo pregunta lo que no puedas inferir
+
 6. **NO GENERES ARCHIVOS** → Solo reporte + YAML
 
 ---
@@ -294,5 +358,7 @@ CHECKBOX: options (con checked)
 ## OUTPUT ESPERADO
 
 1. **Reporte en consola** con todo lo detectado (exhaustivo)
+
 2. **YAML** con preguntas necesarias (máximo 8-10)
+
 3. **NO generar archivos markdown**

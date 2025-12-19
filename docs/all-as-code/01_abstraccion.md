@@ -28,9 +28,13 @@
 El **Modelo C4** (Context, Containers, Components, Code) permite hacer "zoom" progresivo.
 
 ### El Concepto
+
 * **Nivel 1 (Contexto):** El "País" → ¿Quién usa el sistema y con qué interactúa?
+
 * **Nivel 2 (Contenedores):** La "Ciudad" → ¿Qué aplicaciones/servicios y qué tecnología?
+
 * **Nivel 3 (Componentes):** El "Edificio" → ¿Cómo está organizado el código internamente?
+
 * **Nivel 4 (Código):** Los "Planos" → Clases, funciones (raramente se diagrama)
 
 ---
@@ -50,14 +54,14 @@ Este diagrama se genera **en tiempo real**. Si cambiamos la tecnología, cambiam
 
         %% Nivel 2: Sistemas (Contenedores)
         subgraph "Nube AWS (Nuestro Sistema)"
-            SPA[Web App Single Page<br/>React]
-            API[API Gateway<br/>Node.js]
-            DB[(Base de Datos<br/>PostgreSQL)]
+            SPA["Web App Single Page<br/>React"]
+            API["API Gateway<br/>Node.js"]
+            DB["(Base de Datos<br/>PostgreSQL)"]
         end
 
         %% Sistemas Externos
-        Bank[Pasarela de Pagos<br/>Stripe/PayPal]
-        Email[Servicio de Correo<br/>SendGrid]
+        Bank["Pasarela de Pagos<br/>Stripe/PayPal"]
+        Email["Servicio de Correo<br/>SendGrid"]
 
         %% Relaciones
         User -->|HTTPS| SPA

@@ -76,8 +76,11 @@ flowchart LR
 ## ② Ejecutar en Copilot
 
 1. **Copia el prompt completo** del archivo que se abrió
+
 2. **Abre Copilot en el proyecto** que quieres documentar
+
 3. **Pega el prompt** y ejecuta
+
 4. **Espera el análisis** (30-60 segundos)
 
 !!! warning "Importante"
@@ -147,7 +150,9 @@ sections:
 Completa las preguntas que aparecen en el formulario.
 
 **Ejemplo:**
+
 - Si Copilot NO encontró cloud provider → Responde cuál usas
+
 - Si SÍ encontró Docker → No pregunta por Docker
 
 ---
@@ -157,8 +162,11 @@ Completa las preguntas que aparecen en el formulario.
 Click en **🚀 Generar y Copiar Prompt**
 
 El sistema:
+
 1. Combina info extraída del código + tus respuestas
+
 2. **Copia automáticamente** el prompt al portapapeles
+
 3. Muestra el prompt con opción de ver/ocultar
 
 ---
@@ -166,12 +174,17 @@ El sistema:
 ## ⑦ Ejecutar Prompt Final en Copilot
 
 1. **Copia el prompt final** generado
+
 2. **Pega en Copilot** (en el proyecto original)
+
 3. **Espera la generación** de los 3 archivos `.md`
 
 **Archivos generados:**
+
 - `ai_docs/06-infraestructura/01-deployment.md`
+
 - `ai_docs/06-infraestructura/02-ci-cd.md`
+
 - `ai_docs/06-infraestructura/03-monitoreo.md`
 
 ---
@@ -191,7 +204,9 @@ El sistema:
 ### ❌ Error: "YAML inválido"
 
 **Solución:**
+
 1. Copia TODO el YAML desde `title:` hasta el final
+
 2. Revisa la indentación (YAML usa espacios)
 
 ---
@@ -207,7 +222,9 @@ El sistema:
 ## 📚 Recursos
 
 - [Prompt de Análisis Inicial](/ai_prompts/07_pre_deployment.md)
+
 - [Formularios Interactivos](12-formularios-interactivos.md)
+
 - [Sistema de 2 Fases (Técnico)](13-sistema-dos-fases.md)
 
 ---

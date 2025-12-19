@@ -68,13 +68,16 @@ El prompt 00 le dice a Copilot:
 ROL: Senior Software Architect
 
 TAREA:
+
 1. Analiza @workspace completo
+
 2. Detecta:
    - Dockerfile, docker-compose
    - Cloud provider (AWS/IBM/GCP/Azure)
    - CI/CD (GitHub Actions, GitLab CI, Jenkins)
    - Base de datos (PostgreSQL, MongoDB, MySQL)
    - Monitoreo (Prometheus, Datadog, CloudWatch)
+
 3. Genera archivo YAML con:
    - auto_extracted: información encontrada
    - sections: SOLO preguntas sobre lo NO encontrado
@@ -240,6 +243,7 @@ El formulario mostrará:
 En lugar de 50 preguntas, **solo 2**:
 
 1. ☁️ **Cloud Provider**: AWS / IBM / On-Premise
+
 2. 🚀 **Plataforma**: Kubernetes / EC2 / Serverless
 
 #### 8. Genera Prompt Final
@@ -247,7 +251,9 @@ En lugar de 50 preguntas, **solo 2**:
 Click en **"🚀 Generar Prompt Personalizado"**
 
 El template combinará:
+
 - ✅ Info auto-extraída (Docker, CI/CD, DB)
+
 - ❌ Tus respuestas (Cloud, Platform)
 
 #### 9. Copia y Ejecuta
@@ -262,19 +268,27 @@ El prompt final incluye **TODA la información**:
 Proyecto: mi-proyecto
 
 ### Docker
+
 - Dockerfile: SÍ
+
 - Imagen base: node:18-alpine
+
 - Puertos: [3000, 8080]
 
 ### Docker Compose
+
 - Servicios: [app, postgres, redis]
 
 ### CI/CD
+
 - Herramienta: github-actions
+
 - Archivo: .github/workflows/deploy.yml
 
 ### Base de Datos
+
 - Tipo: postgresql
+
 - ORM: prisma
 
 ## ❌ Información Completada Manualmente
@@ -448,8 +462,11 @@ template: |
 ```yaml
 # 00-infra-analyzer.yaml
 Analiza:
+
 - Terraform files → cloud provider, recursos
+
 - Kubernetes manifests → deployments, services
+
 - Helm charts → valores, dependencias
 ```
 
@@ -458,8 +475,11 @@ Analiza:
 ```yaml
 # 00-api-analyzer.yaml
 Analiza:
+
 - OpenAPI/Swagger → endpoints, schemas
+
 - Código fuente → controllers, servicios
+
 - Tests → casos de uso, validaciones
 ```
 
@@ -468,8 +488,11 @@ Analiza:
 ```yaml
 # 00-security-analyzer.yaml
 Analiza:
+
 - Dependencias → vulnerabilidades conocidas
+
 - Secrets → configuración de vaults
+
 - Autenticación → JWT, OAuth, SAML
 ```
 
@@ -480,15 +503,21 @@ Analiza:
 ### ✅ DO
 
 - **Re-analiza cuando cambia el código** - Genera nuevo YAML
+
 - **Combina análisis automático + conocimiento del equipo**
+
 - **Usa condicionales** para templates adaptativos
+
 - **Marca incertidumbres** - Si no estás seguro, pregunta
 
 ### ❌ DON'T
 
 - No asumas información no encontrada
+
 - No generes preguntas sobre info obvia en el código
+
 - No uses templates estáticos cuando puedes usar condicionales
+
 - No olvides validar el YAML generado antes de usarlo
 
 ---
@@ -496,8 +525,11 @@ Analiza:
 ## 🔗 Recursos
 
 - [Prompt 00 - Analyzer](../ai_prompts/00-analyzer.yaml)
+
 - [Documentación de Handlebars](https://handlebarsjs.com/)
+
 - [Formularios Interactivos](12-formularios-interactivos.md)
+
 - [Prompts para IA](05-prompts.md)
 
 ---
@@ -505,8 +537,11 @@ Analiza:
 ## 🎯 Próximos Pasos
 
 1. ✅ [Carga Prompt 00](#fase-1-analisis-inicial) y analiza tu proyecto
+
 2. ✅ Guarda el YAML generado
+
 3. ✅ Carga el formulario personalizado
+
 4. ✅ Genera documentación completa
 
 **¡El futuro de la documentación es automático y personalizado!** 🚀

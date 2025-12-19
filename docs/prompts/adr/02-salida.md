@@ -3,7 +3,9 @@
 ## CONTEXTO
 
 Recibirás:
+
 1. **Análisis automático** (decisiones identificadas del código)
+
 2. **Respuestas del formulario** (contexto, alternativas, justificaciones)
 
 ---
@@ -17,14 +19,21 @@ Genera el archivo: `ai_docs/03-arquitectura/04-decisiones.md`
 ## GUÍAS DE ESTILO
 
 ### Formato ADR
+
 - **Estructura estándar** → Status, Context, Decision, Alternatives, Consequences
+
 - **Lenguaje claro** → Técnico pero entendible
+
 - **Justificaciones** → Por qué, no solo qué
+
 - **Trade-offs explícitos** → Qué se sacrificó
 
 ### Diagramas
+
 - **Decision tree** si hay múltiples alternativas evaluadas
+
 - **Comparison tables** para pros/cons de alternativas
+
 - **Timeline** si hay evolución de decisiones
 
 ---
@@ -50,9 +59,13 @@ Documentar las decisiones arquitectónicas significativas del proyecto, su conte
 | [Listar todas las decisiones detectadas + del formulario] |
 
 **Leyenda de Estados:**
+
 - ✅ Aceptada - Implementada y en uso
+
 - 🔄 En Revisión - Bajo evaluación
+
 - ⚠️ Deprecated - Reemplazada por otra decisión
+
 - ❌ Rechazada - Evaluada pero no implementada
 
 ---
@@ -80,13 +93,19 @@ Documentar las decisiones arquitectónicas significativas del proyecto, su conte
 [Explicación clara del problema o necesidad que llevó a esta decisión]
 
 **Situación:**
+
 - [Qué problema se necesitaba resolver]
+
 - [Qué restricciones existían]
+
 - [Qué requisitos había]
 
 **Restricciones:**
+
 - [Técnicas: performance, escalabilidad]
+
 - [Negocio: presupuesto, tiempo, equipo]
+
 - [Organizacionales: experiencia del equipo, soporte]
 
 ---
@@ -101,7 +120,9 @@ Documentar las decisiones arquitectónicas significativas del proyecto, su conte
 ```
 
 **Configuración:**
+
 - [Detalles de configuración relevantes]
+
 - [Versiones específicas]
 
 ---
@@ -115,11 +136,15 @@ Documentar las decisiones arquitectónicas significativas del proyecto, su conte
 **Descripción:** [Qué era esta alternativa]
 
 **Pros:**
+
 - ✅ [Ventaja 1]
+
 - ✅ [Ventaja 2]
 
 **Contras:**
+
 - ❌ [Desventaja 1]
+
 - ❌ [Desventaja 2]
 
 **Razón de rechazo:** [Por qué NO se eligió esta alternativa]
@@ -151,18 +176,23 @@ Documentar las decisiones arquitectónicas significativas del proyecto, su conte
 ##### ✅ Positivas
 
 - [Beneficio 1 obtenido]
+
 - [Beneficio 2 obtenido]
+
 - [Impacto positivo en X]
 
 ##### ⚠️ Negativas (Trade-offs)
 
 - [Compromiso 1 aceptado]
+
 - [Limitación 2 asumida]
+
 - [Qué se sacrificó]
 
 ##### 🔄 Neutral
 
 - [Cambios necesarios]
+
 - [Ajustes requeridos]
 
 ---
@@ -178,6 +208,7 @@ Documentar las decisiones arquitectónicas significativas del proyecto, su conte
 #### Decisiones Relacionadas
 
 - Ver [ADR-XXX]: [Relación con otra decisión]
+
 - Reemplaza [ADR-YYY]: [Si depreca otra decisión]
 
 ---
@@ -185,8 +216,11 @@ Documentar las decisiones arquitectónicas significativas del proyecto, su conte
 #### Referencias
 
 - [Documentación oficial de la tecnología]
+
 - [Artículos/Papers que influyeron]
+
 - [Benchmarks realizados]
+
 - [Issues/PRs relevantes]
 
 ---
@@ -229,8 +263,11 @@ graph LR
 ### En Evaluación
 
 **[Nombre de decisión futura]**
+
 - **Motivación:** [Por qué se está considerando]
+
 - **Estado:** 🔄 En investigación
+
 - **Fecha estimada:** [Cuándo se decidirá]
 
 ---
@@ -240,8 +277,11 @@ graph LR
 [Del formulario si se especificó]
 
 **[Nombre de decisión]**
+
 - **Qué salió mal:** [Problema encontrado]
+
 - **Costo del cambio:** [Si se cambió o se planea cambiar]
+
 - **Lección:** [Qué se aprendió]
 
 ---
@@ -255,6 +295,7 @@ Basándose en las decisiones tomadas, los principios arquitectónicos que guían
 1. **[Principio 1]**: [Descripción - ej: "Simplicidad sobre complejidad prematura"]
    - Evidencia: ADR-001, ADR-003
    
+
 2. **[Principio 2]**: [Descripción - ej: "Priorizar experiencia del equipo"]
    - Evidencia: ADR-002, ADR-005
 
@@ -274,36 +315,57 @@ Basándose en las decisiones tomadas, los principios arquitectónicos que guían
 ## REGLAS DE IMPLEMENTACIÓN
 
 ### 1. Contenido
+
 - **5-8 ADRs** principales (del análisis + formulario)
+
 - **Decisiones significativas** → No trivialidades
+
 - **Contexto completo** → Por qué era necesaria
+
 - **Alternativas reales** → Las que se evaluaron de verdad
 
 ### 2. Estructura
+
 - **Formato ADR estándar** → Status, Context, Decision, Alternatives, Consequences
+
 - **Secciones completas** → No omitir partes
+
 - **Lenguaje claro** → Técnico pero entendible
 
 ### 3. Evidencia
+
 - **Basado en código** → Ejemplos del proyecto real
+
 - **Referencias** → A archivos específicos
+
 - **Versiones** → Exactas de package.json, etc.
 
 ### 4. Diagramas (si aplica)
+
 - **Evolution diagram** → Si hay decisiones que evolucionaron
+
 - **Comparison tables** → Para alternativas
+
 - **Decision tree** → Si hay flujo de decisiones dependientes
 
 ### 5. Formato
+
 - **Línea en blanco antes de listas**
+
 - **Tablas bien formadas**
+
 - **Emojis consistentes** (✅, ⚠️, ❌, 🔄)
+
 - **Código de ejemplo** del proyecto real
 
 ### 6. Creación de Archivo
+
 - **Ruta**: `ai_docs/03-arquitectura/04-decisiones.md`
+
 - **Crear carpeta** si no existe
+
 - **1 archivo** con todas las ADRs
+
 - **Guardar automáticamente**
 
 ---
@@ -311,14 +373,18 @@ Basándose en las decisiones tomadas, los principios arquitectónicos que guían
 ## PROCESO DE EJECUCIÓN
 
 1. **Leer** análisis + respuestas del formulario
+
 2. **Generar ADRs** para cada decisión identificada
+
 3. **Completar estructura** → Todas las secciones
+
 4. **Verificar**:
    - Contexto claro y justificado
    - Alternativas documentadas
    - Consecuencias explícitas
    - Trade-offs identificados
    - Formato consistente
+
 5. **Guardar** en ruta especificada
 
 ---
@@ -326,8 +392,11 @@ Basándose en las decisiones tomadas, los principios arquitectónicos que guían
 ## EJEMPLO DE INFERENCIA
 
 **Si detectas:**
+
 - `package.json`: `"express": "^4.18.2"`
+
 - No hay NestJS, Fastify, Koa
+
 - Estructura simple de controllers/routes
 
 **Genera ADR:**
@@ -337,8 +406,11 @@ Basándose en las decisiones tomadas, los principios arquitectónicos que guían
 
 **Contexto:**
 Necesitábamos un framework web para Node.js que fuera:
+
 - Maduro y confiable
+
 - Con ecosistema amplio de middleware
+
 - Fácil de aprender para el equipo
 
 **Decisión:**

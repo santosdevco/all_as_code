@@ -130,7 +130,47 @@ nav:
       - 📚 Swagger/OpenAPI:
           - Paso 1 - Análisis: prompts/swagger/01-analisis.md
           - Paso 2 - Salida: prompts/swagger/02-salida.md
-  
+  - Proyectos:
+    - Whatshelp:
+      - 📊 Vista Ejecutiva:
+        - projects/whatshelp/01-vista-ejecutiva/resumen-ejecutivo.md
+      
+      - 📋 Requerimientos:
+        - Funcionales: projects/whatshelp/02-requerimientos/01-funcionales.md
+        - No Funcionales: projects/whatshelp/02-requerimientos/02-no-funcionales.md
+      
+      - 🏗️ Arquitectura:
+        - Contexto: projects/whatshelp/03-arquitectura/01-contexto.md
+        - Contenedores: projects/whatshelp/03-arquitectura/02-contenedores.md
+        - Componentes: projects/whatshelp/03-arquitectura/03-componentes.md
+        - Decisiones: projects/whatshelp/03-arquitectura/04-decisiones.md
+      
+      - 💻 Documentación Técnica:
+        - Stack Tecnológico: projects/whatshelp/04-tecnica/01-stack-tecnologico.md
+        - Modelo de Datos: projects/whatshelp/04-tecnica/02-modelo-datos.md
+        - APIs: projects/whatshelp/04-tecnica/03-apis.md
+        - Integraciones: projects/whatshelp/04-tecnica/04-integraciones.md
+      
+      - 🔄 Procesos de Negocio:
+        - Índice: projects/whatshelp/05-procesos-negocio/00-indice.md
+        - Casos de Uso - Atención: projects/whatshelp/05-procesos-negocio/01-casos-uso-atencion.md
+        - Casos de Uso - Cola: projects/whatshelp/05-procesos-negocio/02-casos-uso-cola.md
+        - Casos de Uso - Transferencia: projects/whatshelp/05-procesos-negocio/03-casos-uso-transferencia.md
+        - Casos de Uso - Encuestas: projects/whatshelp/05-procesos-negocio/04-casos-uso-encuestas.md
+        - Casos de Uso - Alertas: projects/whatshelp/05-procesos-negocio/05-casos-uso-alertas.md
+        - Flujo WhatsApp: projects/whatshelp/05-procesos-negocio/06-flujo-whatsapp-entrada.md
+        - Flujo Cierre y Encuesta: projects/whatshelp/05-procesos-negocio/07-flujo-cierre-encuesta.md
+        - Reglas de Negocio: projects/whatshelp/05-procesos-negocio/08-reglas-negocio.md
+        - Matriz de Casos de Uso: projects/whatshelp/05-procesos-negocio/09-matriz-casos-uso.md
+      
+      - 🚀 Infraestructura:
+        - Deployment: projects/whatshelp/06-infraestructura/01-deployment.md
+        - CI/CD: projects/whatshelp/06-infraestructura/02-ci-cd.md
+        - Monitoreo: projects/whatshelp/06-infraestructura/03-monitoreo.md
+      
+      - 📖 API Reference:
+        - Documentación API: 08-api-reference.md
+        - Swagger UI: projects/whatshelp/07-swagger/swagger.md 
   # - 🎮 Demos:
   #     - 📦 Instalación Swagger: ejemplos/instalacion-swagger.md
   #     - Swagger UI Interactivo: ejemplos/swagger-demo.md

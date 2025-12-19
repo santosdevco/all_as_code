@@ -168,8 +168,11 @@ Ahora vas a usar GitHub Copilot en modo agente para generar la documentación au
 **Ver prompt completo en:** [05-prompts.md - Prompt 01](/guia-documentacion/05-prompts/#-prompt-01-analisis-inicial)
 
 **⚠️ CRÍTICO:** Este análisis se guardará en `ai_docs/00-analisis-inicial.md` y servirá como:
+
 - ✅ Fuente de verdad para validar otros prompts
+
 - ✅ Documentación base del proyecto
+
 - ✅ Referencia para detectar inconsistencias
 
 **Cómo completar:**
@@ -186,16 +189,27 @@ TAREA: Analiza el proyecto y genera el archivo ai_docs/00-analisis-inicial.md
 El análisis debe incluir:
 
 1. Identificación del Proyecto (nombre, tipo, propósito, dominio)
+
 2. Stack Tecnológico Completo (con VERSIONES)
+
 3. 🆕 Análisis de Dependencias (tabla con versión actual vs última, estado)
+
 4. Estructura del Proyecto (patrón, carpetas, archivos de configuración)
+
 5. Integraciones Identificadas (APIs externas, servicios)
+
 6. Modelo de Datos Preliminar (entidades principales)
+
 7. Casos de Uso Evidentes (5-10 principales)
+
 8. Ejecución Local (prerequisitos, instalación)
+
 9. Variables de Entorno Identificadas (tabla completa)
+
 10. Accesos (URLs de ambientes si están documentados)
+
 11. Observaciones Críticas (buenas prácticas, deuda técnica)
+
 12. Recomendaciones Iniciales
 
 ARCHIVO DE SALIDA: ai_docs/00-analisis-inicial.md
@@ -204,9 +218,13 @@ IMPORTANTE: Este archivo es la BASE. Guárdalo para referencia.
 ```
 
 **✅ Qué esperar:**
+
 - Copilot generará `ai_docs/00-analisis-inicial.md` con análisis completo
+
 - Incluirá análisis de dependencias con versiones
+
 - Identificará archivos de configuración y su propósito
+
 - **GUARDA ESTE ARCHIVO** - lo usarás para validar los demás prompts
 
 ---
@@ -298,9 +316,13 @@ ARCHIVO DE SALIDA: ai_docs/01-requerimientos.md
 ```
 
 **✅ Qué esperar:**
+
 - Copilot analizará el código del repositorio
+
 - Generará el archivo `01-requerimientos.md` en la carpeta del proyecto
+
 - El archivo aparecerá automáticamente en el explorador de VS Code
+
 - **Revisa** que los requisitos tengan sentido para tu proyecto antes de continuar
 
 ---
@@ -368,8 +390,11 @@ ARCHIVO DE SALIDA: ai_docs/02-vista-ejecutiva.md
 ```
 
 **✅ Qué esperar:**
+
 - Copilot generará el archivo `02-vista-ejecutiva.md` con lenguaje de negocio
+
 - Incluirá métricas, ROI y diagramas de contexto
+
 - **Revisa** que los números de negocio sean realistas antes de continuar
 
 ---
@@ -455,8 +480,11 @@ ARCHIVOS DE SALIDA:
 ```
 
 **✅ Qué esperar:**
+
 - Copilot generará los 4 archivos de arquitectura
+
 - Incluirá diagramas C4 niveles 1, 2 y 3, más ADRs
+
 - **Revisa** que los diagramas reflejen la arquitectura real del proyecto
 
 ---
@@ -546,8 +574,11 @@ ARCHIVOS DE SALIDA:
 ```
 
 **✅ Qué esperar:**
+
 - Copilot generará los 4 archivos técnicos
+
 - Incluirá stack, modelos de datos, APIs e integraciones
+
 - **Revisa** que las tecnologías y endpoints sean correctos
 
 ---
@@ -614,8 +645,11 @@ ARCHIVOS DE SALIDA:
 ```
 
 **✅ Qué esperar:**
+
 - Copilot generará casos de uso y flujos funcionales
+
 - Incluirá diagramas de secuencia de los procesos principales
+
 - **Revisa** que los flujos representen correctamente la lógica de negocio
 
 ---
@@ -691,8 +725,11 @@ ARCHIVOS DE SALIDA:
 ```
 
 **✅ Qué esperar:**
+
 - Copilot generará documentación de infraestructura
+
 - Incluirá deployment, pipelines CI/CD y monitoreo
+
 - **Revisa** que refleje la configuración real de tu infraestructura
 
 ---
@@ -757,8 +794,11 @@ ARCHIVOS DE SALIDA:
 ```
 
 **✅ Qué esperar:**
+
 - Copilot generará los últimos 3 archivos de apéndices
+
 - Incluirá glosario, referencias y changelog
+
 - **Revisa** que el glosario incluya todos los términos importantes
 
 ---
@@ -794,32 +834,52 @@ TAREA: Genera archivos complementarios del repositorio.
 ARCHIVOS A GENERAR:
 
 1. README.md (completo con arquitectura, setup, ejecución local, variables de entorno)
+
 2. .gitignore (apropiado para el stack + site/ para MkDocs)
+
 3. CHANGELOG.md (formato Keep a Changelog)
+
 4. .env.example (si aplica - detectar del código)
+
 5. CONTRIBUTING.md (guía de contribución)
 
 INSTRUCCIONES ESPECIALES:
+
 - Analiza primero qué archivos ya existen
+
 - NO sobrescribas archivos completos sin avisar
+
 - Complementa archivos existentes si están incompletos
+
 - Extrae información de ai_docs/ para coherencia
+
 - Detecta el stack para generar .gitignore apropiado
 
 ARCHIVOS DE SALIDA:
+
 - README.md (raíz)
+
 - .gitignore (raíz) - asegurar que incluya site/
+
 - CHANGELOG.md (raíz)
+
 - .env.example (raíz, solo si aplica)
+
 - CONTRIBUTING.md (raíz)
 ```
 
 **✅ Qué esperar:**
+
 - Copilot generará README.md completo con toda la info del proyecto
+
 - Actualizará o creará .gitignore con `site/` incluido
+
 - Generará CHANGELOG.md siguiendo estándares
+
 - Creará .env.example si detecta variables de entorno en el código
+
 - Creará CONTRIBUTING.md con guía de contribución
+
 - **Revisa** que el README tenga sentido y esté completo antes de publicar
 
 ---
@@ -879,14 +939,21 @@ TAREA: Genera documentación completa de API.
 INFORMACIÓN REQUERIDA:
 
 - Nombre de la API: [COMPLETAR: ej. "E-commerce API"]
+
 - Versión: [COMPLETAR: ej. "1.0.0"]
 
 SERVIDORES (hosts disponibles):
+
 - Producción: [COMPLETAR: ej. "https://api.example.com" o "a definir"]
+
 - QA/Testing: [COMPLETAR: ej. "https://api-qa.example.com" o "a definir"]
+
 - Staging: [COMPLETAR: ej. "https://api-staging.example.com" o "a definir"]
+
 - Desarrollo: [COMPLETAR: ej. "https://api-dev.example.com" o "a definir"]
+
 - Local: [COMPLETAR: ej. "http://localhost:3000"]
+
 - Otro (manual): [COMPLETAR: Si necesitas un host adicional, escríbelo aquí]
 
 Path Base: [COMPLETAR: ej. "/api/v1" o dejar vacío]
@@ -896,6 +963,7 @@ Autenticación: [COMPLETAR: "Bearer Token (JWT)" / "API Key" / "None"]
 ARCHIVOS A GENERAR:
 
 1. openapi.json (raíz) - Especificación OpenAPI 3.0 en JSON
+
 2. ai_docs/08-api-reference.md - Documentación markdown que importa el openapi.json
 
 NOTA IMPORTANTE: El openapi.json tendrá un dropdown de servidores donde el usuario
@@ -904,10 +972,15 @@ cualquier URL personalizada.
 ```
 
 **✅ Qué esperar:**
+
 - Copilot generará `openapi.json` con todos los endpoints del código
+
 - Generará `ai_docs/08-api-reference.md` que importa el JSON con Swagger UI
+
 - **Dropdown de servidores** en Swagger UI para cambiar entre ambientes
+
 - **Campo manual** para escribir URLs personalizadas
+
 - Documentación interactiva lista para probar
 
 **🎯 Usar el Swagger UI en el Hub de Documentación:**
@@ -930,11 +1003,17 @@ Una vez generado el `openapi.json`, se renderizará automáticamente en el hub:
 **🔄 Cambiar de Servidor en Swagger UI:**
 
 1. Abre el hub de documentación: `mkdocs serve`
+
 2. Ve a la página "Referencia de API"
+
 3. En el Swagger UI, verás un **dropdown** arriba que dice "Servers"
+
 4. Haz clic y selecciona: 🚀 Producción | 🧪 QA | 🎭 Staging | 🔧 Dev | 💻 Local
+
 5. O escribe manualmente cualquier URL en el campo "Server URL"
+
 6. Haz clic en "Authorize" para configurar tu token
+
 7. ¡Prueba los endpoints en el ambiente que elijas!
 
 ---

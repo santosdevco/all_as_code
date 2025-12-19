@@ -51,7 +51,9 @@ Copia el prompt de análisis:
 **Cómo usarlo**:
 
 1. Abre el archivo `07-deployment-analyzer.md`
+
 2. Copia TODO el contenido
+
 3. Pega en Copilot Chat con `@workspace`
 
 ```
@@ -63,11 +65,17 @@ Copia el prompt de análisis:
 El prompt analiza automáticamente:
 
 - ✅ **Docker**: Dockerfile, docker-compose, imágenes, puertos
+
 - ✅ **CI/CD**: GitHub Actions, GitLab CI, Jenkins, CircleCI
+
 - ✅ **Cloud**: AWS, IBM Cloud, GCP, Azure (configs de terraform, cloudformation, etc)
+
 - ✅ **Kubernetes**: Manifests, Helm charts, Kustomize
+
 - ✅ **Base de Datos**: PostgreSQL, MySQL, MongoDB + ORMs (Prisma, TypeORM, etc)
+
 - ✅ **Monitoreo**: Prometheus, Grafana, Datadog, CloudWatch
+
 - ✅ **Variables**: .env.example, configs por ambiente
 
 ### 1.3 Output: YAML en Terminal
@@ -112,7 +120,9 @@ sections:
 ### 1.4 Guardar el YAML
 
 1. **Copia TODO el YAML** de la respuesta de Copilot
+
 2. **Crea el archivo**: `docs/ai_prompts/07-deployment.yaml`
+
 3. **Pega el contenido** completo
 
 ```bash
@@ -184,7 +194,9 @@ Si el analyzer detectó Docker pero NO cloud provider:
 Click en **"🚀 Generar Prompt Personalizado"**
 
 El sistema combina:
+
 - ✅ Info auto-extraída del código
+
 - ❌ Respuestas del usuario
 
 **Output**:
@@ -196,12 +208,17 @@ DevOps Engineer documentando infraestructura
 # ✅ INFORMACIÓN DEL CÓDIGO
 
 ## Docker
+
 - Imagen: node:18-alpine
+
 - Puertos: 3000, 8080
+
 - Servicios: app, postgres, redis
 
 ## CI/CD
+
 - Tool: GitHub Actions
+
 - Archivo: .github/workflows/deploy.yml
 
 Instrucción: Analiza .github/workflows/deploy.yml
@@ -217,8 +234,11 @@ VMs con Docker
 
 # TAREA
 Genera 3 archivos:
+
 1. ai_docs/06-infraestructura/01-deployment.md
+
 2. ai_docs/06-infraestructura/02-ci-cd.md
+
 3. ai_docs/06-infraestructura/03-monitoreo.md
 ```
 
@@ -229,6 +249,7 @@ Genera 3 archivos:
 ### 3.1 Ejecutar Prompt Final
 
 1. **Copia el prompt** generado por el formulario
+
 2. **Pega en Copilot** con `@workspace`
 
 ```
@@ -246,21 +267,28 @@ Copilot generará **3 archivos Markdown**:
 ## Diagrama de Infraestructura
 ```mermaid
 graph TB
-    LB[Load Balancer] --> VM1[VM 1: Docker]
-    LB --> VM2[VM 2: Docker]
+    LB["Load Balancer"] --> VM1["VM 1: Docker"]
+    LB --> VM2["VM 2: Docker"]
     VM1 --> DB[(PostgreSQL)]
     VM2 --> DB
 ```
 
 ## Ambientes
+
 - Desarrollo: Docker Compose local
+
 - Producción: 2 VMs on-premise con Docker
 
 ## Proceso de Deployment
+
 1. Push a main → GitHub Actions
+
 2. Build image
+
 3. Push to registry
+
 4. SSH a VMs
+
 5. docker pull + restart
 ```
 
@@ -271,8 +299,11 @@ graph TB
 ## GitHub Actions Workflow
 
 ### Stages
+
 1. **Build**: Compila y crea imagen Docker
+
 2. **Test**: Ejecuta tests unitarios
+
 3. **Deploy**: Despliega a VMs
 ```
 
@@ -281,7 +312,9 @@ graph TB
 # 📊 Monitoreo
 
 ## Herramientas
+
 - Logs: Docker logs centralizados
+
 - Métricas: Pendiente configurar
 ```
 
@@ -321,8 +354,11 @@ graph TB
 **Problema**: Copilot no responde con YAML
 
 **Solución**:
+
 1. Verifica que copiaste TODO el prompt analyzer
+
 2. Usa `@workspace` al ejecutar
+
 3. Si falla, pide explícitamente: "Genera el YAML de configuración"
 
 ### El formulario no carga el YAML
@@ -330,8 +366,11 @@ graph TB
 **Problema**: Error al cargar 07-deployment.yaml
 
 **Solución**:
+
 1. Verifica que el archivo está en `docs/ai_prompts/07-deployment.yaml`
+
 2. Valida la sintaxis YAML con: https://www.yamllint.com/
+
 3. Revisa que tenga las secciones `title`, `template` y `sections`
 
 ### Faltan preguntas en el formulario
@@ -339,8 +378,11 @@ graph TB
 **Problema**: El analyzer detectó todo y no genera preguntas
 
 **Solución**:
+
 - ¡Eso es BUENO! Significa que toda la info está en el código
+
 - Revisa la sección `template` - ahí estará todo
+
 - Si realmente falta algo, agrégalo manualmente al `sections`
 
 ---
@@ -348,7 +390,9 @@ graph TB
 ## 📚 Archivos Relacionados
 
 - 📄 **Prompt Analyzer**: [`07-deployment-analyzer.md`](../ai_prompts/07-deployment-analyzer.md)
+
 - 📄 **YAML Generado**: `docs/ai_prompts/07-deployment.yaml` (creado por ti)
+
 - 📘 **Sistema PromptBuilder**: [`12-formularios-interactivos.md`](12-formularios-interactivos.md)
 
 ---
@@ -356,20 +400,28 @@ graph TB
 ## 🎯 Resumen del Flujo
 
 ```
+
 1. Ejecutar 07-deployment-analyzer.md en Copilot
    ↓
+
 2. Copilot analiza @workspace y genera YAML
    ↓
+
 3. Copiar YAML → guardar como 07-deployment.yaml
    ↓
+
 4. Cargar YAML en formulario interactivo
    ↓
+
 5. Ver info extraída ✅ + responder faltantes ❌
    ↓
+
 6. Generar prompt final combinado
    ↓
+
 7. Ejecutar prompt final en Copilot
    ↓
+
 8. Obtener 3 archivos .md de documentación
 ```
 
@@ -382,8 +434,11 @@ graph TB
 Una vez que tengas los 3 archivos generados:
 
 1. Revisa y ajusta según necesidad
+
 2. Agrega a la navegación de MkDocs
+
 3. Ejecuta `mkdocs serve` para previsualizar
+
 4. Commit y push al repositorio
 
 **¡Tu documentación de deployment está completa!** 🎉

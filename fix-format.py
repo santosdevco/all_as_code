@@ -96,15 +96,8 @@ def process_file(file_path):
 def main():
     print("🔧 Corrigiendo formato de documentación...\n")
     
-    # Encontrar todos los archivos markdown
-    patterns = [
-        "docs/guia-documentacion/*.md",
-        "docs/*.md"
-    ]
-    
-    files = []
-    for pattern in patterns:
-        files.extend(glob.glob(pattern))
+    # Encontrar todos los archivos markdown en docs/ de forma recursiva
+    files = glob.glob("docs/**/*.md", recursive=True)
     
     modified_count = 0
     

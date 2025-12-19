@@ -8,12 +8,12 @@ Sistema inteligente en **5 pasos** que genera documentación técnica completa c
 
 ```mermaid
 flowchart TB
-    Start([👤 Usuario]) --> Step1["① ANÁLISIS<br/>Copiar prompt de análisis"]
+    Start(["👤 Usuario"]) --> Step1["① ANÁLISIS<br/>Copiar prompt de análisis"]
     Step1 --> Step2["② COPILOT ANALIZA<br/>@workspace<br/>Genera YAML con preguntas"]
     Step2 --> Step3["③ RESPONDER<br/>Usuario copia YAML<br/>Pega en formulario web<br/>Responde preguntas"]
     Step3 --> Step4["④ GENERACIÓN<br/>Formulario genera prompt<br/>uniendo respuestas + formato"]
     Step4 --> Step5["⑤ COPILOT GENERA<br/>Usuario pega prompt<br/>Copilot crea 3 archivos .md"]
-    Step5 --> End([✅ Documentación Lista])
+    Step5 --> End(["✅ Documentación Lista"])
     
     style Step1 fill:#667eea,color:#fff,stroke:#764ba2,stroke-width:3px
     style Step2 fill:#11998e,color:#fff,stroke:#38ef7d,stroke-width:3px
@@ -30,9 +30,13 @@ flowchart TB
 ### ✅ Ventajas
 
 - **Inteligente**: Copilot analiza el código y solo pregunta lo que NO encuentra
+
 - **Visual**: Formulario web interactivo para responder (no editar YAML manualmente)
+
 - **Completo**: Genera 3 archivos de documentación detallada
+
 - **Específico**: Usa configuraciones reales del proyecto, no templates genéricos
+
 - **Rápido**: ~10 minutos vs horas de documentación manual
 
 ### 🎯 Qué genera
@@ -40,7 +44,9 @@ flowchart TB
 **3 archivos markdown completos:**
 
 1. **`01-deployment.md`** → Arquitectura, ambientes, Docker, K8s, seguridad
+
 2. **`02-ci-cd.md`** → Pipeline completo, stages, deploy, secrets
+
 3. **`03-monitoreo.md`** → Logs, métricas, alertas, dashboards
 
 ---
@@ -109,7 +115,9 @@ flowchart TB
 ## 🤖 PASO 2: Ejecutar en Copilot
 
 1. **Abre Copilot** en el proyecto que quieres documentar
+
 2. **Pega el prompt** que copiaste
+
 3. **Ejecuta** y espera el análisis
 
 !!! tip "Tip"
@@ -277,7 +285,9 @@ Una vez completado el formulario, haz clic en **"Generar Prompt Personalizado"**
 ## 🤖 PASO 5: Copilot Genera los Archivos
 
 1. **Pega el prompt** generado en Copilot
+
 2. **Ejecuta** y espera (~1-2 minutos)
+
 3. **Copilot creará** automáticamente los 3 archivos:
    - `ai_docs/06-infraestructura/01-deployment.md`
    - `ai_docs/06-infraestructura/02-ci-cd.md`
@@ -295,11 +305,17 @@ Una vez completado el formulario, haz clic en **"Generar Prompt Personalizado"**
 **Contiene:**
 
 - 📊 Diagrama de arquitectura completa
+
 - 🌍 Configuración de ambientes (dev, staging, prod)
+
 - 🐳 Detalles de Docker y registry
+
 - ☸️ Configuración de Kubernetes (si aplica)
+
 - 📈 Estrategias de escalabilidad y HA
+
 - 🔒 Seguridad: Load Balancer, SSL, WAF
+
 - 💾 Base de datos, backups, disaster recovery
 
 ### 2. `ai_docs/06-infraestructura/02-ci-cd.md`
@@ -307,10 +323,15 @@ Una vez completado el formulario, haz clic en **"Generar Prompt Personalizado"**
 **Contiene:**
 
 - 📊 Diagrama del pipeline completo
+
 - ⚙️ Stages detallados (build, test, deploy, etc.)
+
 - 🌿 Estrategia de branching (GitFlow, trunk-based, etc.)
+
 - 🚀 Proceso de deployment paso a paso
+
 - 🔐 Secrets y variables de entorno
+
 - ↩️ Procedimientos de rollback
 
 ### 3. `ai_docs/06-infraestructura/03-monitoreo.md`
@@ -318,11 +339,17 @@ Una vez completado el formulario, haz clic en **"Generar Prompt Personalizado"**
 **Contiene:**
 
 - 🛠️ Stack de herramientas de monitoreo
+
 - 📈 Métricas monitoreadas (infra, app, BD, negocio)
+
 - 🚨 Configuración de alertas
+
 - 📝 Estrategia de logging
+
 - 🔍 Tracing distribuido (si aplica)
+
 - 📊 Dashboards y SLIs/SLOs
+
 - ⚠️ Recomendaciones si no hay monitoreo
 
 ---
@@ -332,15 +359,21 @@ Una vez completado el formulario, haz clic en **"Generar Prompt Personalizado"**
 ### ✅ Haz esto
 
 - **Copia TODO el YAML** que genera Copilot (incluyendo comentarios)
+
 - **Revisa lo pre-llenado** antes de generar (Copilot puede equivocarse)
+
 - **Sé específico** en las respuestas (URLs exactas, nombres reales, no "example.com")
+
 - **Completa todos los campos** del formulario (o marca explícitamente "No aplica")
 
 ### ❌ Evita esto
 
 - Copiar solo parte del YAML (el formulario no cargará)
+
 - Dejar campos vacíos sin explicación
+
 - Usar placeholders genéricos ("mi-app", "localhost")
+
 - Editar manualmente el YAML (usa el formulario)
 
 ---
@@ -350,7 +383,9 @@ Una vez completado el formulario, haz clic en **"Generar Prompt Personalizado"**
 Este sistema es **versionado y mantenido**. Si la infraestructura cambia:
 
 1. Ejecuta nuevamente el **Prompt de Análisis**
+
 2. Actualiza las respuestas necesarias
+
 3. Regenera los archivos
 
 ---
@@ -358,6 +393,7 @@ Este sistema es **versionado y mantenido**. Si la infraestructura cambia:
 ## 📚 Referencias
 
 - [Prompt de Análisis](/ai_prompts/07_pre_deployment/) - Analiza @workspace y genera YAML
+
 - [Prompt de Generación](/ai_prompts/07_generation/) - Genera los 3 archivos de documentación
 
 ---

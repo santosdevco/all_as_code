@@ -35,8 +35,11 @@
 Porque tenemos la idea de que es:
 
 - ❌ Una tarea **compleja**
+
 - ❌ Algo **aburrido**
+
 - ❌ Que consume **mucho tiempo**
+
 - ❌ Que queda **obsoleto** rápidamente
 
 ### 🚀 Pero Eso Quedó Atrás
@@ -93,35 +96,53 @@ Antes de continuar, entendamos rápidamente qué es cada una:
 Convierte archivos **Markdown** (`.md`) en un **sitio web completo** con:
 
 - 🎨 **Navegación automática** (menú lateral, breadcrumbs)
+
 - 🔍 **Búsqueda integrada** (sin configuración)
+
 - 📱 **Diseño responsive** (móvil, tablet, desktop)
+
 - 🌓 **Modo oscuro/claro** (toggle automático)
+
 - 📄 **Multi-página** (organización por secciones)
+
 - 🔗 **Links internos** (entre páginas)
+
 - 📊 **Soporte para Mermaid** (con plugin)
 
 #### ¿Cómo Funciona?
 
 1. Escribes archivos `.md` (Markdown) - texto plano simple
+
 2. Ejecutas `mkdocs serve` en la terminal
+
 3. ¡Boom! Tienes un **servidor de documentación local** en `http://localhost:8000`
+
 4. Haces cambios → Se actualiza automáticamente (live reload)
 
 **MkDocs monta tus Markdown en un servidor** donde puedes:
 
 - Ver la documentación como sitio web profesional
+
 - Navegar entre secciones fácilmente
+
 - Buscar contenido al instante
+
 - Ver diagramas Mermaid renderizados
+
 - Compartir con el equipo (deploy a producción)
 
 **¿Por qué es genial?**
 
 - ✅ **Fácil**: Si sabes escribir un README, ya sabes usar MkDocs
+
 - ✅ **Rápido**: De cero a sitio completo en 5 minutos
+
 - ✅ **Temas bonitos**: Material Design incluido
+
 - ✅ **Búsqueda automática**: Sin configuración adicional
+
 - ✅ **Deploy gratis**: GitHub Pages, GitLab Pages, Vercel, Netlify
+
 - ✅ **Versionable**: Todo en Git, mismo flujo que el código
 
 !!! example "Ejemplo de uso"
@@ -177,9 +198,13 @@ Y obtienes esto (diagrama visual):
 **¿Por qué es genial?**
 
 - ✅ **Versionable**: El diagrama es código, va a Git
+
 - ✅ **Actualizable**: Cambias el texto, cambia el diagrama
+
 - ✅ **Estandarizado**: Misma sintaxis en todos lados
+
 - ✅ **Tipos múltiples**: Secuencia, flujo, Gantt, C4, etc.
+
 - ✅ **Integrado**: Funciona en MkDocs, GitHub, Notion, etc.
 
 #### 🤖 Potenciado por IA
@@ -213,7 +238,7 @@ La IA ha democratizado estas herramientas. Ya no necesitas ser experto en sintax
 
 ```mermaid
 graph TB
-    User[Usuario] --> API[API REST]
+    User[Usuario] --> API["API REST"]
     API --> DB[(PostgreSQL)]
     API --> Cache[Redis]
 ```
@@ -224,8 +249,11 @@ GitHub lo renderiza como diagrama visual. **Tu equipo lo ve sin instalar nada.**
 #### 🌍 Facilita la Comunicación
 
 - **Entre equipos:** Frontend entiende qué hace Backend
+
 - **Con stakeholders:** Managers visualizan el flujo sin código
+
 - **Contigo mismo:** Vuelves al proyecto en 6 meses y entiendes todo rápidamente
+
 - **En onboarding:** Nuevos developers entienden el sistema en minutos
 
 !!! tip "💡 Prueba Ahora Mismo"
@@ -238,8 +266,11 @@ GitHub lo renderiza como diagrama visual. **Tu equipo lo ve sin instalar nada.**
 Cuando los combinas:
 
 1. Escribes documentación en Markdown
+
 2. Incluyes diagramas Mermaid dentro del Markdown
+
 3. MkDocs renderiza TODO automáticamente
+
 4. Obtienes un sitio web con diagramas interactivos
 
 **Esta presentación ES el ejemplo**: Todo lo que estás viendo fue creado con estas dos herramientas.
@@ -268,34 +299,49 @@ Los seres humanos entendemos mejor algo **visual**. Es uno de nuestros sentidos 
 Los **diagramas** son la forma de:
 
 - Sacar las ideas de la cabeza y aterrizarlas
+
 - Comunicar decisiones complejas en segundos
+
 - Dejar conocimiento documentado para el equipo
+
 - Analizar problemas antes de que se vuelvan crisis
 
 ## 🎯 Objetivo de Hoy
 Mostrarles **herramientas prácticas** que pueden usar MAÑANA para:
 
 1. Documentar arquitectura de forma viva y versionada
+
 2. Crear diagramas que se actualicen automáticamente
+
 3. Analizar problemas de rendimiento y seguridad visualmente
+
 4. **Dejar de ser el cuello de botella del conocimiento**
 
 ## 🚫 Los Problemas que Todos Conocemos
 
 ### Documentación Tradicional
+
 * ❌ Diagramas en PowerPoint/Visio que nadie actualiza
+
 * ❌ PDFs obsoletos en carpetas compartidas
+
 * ❌ "La documentación está en la cabeza de Juan"
+
 * ❌ Diagramas que no reflejan la realidad del código
 
 ### Análisis de Arquitectura
 Cuando nos piden evaluar o cambiar una arquitectura:
 
 1. **Documentación:** Si no hay, está desactualizada o incompleta → toca revisarla
+
 2. **Requisitos:** Funcionales y No Funcionales (RNFs) → hay que documentarlos
+
 3. **Análisis Actual:** Revisar decisiones de arquitectura existentes
+
 4. **Evaluación:** Nivel de cumplimiento de cada RNF
+
 5. **Comparación:** Decisiones vs Requisitos
+
 6. **Mejoras:** Identificar oportunidades
 
 > **Nota:** Este proceso se relaciona con metodologías como **ADR (Architecture Decision Records)**, **ATAM (Architecture Tradeoff Analysis Method)** y **Architecture Assessment** del SEI.
@@ -307,7 +353,9 @@ Cuando nos piden evaluar o cambiar una arquitectura:
 **MkDocs + Mermaid = Documentación Profesional en Minutos**
 
 * **MkDocs:** Generador de sitios de documentación desde archivos Markdown
+
 * **Mermaid.js:** Diagramas como texto (se renderizan automáticamente)
+
 * **Git:** Versionado de documentación como código
 
 !!! tip "🎨 Prueba Mermaid en Tiempo Real"
@@ -321,10 +369,10 @@ Cuando nos piden evaluar o cambiar una arquitectura:
 
     ```mermaid
     graph LR
-        A[Escribes Markdown] --> B[MkDocs Genera HTML]
-        B --> C[Sitio Web Profesional]
-        D[Diagramas Mermaid] --> B
-        E[Git Version Control] --> A
+        A["Escribes Markdown"] --> B["MkDocs Genera HTML"]
+        B --> C["Sitio Web Profesional"]
+        D["Diagramas Mermaid"] --> B
+        E["Git Version Control"] --> A
         E --> D
         
         style C fill:#90EE90,stroke:#006400,stroke-width:2px
@@ -346,16 +394,23 @@ Cuando nos piden evaluar o cambiar una arquitectura:
 **Ventajas:**
 
 1. **Versionado:** Documentación en Git, mismo flujo que el código
+
 2. **Viva:** Si cambia la arquitectura, actualizas el texto
+
 3. **Colaborativa:** Pull Requests para documentación
+
 4. **Portable:** Se despliega en GitHub Pages, AWS, Azure, etc.
+
 5. **Buscable:** Índice automático y búsqueda integrada
 
 ## 📋 Agenda de Esta Capacitación
 
 1. **Tipos de Diagramas y Cuándo Usarlos** - Abstracción según audiencia
+
 2. **Diagramas de Rendimiento** - Detectar cuellos de botella
+
 3. **Diagramas de Seguridad** - Auditar flujos de datos sensibles
+
 4. **Cómo Implementar MkDocs + Mermaid** - Tutorial práctico
 
 ---

@@ -294,8 +294,11 @@ IMPORTANTE: Usa @workspace para analizar todos los archivos del proyecto actual.
 Analiza el proyecto y genera el archivo `ai_docs/00-analisis-inicial.md` con un análisis completo del proyecto.
 
 Este análisis servirá como:
+
 - ✅ Documentación base para referencia futura
+
 - ✅ Validación de información para otros prompts
+
 - ✅ Fuente de verdad para entender el proyecto
 
 ## ESTRUCTURA DEL ANÁLISIS:
@@ -315,30 +318,43 @@ Este análisis servirá como:
 ### Backend
 
 - **Lenguaje principal**: [Ej: Node.js 18.x, Python 3.11, Java 17, etc.] + versión
+
 - **Framework**: [Ej: Express 4.18, FastAPI 0.109, Spring Boot 3.x, etc.] + versión
+
 - **Base de datos**: [Ej: PostgreSQL 15, MongoDB 6.0, MySQL 8.0, etc.] + versión
+
 - **ORM/ODM**: [Ej: Prisma 5.x, TypeORM, SQLAlchemy, etc.] + versión
 
 ### Frontend (si aplica)
 
 - **Framework**: [Ej: React 18.x, Vue 3.x, Angular 17, etc.] + versión
+
 - **Lenguaje**: [JavaScript, TypeScript 5.x]
+
 - **Build Tool**: [Vite 5.x, Webpack 5.x, etc.] + versión
+
 - **Estilos**: [Tailwind, CSS Modules, Styled Components, etc.]
 
 ### Infraestructura y DevOps
 
 - **Containerización**: [Docker 24.x, Podman, etc.]
+
 - **Orquestación**: [Docker Compose, Kubernetes 1.28, etc.]
+
 - **CI/CD**: [GitHub Actions, GitLab CI, Jenkins, etc.]
+
 - **Cloud Provider**: [AWS, GCP, Azure, On-Premise] + servicios específicos
 
 ### Otras Tecnologías Relevantes
 
 - **Cache**: [Redis 7.x, Memcached, etc.]
+
 - **Message Queue**: [RabbitMQ, Kafka, SQS, etc.]
+
 - **Monitoring**: [Prometheus, Datadog, New Relic, etc.]
+
 - **Logging**: [Winston, Pino, ELK Stack, etc.]
+
 - **Testing**: [Jest, Pytest, JUnit, etc.]
 
 ## 3. Análisis de Dependencias (NUEVO)
@@ -354,10 +370,15 @@ Analiza el archivo de dependencias (package.json, requirements.txt, pom.xml, go.
 | lodash | 4.17.20 | 4.17.21 | ⚠️ Desactualizado | Utilidades |
 
 **Análisis:**
+
 - Total de dependencias de producción: [número]
+
 - Dependencias actualizadas: [número y %]
+
 - Dependencias con actualizaciones menores disponibles: [número]
+
 - Dependencias con actualizaciones mayores disponibles: [número]
+
 - ⚠️ Dependencias deprecadas (si las hay): [lista]
 
 ### Dependencias de Desarrollo
@@ -367,8 +388,11 @@ Lista las más importantes (no todas) con su propósito:
 - [Nombre]: [Versión] - [Para qué se usa]
 
 Ejemplo:
+
 - typescript: 5.3.3 - Tipado estático
+
 - jest: 29.7.0 - Testing
+
 - eslint: 8.56.0 - Linting
 
 ### Vulnerabilidades Conocidas (si detectas)
@@ -401,18 +425,27 @@ Ejemplo:
 Describe el propósito de cada archivo de configuración importante:
 
 - **package.json / requirements.txt**: [Qué define, scripts importantes]
+
 - **tsconfig.json**: [Configuración de TypeScript] (si aplica)
+
 - **webpack.config.js / vite.config.ts**: [Configuración de build] (si aplica)
+
 - **.env.example**: [Variables de entorno requeridas]
+
 - **Dockerfile**: [Imagen base, puertos, comandos]
+
 - **docker-compose.yml**: [Servicios definidos]
+
 - **.github/workflows** o **.gitlab-ci.yml**: [Pipelines de CI/CD]
+
 - **jest.config.js / pytest.ini**: [Configuración de tests]
 
 ### Puntos de Entrada
 
 - **Archivo principal**: [index.js, main.py, App.java, etc.]
+
 - **Puerto por defecto**: [3000, 8080, etc.]
+
 - **Comando de inicio**: [npm start, python main.py, etc.]
 
 ## 5. Integraciones Identificadas
@@ -428,8 +461,11 @@ Lista sistemas externos con los que este proyecto se integra:
 ## 6. Modelo de Datos Preliminar
 
 Identifica las entidades principales del dominio basándote en:
+
 - Modelos/Entities del código
+
 - Esquema de base de datos
+
 - Migraciones
 
 | Entidad | Descripción | Atributos Principales |
@@ -443,9 +479,13 @@ Identifica las entidades principales del dominio basándote en:
 Lista 5-10 casos de uso principales que identificas del código:
 
 1. **Registro de usuario**: Crear cuenta nueva con validación de email
+
 2. **Autenticación**: Login con JWT
+
 3. **Crear pedido**: Proceso completo desde carrito hasta pago
+
 4. **Gestión de productos**: CRUD de productos (admin)
+
 5. **Procesamiento de pagos**: Integración con Stripe
 
 ## 8. Ejecución Local (análisis preliminar)
@@ -455,6 +495,7 @@ Lista 5-10 casos de uso principales que identificas del código:
 Lista lo que se necesita instalar:
 
 - [Node.js 18+ / Python 3.11+ / Java 17+]
+
 - [Docker / PostgreSQL / etc.]
 
 ### Pasos de Instalación (inferidos)
@@ -490,9 +531,13 @@ Analiza el código y archivos .env.example para listar todas las variables:
 Si encuentras URLs o accesos documentados:
 
 - **Producción**: [URL]
+
 - **Staging**: [URL]
+
 - **Desarrollo**: http://localhost:3000
+
 - **Documentación API**: [Swagger/OpenAPI URL]
+
 - **Monitoreo**: [Dashboard URL]
 
 ## 11. Observaciones Críticas
@@ -500,18 +545,23 @@ Si encuentras URLs o accesos documentados:
 ### Buenas Prácticas Detectadas
 
 - ✅ [Ejemplo: "Uso de TypeScript para type safety"]
+
 - ✅ [Ejemplo: "Tests con >80% de cobertura"]
+
 - ✅ [Ejemplo: "Variables de entorno bien documentadas"]
 
 ### Áreas de Mejora / Deuda Técnica
 
 - ⚠️ [Ejemplo: "Dependencias desactualizadas"]
+
 - ⚠️ [Ejemplo: "Falta documentación de APIs"]
+
 - ⚠️ [Ejemplo: "Sin manejo de errores centralizado"]
 
 ### Preguntas que Requieren Clarificación
 
 - ❓ [Ejemplo: "¿Cuál es el SLA de producción?"]
+
 - ❓ [Ejemplo: "¿Hay plan de migración a microservicios?"]
 
 ## 12. Recomendaciones Iniciales
@@ -519,8 +569,11 @@ Si encuentras URLs o accesos documentados:
 Basándote en el análisis:
 
 1. **Seguridad**: [Recomendaciones de seguridad]
+
 2. **Performance**: [Optimizaciones sugeridas]
+
 3. **Mantenibilidad**: [Mejoras en código/estructura]
+
 4. **Documentación**: [Qué documentar con prioridad]
 
 # ARCHIVO DE SALIDA
@@ -528,9 +581,13 @@ Basándote en el análisis:
 ai_docs/00-analisis-inicial.md
 
 ⚠️ IMPORTANTE:
+
 - Crea el archivo EXACTAMENTE en la ruta: ai_docs/00-analisis-inicial.md
+
 - Si la carpeta ai_docs/ no existe, créala primero
+
 - Guarda el archivo automáticamente
+
 - Este archivo servirá como REFERENCIA para todos los demás prompts
 
 # REGLAS CRÍTICAS DE FORMATO
@@ -540,6 +597,7 @@ ai_docs/00-analisis-inicial.md
 
 ❌ **INCORRECTO**:
 A continuación:
+
 - Elemento 1
 
 - Elemento 2
@@ -854,15 +912,23 @@ Un documento markdown completo, estructurado, con:
 ARCHIVO DE SALIDA: ai_docs/01-requerimientos.md
 
 ⚠️ IMPORTANTE: 
+
 - Crea el archivo EXACTAMENTE en la ruta: ai_docs/01-requerimientos.md
+
 - Si la carpeta ai_docs/ no existe, créala primero
+
 - Guarda el archivo automáticamente
 
 REQUISITOS DEL DOCUMENTO:
+
 - Sé específico con números y métricas
+
 - Basa tus respuestas en evidencia del código
+
 - Si algo no se puede determinar del código, indica "A definir con stakeholders"
+
 - Todos los diagramas Mermaid deben tener labels entre comillas dobles si contienen espacios
+
 - Todas las listas deben tener línea en blanco anterior
 ```
 
@@ -1069,8 +1135,11 @@ graph TB
 ai_docs/02-vista-ejecutiva.md
 
 ⚠️ IMPORTANTE:
+
 - Crea el archivo EXACTAMENTE en la ruta: ai_docs/02-vista-ejecutiva.md
+
 - Si la carpeta ai_docs/ no existe, créala primero
+
 - Guarda el archivo automáticamente
 
 # OUTPUT
@@ -1232,13 +1301,19 @@ graph TB
 Genera los siguientes 4 archivos:
 
 1. ai_docs/03-arquitectura/01-contexto.md
+
 2. ai_docs/03-arquitectura/02-contenedores.md
+
 3. ai_docs/03-arquitectura/03-componentes.md
+
 4. ai_docs/03-arquitectura/04-decisiones.md
 
 ⚠️ IMPORTANTE:
+
 - Crea la carpeta ai_docs/03-arquitectura/ si no existe
+
 - Genera los 4 archivos en esa carpeta
+
 - Guarda cada archivo automáticamente
 
 # OUTPUT
@@ -1382,13 +1457,19 @@ erDiagram
 Genera los siguientes 4 archivos:
 
 1. ai_docs/04-tecnico/01-stack-tecnologico.md
+
 2. ai_docs/04-tecnico/02-modelo-datos.md
+
 3. ai_docs/04-tecnico/03-apis.md
+
 4. ai_docs/04-tecnico/04-integraciones.md
 
 ⚠️ IMPORTANTE:
+
 - Crea la carpeta ai_docs/04-tecnico/ si no existe
+
 - Genera los 4 archivos en esa carpeta
+
 - Guarda cada archivo automáticamente
 
 # OUTPUT
@@ -1513,11 +1594,15 @@ Ejemplos:
 Genera los siguientes 2 archivos:
 
 1. ai_docs/05-procesos-negocio/01-casos-uso.md
+
 2. ai_docs/05-procesos-negocio/02-flujos-funcionales.md
 
 ⚠️ IMPORTANTE:
+
 - Crea la carpeta ai_docs/05-procesos-negocio/ si no existe
+
 - Genera los 2 archivos en esa carpeta
+
 - Guarda cada archivo automáticamente
 
 # OUTPUT
@@ -1582,9 +1667,13 @@ Documentar deployment, CI/CD, monitoreo.
 **Pasos:**
 
 1. Click en "🔍 1. Cargar Prompt de Análisis Inicial" arriba
+
 2. Copia el prompt generado
+
 3. Pégalo en Copilot: `@workspace [prompt]`
+
 4. Copilot responderá con un archivo YAML personalizado
+
 5. Guárdalo en: `docs/ai_prompts/07-generated.yaml`
 
 ---
@@ -1632,11 +1721,15 @@ Una vez que tengas el archivo `07-generated.yaml`:
 ### 💡 Cómo Usar el Cuestionario Generado
 
 1. **Revisa la información auto-extraída** (sección verde ✅)
+
 2. **Responde SOLO las preguntas faltantes** (lo que Copilot no pudo determinar)
+
 3. **Haz clic en "Generar Prompt"**
+
 4. **Copia el prompt** que combina:
    - ✅ Info del código (auto-extraída)
    - ❌ Tus respuestas (info faltante)
+
 5. **Pégalo en Copilot** para generar la documentación completa
 
 ---
@@ -1747,12 +1840,17 @@ graph TB
 Genera los siguientes 3 archivos:
 
 1. ai_docs/06-infraestructura/01-deployment.md
+
 2. ai_docs/06-infraestructura/02-ci-cd.md
+
 3. ai_docs/06-infraestructura/03-monitoreo.md
 
 ⚠️ IMPORTANTE:
+
 - Crea la carpeta ai_docs/06-infraestructura/ si no existe
+
 - Genera los 3 archivos en esa carpeta
+
 - Guarda cada archivo automáticamente
 
 # OUTPUT
@@ -1861,8 +1959,11 @@ Ejemplos de decisiones a documentar:
 ai_docs/03-arquitectura/04-decisiones.md
 
 ⚠️ IMPORTANTE:
+
 - Crea el archivo en la carpeta ai_docs/03-arquitectura/
+
 - Si la carpeta no existe, créala primero
+
 - Guarda el archivo automáticamente
 
 # OUTPUT
@@ -1889,11 +1990,17 @@ Eres un Senior Developer preparando un repositorio completo y profesional.
 Proyecto "[COMPLETAR: nombre del proyecto]"
 
 Ya existe documentación completa en la carpeta ai_docs/ con:
+
 - 01-requerimientos.md
+
 - 02-vista-ejecutiva.md
+
 - 03-arquitectura/ (C4 + ADRs)
+
 - 04-tecnico/ (Stack, APIs, etc.)
+
 - 05-procesos-negocio/
+
 - 06-infraestructura/
 
 # TAREA
@@ -1906,31 +2013,44 @@ Genera archivos complementarios del repositorio basándote en la documentación 
 **Si NO existe README.md o está vacío/incompleto**, genera uno completo con:
 
 - **Encabezado**: Nombre + descripción breve (1-2 líneas)
+
 - **Badges**: Build status, coverage, version, license
+
 - **Contexto General**: ¿Qué es y para qué sirve? (2-3 párrafos)
+
 - **Arquitectura**: Diagrama de alto nivel (extraído de ai_docs/03-arquitectura/01-contexto.md)
+
 - **Tecnologías**: Stack principal (extraído de ai_docs/04-tecnico/01-stack-tecnologico.md)
+
 - **Dependencias**: Principales librerías y versiones
+
 - **Estructura del Proyecto**: Árbol de carpetas con descripción
   /src
     /controllers  - Lógica de negocio
     /models       - Modelos de datos
     ...
+
 - **Ejecución Local**: Paso a paso (basado en ai_docs/06-infraestructura/01-deployment.md)
   - Prerequisitos
   - Instalación
   - Configuración
   - Ejecutar desarrollo
   - Ejecutar tests
+
 - **Variables de Entorno** (si aplica): Tabla explicando cada variable
   - Nombre | Descripción | Valor por defecto | Requerido
+
 - **Accesos**: URLs de ambientes, dashboards, logs
   - Producción: [URL]
   - Staging: [URL]
   - Monitoring: [URL]
+
 - **Aplicaciones Externas** (si aplica): APIs de terceros, servicios externos
+
 - **Cómo Contribuir**: Link a CONTRIBUTING.md o guía breve
+
 - **Recomendaciones**: Buenas prácticas, convenciones del proyecto
+
 - **Licencia**: Tipo de licencia
 
 **Si ya existe README.md completo**, analízalo y solo complementa secciones faltantes.
@@ -1976,8 +2096,11 @@ logs/
 **Si NO existe CHANGELOG.md**, genera uno inicial con:
 
 - Formato: [Keep a Changelog](https://keepachangelog.com/)
+
 - Versión actual (extraída de package.json, pom.xml, etc.)
+
 - Secciones: Added, Changed, Deprecated, Removed, Fixed, Security
+
 - Historial desde la versión 1.0.0 o la más antigua identificable
 
 **Si ya existe CHANGELOG.md**, valida que esté al día con la última versión.
@@ -1993,14 +2116,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.1.0] - 2025-12-10
 
 ### Added
+
 - Nueva integración con servicio de pagos Stripe
+
 - Endpoint /api/v1/payments
 
 ### Changed
+
 - Migración de MySQL 5.7 a PostgreSQL 14
+
 - Actualización de dependencias críticas
 
 ### Fixed
+
 - Bug en cálculo de descuentos aplicados
 
 ## [2.0.0] - 2025-11-01
@@ -2013,8 +2141,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 **Si NO existe .env.example**, genera uno con TODAS las variables necesarias:
 
 - Analiza el código fuente para detectar variables de entorno
+
 - Analiza ai_docs/04-tecnico/04-integraciones.md
+
 - Incluye comentarios explicativos
+
 - NO incluir valores sensibles (usar placeholders)
 
 Ejemplo:
@@ -2050,14 +2181,18 @@ ENABLE_CACHE=false
 **Si NO existe CONTRIBUTING.md**, genera una guía de contribución:
 
 - Código de conducta
+
 - Cómo reportar bugs
+
 - Cómo proponer features
+
 - Proceso de desarrollo:
   - Branching strategy (git flow, trunk-based, etc.)
   - Convenciones de commits (Conventional Commits)
   - Code style y linters
   - Testing requerido
   - Pull Request process
+
 - Contacto del equipo
 
 Ejemplo breve:
@@ -2066,41 +2201,58 @@ Ejemplo breve:
 ## 🐛 Reportar Bugs
 
 Abre un issue en GitHub con:
+
 - Descripción clara del problema
+
 - Pasos para reproducir
+
 - Comportamiento esperado vs actual
+
 - Versión del software
 
 ## 💡 Proponer Features
 
 1. Abre un issue de tipo "Feature Request"
+
 2. Explica el caso de uso
+
 3. Espera feedback del equipo antes de implementar
 
 ## 🔀 Proceso de Desarrollo
 
 1. Fork del repositorio
+
 2. Crea una rama: `git checkout -b feature/mi-feature`
+
 3. Commits siguiendo [Conventional Commits](https://www.conventionalcommits.org/)
    - `feat: agregar endpoint de usuarios`
    - `fix: corregir validación de email`
    - `docs: actualizar README`
+
 4. Tests: `npm test` (100% de cobertura requerido)
+
 5. Push: `git push origin feature/mi-feature`
+
 6. Abre un Pull Request
 
 ## 📋 Code Style
 
 - ESLint + Prettier (JavaScript/TypeScript)
+
 - Black (Python)
+
 - Ejecutar `npm run lint` antes de commit
 
 ## ✅ Pull Request Checklist
 
 - [ ] Tests pasan
+
 - [ ] Código linted
+
 - [ ] Documentación actualizada
+
 - [ ] CHANGELOG.md actualizado
+
 - [ ] Sin conflictos con main
 
 **Si ya existe CONTRIBUTING.md completo**, no regenerar.
@@ -2108,25 +2260,39 @@ Abre un issue en GitHub con:
 ## INSTRUCCIONES ESPECIALES:
 
 1. **Analiza primero** qué archivos ya existen en el repositorio
+
 2. **No sobrescribas** archivos completos sin avisar
+
 3. **Complementa** archivos existentes si están incompletos
+
 4. **Extrae información** de ai_docs/ para mantener coherencia
+
 5. **Detecta el stack** para generar .gitignore apropiado
+
 6. **Usa el análisis inicial** (Prompt 01) como base
 
 ## ARCHIVOS DE SALIDA:
 
 1. README.md (raíz)
+
 2. .gitignore (raíz) - asegurar que incluya `site/`
+
 3. CHANGELOG.md (raíz)
+
 4. .env.example (raíz, solo si aplica)
+
 5. CONTRIBUTING.md (raíz)
 
 ⚠️ IMPORTANTE:
+
 - Crea los archivos EXACTAMENTE en la raíz del proyecto
+
 - Si un archivo ya existe, analízalo y solo complementa secciones faltantes
+
 - NO borres contenido existente
+
 - Basate en ai_docs/ para mantener coherencia con la documentación generada
+
 - Agrega `site/` al .gitignore para excluir builds de MkDocs
 
 # OUTPUT
@@ -2160,11 +2326,11 @@ Los archivos markdown/texto correspondientes guardados en la raíz del proyecto.
 
 ```mermaid
 flowchart TD
-    A{¿Tu proyecto<br/>expone endpoints<br/>HTTP?} -->|SÍ| B[✅ Ejecuta<br/>Prompt 10]
-    A -->|NO| C[❌ Omite este<br/>prompt]
+    A{¿Tu proyecto<br/>expone endpoints<br/>HTTP?} -->|SÍ| B["✅ Ejecuta<br/>Prompt 10"]
+    A -->|NO| C["❌ Omite este<br/>prompt"]
     
-    B --> D[Genera:<br/>- openapi.yaml<br/>- swagger-ui.html<br/>- ai_docs/08-api-reference.md]
-    C --> E[Continúa con<br/>revisión final]
+    B --> D["Genera:<br/>- openapi.yaml<br/>- swagger-ui.html<br/>- ai_docs/08-api-reference.md"]
+    C --> E["Continúa con<br/>revisión final"]
     
     style B fill:#4caf50,color:#fff
     style C fill:#ff5722,color:#fff
@@ -2175,17 +2341,21 @@ flowchart TD
 ✅ **API REST de E-commerce** con endpoints:
 
 - `GET /products`
+
 - `POST /orders`
+
 - `PUT /users/{id}`
 
 ✅ **Backend de aplicación móvil** con:
 
 - `POST /auth/login`
+
 - `GET /api/v1/feed`
 
 ✅ **Microservicio** que expone:
 
 - `GET /health`
+
 - `POST /webhooks`
 
 ### Ejemplos de Proyectos que NO Necesitan Este Prompt
@@ -2216,9 +2386,13 @@ Ya existe documentación técnica en ai_docs/04-tecnico/03-apis.md con informaci
 
 # TAREA
 Genera documentación completa de API en formato OpenAPI 3.0 que se pueda:
+
 - ✅ Renderizar en Swagger UI
+
 - ✅ Importar en Postman
+
 - ✅ Usar para generar código (SDK clients)
+
 - ✅ Integrar con herramientas de testing
 
 ## INFORMACIÓN REQUERIDA:
@@ -2226,6 +2400,7 @@ Genera documentación completa de API en formato OpenAPI 3.0 que se pueda:
 ### Configuración General de la API
 
 - **Nombre de la API**: [COMPLETAR: ej. "E-commerce API"]
+
 - **Versión**: [COMPLETAR: ej. "1.0.0" o inferir de package.json]
 
 ### Configuración de Servidores (Hosts)
@@ -2235,10 +2410,15 @@ Genera documentación completa de API en formato OpenAPI 3.0 que se pueda:
 **COMPLETA LOS HOSTS DISPONIBLES:**
 
 - **Producción**: [COMPLETAR: ej. "https://api.example.com" o "a definir"]
+
 - **QA/Testing**: [COMPLETAR: ej. "https://api-qa.example.com" o "a definir"]
+
 - **Staging**: [COMPLETAR: ej. "https://api-staging.example.com" o "a definir"]
+
 - **Desarrollo**: [COMPLETAR: ej. "https://api-dev.example.com" o "a definir"]
+
 - **Local**: [COMPLETAR: ej. "http://localhost:3000" o "http://localhost:8080"]
+
 - **Otro (manual)**: [COMPLETAR: Si necesitas un host adicional, escríbelo aquí]
 
 **Path Base (si aplica)**: [COMPLETAR: ej. "/api/v1" o "/v2" o dejar vacío si no hay]
@@ -2246,7 +2426,9 @@ Genera documentación completa de API en formato OpenAPI 3.0 que se pueda:
 ### Autenticación
 
 - **Tipo**: [COMPLETAR: "Bearer Token (JWT)" / "API Key" / "OAuth2" / "Basic Auth" / "None"]
+
 - **Header de autenticación**: [COMPLETAR: ej. "Authorization" o "X-API-Key"]
+
 - **Formato del token**: [COMPLETAR: ej. "Bearer {token}" o "apikey {key}"]
 
 ### Headers Globales (si aplica)
@@ -2254,7 +2436,9 @@ Genera documentación completa de API en formato OpenAPI 3.0 que se pueda:
 Headers que se deben enviar en TODAS las requests:
 
 - [COMPLETAR: ej. "X-Client-Version: 1.0.0" o "ninguno"]
+
 - [COMPLETAR: ej. "X-Request-ID: {uuid}" o "ninguno"]
+
 - [COMPLETAR: ej. "Content-Type: application/json" - este es estándar]
 
 ## ARCHIVOS A GENERAR:
@@ -2921,8 +3105,11 @@ Genera documentación complementaria en Markdown:
 ## Información General
 
 - **Nombre**: [Nombre de la API]
+
 - **Versión**: [versión]
+
 - **Formato**: JSON
+
 - **Charset**: UTF-8
 
 ### Servidores Disponibles
@@ -3032,7 +3219,9 @@ Endpoints que retornan listas usan paginación:
 ### Query Parameters
 
 - `page` (integer): Número de página (default: 1)
+
 - `limit` (integer): Items por página (default: 20, max: 100)
+
 - `sort` (string): Campo de ordenamiento (prefijo `-` para descendente)
 
 ### Respuesta con Paginación
@@ -3077,14 +3266,19 @@ curl -X GET "https://api.example.com/v1/users?page=1&limit=10&role=admin&sort=-c
 Para probar la API interactivamente:
 
 1. Visita: `https://api.example.com/docs`
+
 2. Haz clic en "Authorize"
+
 3. Ingresa tu token JWT
+
 4. Explora y prueba los endpoints
 
 ## Importar en Postman
 
 1. Descarga `openapi.yaml`
+
 2. Abre Postman → Import → Sube el archivo
+
 3. Se creará una colección completa con todos los endpoints
 
 ## Generar SDKs
@@ -3104,20 +3298,31 @@ openapi-generator-cli generate -i openapi.yaml -g java -o ./sdk/java
 ## Recursos Adicionales
 
 - [Especificación OpenAPI 3.0](https://swagger.io/specification/)
+
 - [Documentación completa del proyecto](../README.md)
+
 - [Guía de integración](./04-tecnico/04-integraciones.md)
 
 ## INSTRUCCIONES ESPECIALES:
 
 1. **Analiza el código REAL del proyecto** (controllers, routes, services)
+
 2. **Extrae información de `ai_docs/04-tecnico/03-apis.md`** si existe
+
 3. **Genera schemas para TODAS las entidades** del modelo de datos
+
 4. **Incluye ejemplos reales** de requests y responses
+
 5. **Documenta TODOS los endpoints** que encuentres en el código
+
 6. **Headers dinámicos** deben estar en `components/parameters` para reutilizarse
+
 7. **Usa referencias ($ref)** para evitar duplicación
+
 8. **Genera FORMATO JSON** (NO YAML) - el archivo debe ser `openapi.json`
+
 9. **Configura TODOS los servidores** proporcionados (producción, QA, staging, dev, local)
+
 10. **Usa emojis** en las descripciones de servidores para mejor UX
 
 ## CONFIGURACIÓN DE SERVIDORES - IMPORTANTE:
@@ -3148,9 +3353,13 @@ openapi-generator-cli generate -i openapi.yaml -g java -o ./sdk/java
 ]
 
 **⚠️ IMPORTANTE:** 
+
 - Si algún host se completó como "a definir", NO lo incluyas en el array
+
 - Concatena la URL base + Path Base (ej: `https://api.example.com` + `/api/v1` = `https://api.example.com/api/v1`)
+
 - El usuario podrá **elegir el servidor** desde un dropdown en Swagger UI
+
 - También podrá **escribir manualmente** cualquier URL personalizada
 
 ## HEADERS DINÁMICOS - CONFIGURACIÓN:
@@ -3177,17 +3386,27 @@ Para que Swagger UI permita configurar headers dinámicamente:
 ## ARCHIVOS DE SALIDA:
 
 1. **openapi.json** (raíz del proyecto) ← FORMATO JSON
+
 2. **ai_docs/08-api-reference.md** ← Debe incluir `<swagger-ui src="../openapi.json"/>`
 
 ⚠️ IMPORTANTE:
+
 - El archivo openapi.json DEBE ser válido según OpenAPI 3.0.3
+
 - Formato JSON (NO YAML)
+
 - Incluye TODOS los endpoints del proyecto
+
 - Headers dinámicos en components/parameters
+
 - Usa $ref para reutilización
+
 - Ejemplos realistas en cada endpoint
+
 - Códigos de error completos
+
 - Todos los servidores configurados en el array `servers`
+
 - El markdown debe importar el JSON con la etiqueta `<swagger-ui>`
 
 # OUTPUT
@@ -3287,6 +3506,7 @@ Solo la sección actualizada en markdown.
 6. **Humaniza**: La IA genera el 90%, el humano valida y refina el 10%
 
 7. **Empezar de 0 si es necesario**: A veces es mejor volver a iniciar con un prompt mas refinado y mas especifico que tratar de moldear algo que en un principio se fue por donde no se queria, la IA suele cometer mas errores en este escenario.
+
 8. **Modularizacion**: manejar la documentacion en archivos separados facilita a la ia analizar y modificar sin usar tanta memoria mejorando el contexto.
 
 9. **Iniciar un nuevo chat cuando sea necesario** entre mas largo el chat mas contexto que quizas no es necesario para lo que estas solicitando en el momento especifico, se demora mas, comete mas errores y consume mas tokens. 
@@ -3300,7 +3520,9 @@ Solo la sección actualizada en markdown.
 Es normal que al ejecutar los prompts 02-09, notes que la información generada no coincide 100% con el análisis inicial (Prompt 01). Esto puede pasar por varias razones:
 
 1. **El agente IA interpretó algo diferente** en cada ejecución
+
 2. **El contexto cambió** entre prompts (código actualizado)
+
 3. **Información faltante** que se completó con suposiciones
 
 ### ✅ Proceso de Validación y Corrección
@@ -3313,9 +3535,11 @@ Compara el archivo `ai_docs/00-analisis-inicial.md` con los archivos generados d
 
 ```markdown
 # En 00-analisis-inicial.md
+
 - Base de datos: PostgreSQL 15
 
 # En 04-tecnico/01-stack-tecnologico.md
+
 - Base de datos: MySQL 8.0
 ```
 
@@ -3349,10 +3573,15 @@ Necesito corregir el archivo ai_docs/04-tecnico/01-stack-tecnologico.md
 PROBLEMA: El archivo dice que usamos MySQL, pero en realidad usamos PostgreSQL 15.
 
 TAREA: 
+
 1. Abre ai_docs/04-tecnico/01-stack-tecnologico.md
+
 2. Busca la sección de Base de Datos
+
 3. Reemplaza "MySQL 8.0" por "PostgreSQL 15"
+
 4. Asegúrate de mantener el formato de la tabla
+
 5. Guarda el archivo
 
 ARCHIVO DE SALIDA: ai_docs/04-tecnico/01-stack-tecnologico.md (actualizado)
@@ -3363,6 +3592,7 @@ ARCHIVO DE SALIDA: ai_docs/04-tecnico/01-stack-tecnologico.md (actualizado)
 Si todo el archivo está mal o tiene muchas inconsistencias:
 
 1. **Borra el archivo incorrecto** (opcional, puedes pedir a Copilot que lo sobrescriba)
+
 2. **Re-ejecuta el prompt correspondiente** con información más específica
 
 **Ejemplo mejorado del Prompt 05:**
@@ -3374,9 +3604,13 @@ CONTEXTO: Estoy re-generando el archivo 04-tecnico/01-stack-tecnologico.md porqu
 la versión anterior tenía información incorrecta.
 
 INFORMACIÓN CORRECTA (validada del código):
+
 - Base de datos: PostgreSQL 15 (NO MySQL)
+
 - ORM: Prisma 5.7 (NO TypeORM)
+
 - Framework: Express 4.18
+
 - Lenguaje: TypeScript 5.3
 
 TAREA: Genera el archivo ai_docs/04-tecnico/01-stack-tecnologico.md usando 
@@ -3392,6 +3626,7 @@ esta información CORRECTA.
 Si hay MUCHAS inconsistencias en MÚLTIPLES archivos:
 
 1. **Borra la carpeta ai_docs/** completa
+
 2. **Re-ejecuta el Prompt 01** con información MÁS ESPECÍFICA:
 
 ```
@@ -3404,9 +3639,13 @@ PROYECTO: [Nombre]
 ⚠️ INFORMACIÓN ESPECÍFICA QUE DEBES USAR:
 
 - Base de datos: PostgreSQL 15 (confirmado en docker-compose.yml)
+
 - Framework backend: Express 4.18 (confirmado en package.json)
+
 - ORM: Prisma 5.7 (confirmado en package.json)
+
 - Frontend: React 18 con TypeScript
+
 - Cloud: AWS (usa RDS, S3, EC2)
 
 TAREA: Analiza el proyecto usando ESTA información como base de verdad.
@@ -3429,12 +3668,17 @@ Si hiciste correcciones manuales, documéntalas en el archivo de análisis inici
 **Fecha:** 2025-12-11
 
 **Cambios:**
+
 - ✅ Corregida base de datos de MySQL a PostgreSQL 15
+
 - ✅ Actualizado ORM de TypeORM a Prisma 5.7
+
 - ✅ Confirmado deployment en AWS (no Azure)
 
 **Archivos afectados:**
+
 - ai_docs/04-tecnico/01-stack-tecnologico.md (re-generado)
+
 - ai_docs/06-infraestructura/01-deployment.md (corregido manualmente)
 ```
 
@@ -3452,9 +3696,13 @@ Analiza el proyecto y genera el análisis inicial.
 Analiza el proyecto "E-commerce API".
 
 INFORMACIÓN CLAVE:
+
 - Es un sistema de e-commerce B2C
+
 - Stack: Node.js + Express + PostgreSQL + React
+
 - Infraestructura: AWS (ECS + RDS + S3)
+
 - Usuarios estimados: 10,000 concurrentes
 ```
 
@@ -3475,19 +3723,27 @@ IMPORTANTE: Consulta ai_docs/00-analisis-inicial.md para mantener coherencia.
 No ejecutes los 9 prompts en una sola sesión de chat. Divide en sesiones:
 
 **Sesión 1:**
+
 - Prompt 01 (análisis)
+
 - PAUSA → Revisar y validar
 
 **Sesión 2 (nuevo chat):**
+
 - Prompts 02-04 (requerimientos + vista ejecutiva + arquitectura)
+
 - PAUSA → Revisar coherencia
 
 **Sesión 3 (nuevo chat):**
+
 - Prompts 05-07 (técnico + procesos + infraestructura)
+
 - PAUSA → Revisar coherencia
 
 **Sesión 4 (nuevo chat):**
+
 - Prompts 08-09 (apéndices + archivos del repo)
+
 - PAUSA → Revisión final
 
 #### 5. Mantén un Checklist de Validación
@@ -3500,20 +3756,31 @@ Crea un archivo `VALIDACION.md` en la raíz con:
 ## Información Crítica a Validar
 
 - [ ] Nombre del proyecto: [CORRECTO / INCORRECTO]
+
 - [ ] Base de datos: [PostgreSQL 15]
+
 - [ ] Framework: [Express 4.18]
+
 - [ ] Cloud: [AWS]
+
 - [ ] Usuarios concurrentes: [10,000]
 
 ## Archivos Generados
 
 - [ ] 00-analisis-inicial.md → Revisado y correcto
+
 - [ ] 01-requerimientos.md → Coherente con análisis inicial
+
 - [ ] 02-vista-ejecutiva.md → Números coinciden
+
 - [ ] 03-arquitectura/*.md → Diagramas coherentes
+
 - [ ] 04-tecnico/*.md → Stack correcto
+
 - [ ] 05-procesos-negocio/*.md → Casos de uso reales
+
 - [ ] 06-infraestructura/*.md → Infraestructura correcta
+
 - [ ] README.md → Información precisa
 
 ## Inconsistencias Encontradas

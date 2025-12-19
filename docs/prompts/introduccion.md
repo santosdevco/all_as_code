@@ -8,7 +8,7 @@ Sistema que combina análisis automático del código con formularios interactiv
 
 ```mermaid
 flowchart LR
-    Start([👤 Usuario]) --> Step0["⓪ ELEGIR ANÁLISIS<br/>Deployment, API,<br/>Arquitectura, etc."]
+    Start(["👤 Usuario"]) --> Step0["⓪ ELEGIR ANÁLISIS<br/>Deployment, API,<br/>Arquitectura, etc."]
     Step0 --> Step1["① COPIAR PROMPT<br/>Análisis Inicial"]
     Step1 --> Step11["①.① COPILOT ANALIZA<br/>@workspace<br/>Genera YAML"]
     Step11 --> Step2["② PEGAR YAML<br/>Cargar Formulario"]
@@ -18,7 +18,7 @@ flowchart LR
     Decision -->|Sí, genera YAML| Step2
     Decision -->|No, 'todo ok'| Step3["③ COPIAR PROMPT<br/>Formato Salida"]
     Step3 --> Step31["③.① COPILOT GENERA<br/>Archivos .md"]
-    Step31 --> End([✅ Docs Listas])
+    Step31 --> End(["✅ Docs Listas"])
     
     style Start fill:#667eea,color:#fff,stroke:#764ba2,stroke-width:2px
     style Step0 fill:#a8edea,color:#333,stroke:#fed6e3,stroke-width:2px
@@ -42,7 +42,9 @@ flowchart LR
 Cada tipo de documentación (deployment, API, arquitectura, etc.) tiene:
 
 #### 1. **Página Principal (`deployment.md`, `api.md`, etc.)**
+
 - **Qué es**: Página web interactiva con formulario
+
 - **Contiene**:
   - Botones para copiar prompts
   - Input para pegar YAML
@@ -51,16 +53,23 @@ Cada tipo de documentación (deployment, API, arquitectura, etc.) tiene:
   - Botón "Copiar Prompt de Salida"
 
 #### 2. **`01-analisis.md`**
+
 - **Qué hace**: Prompt que Copilot ejecuta sobre `@workspace`
+
 - **Input**: Código del proyecto
+
 - **Output**: 
   - Reporte en consola con hallazgos
   - YAML con preguntas en formato específico
+
 - **Proceso iterativo**: Se ejecuta tantas veces como sea necesario hasta que Copilot confirme "todo ok"
+
 - **NO genera archivos**, solo análisis + YAML
 
 #### 3. **`02-salida.md`**
+
 - **Qué contiene**: Especificación de archivos a generar
+
 - **Incluye**:
   - Formato de cada archivo markdown
   - Estructura requerida
@@ -74,7 +83,9 @@ Cada tipo de documentación (deployment, API, arquitectura, etc.) tiene:
 El usuario navega a la página del tipo de documentación que necesita:
 
 - 🚀 **Deployment e Infraestructura** → `/prompts/deployment/deployment.md`
+
 - 📡 **API Documentation** → `/prompts/api/api.md`
+
 - 🏗️ **Arquitectura** → `/prompts/arquitectura/arquitectura.md`
 
 Abre la página correspondiente que contiene el formulario interactivo.
@@ -84,7 +95,9 @@ Abre la página correspondiente que contiene el formulario interactivo.
 ### ① Copiar Prompt de Análisis Inicial
 
 1. **Hace clic en "📋 Copiar Prompt de Análisis Inicial"**
+
 2. El botón copia el contenido completo de `01-analisis.md`
+
 3. **Pega el prompt en Copilot**
 
 ---
@@ -133,8 +146,11 @@ sections:
 ### ② Pegar YAML y Cargar Formulario
 
 1. Usuario **copia el YAML completo** del output de Copilot
+
 2. **Pega el YAML** en el textarea de la página web
+
 3. **Hace clic en "🚀 Cargar Formulario"**
+
 4. El formulario se auto-genera con las preguntas del YAML
 
 ---
@@ -148,6 +164,7 @@ El usuario responde todas las preguntas del formulario generado.
 ### ②.② Copiar Respuestas
 
 1. **Hace clic en "📋 Copiar Respuestas"**
+
 2. El sistema copia al clipboard:
    ```
 ---
@@ -196,7 +213,9 @@ todo ok
 Una vez que Copilot confirma "todo ok":
 
 1. **Hace clic en "📄 Copiar Prompt de Formato de Salida"**
+
 2. El botón copia el contenido completo de `02-salida.md`
+
 3. **Pega el prompt en Copilot** (mismo chat, manteniendo TODO el historial)
 
 ---
@@ -206,7 +225,9 @@ Una vez que Copilot confirma "todo ok":
 Copilot tiene en su historial:
 
 1. ✅ Análisis completo del workspace (paso ①.①)
+
 2. ✅ Todas las respuestas del usuario (iteraciones del paso ②)
+
 3. ✅ Especificación de formato de salida (`02-salida.md`)
 
 Copilot **genera los archivos** automáticamente:
@@ -279,7 +300,9 @@ ai_docs/06-infraestructura/
 ```
    - Tiene las respuestas específicas del proyecto
    - Tiene las especificaciones de salida
+
 2. **Genera los archivos** según `02-salida.md`
+
 3. **Guarda automáticamente** en el workspace
 
 ---
@@ -299,10 +322,15 @@ docs/prompts/deployment/
 ## ✅ Ventajas del Sistema
 
 1. **Iterativo**: La IA pregunta hasta tener toda la información necesaria
+
 2. **Inteligente**: Solo pregunta lo que NO puede determinar del código
+
 3. **Conversacional**: Mantiene el historial del chat para contexto completo
+
 4. **Específico**: Usa configuraciones reales del proyecto
+
 5. **Reutilizable**: El mismo flujo aplica para cualquier tipo de documentación
+
 6. **Extensible**: Fácil agregar nuevos tipos de documentación
 
 ---
@@ -373,17 +401,23 @@ sections:
 El sistema permite **múltiples iteraciones** de preguntas:
 
 1. **Primera iteración**: Usuario pega prompt de análisis inicial (solo una vez)
+
 2. **Copilot genera YAML** → Usuario pega YAML, responde, copia respuestas
+
 3. **Copilot decide**:
    - Si necesita más info → Genera **nuevo YAML** (no repite el análisis)
    - Si está claro → Responde `todo ok`
+
 4. **Iteraciones siguientes**: Solo se pega el **nuevo YAML** y las **respuestas**, **NO se vuelve a pegar el prompt de análisis**
+
 5. **Se repite** hasta que Copilot confirme "todo ok"
 
 Esto permite un **diálogo natural** donde la IA profundiza sin repetir el análisis inicial.
+
 3. **Copilot decide**:
    - Si necesita más info → Genera nuevo YAML (iteración 2)
    - Si está claro → Responde "todo ok"
+
 4. **Se repite** hasta que Copilot confirme que tiene toda la información
 
 Esto permite un **diálogo natural** donde la IA puede profundizar según las respuestas del usuario.
@@ -393,8 +427,11 @@ Esto permite un **diálogo natural** donde la IA puede profundizar según las re
 Es **CRÍTICO** mantener el historial del chat en Copilot:
 
 - ✅ Usar el **mismo chat** para todas las iteraciones
+
 - ✅ Copilot "recuerda" el análisis inicial
+
 - ✅ Copilot "recuerda" todas las respuestas anteriores
+
 - ✅ Al final, tiene **contexto completo** para generar archivos perfectos
 
 ❌ **NO abrir chats nuevos** entre iteraciones, se pierde el contexto.
@@ -414,12 +451,19 @@ Es **CRÍTICO** mantener el historial del chat en Copilot:
 ## ✅ Ventajas del Sistema
 
 1. **Iterativo**: La IA pregunta hasta tener toda la información necesaria
+
 2. **Inteligente**: Solo pregunta lo que NO puede determinar del código
+
 3. **Conversacional**: Mantiene el historial del chat para contexto completo
+
 4. **Específico**: Usa configuraciones reales del proyecto
+
 5. **Reutilizable**: El mismo flujo aplica para cualquier tipo de documentación
+
 6. **Extensible**: Fácil agregar nuevos tipos de documentación
+
 7. **Eficiente**: El análisis inicial se hace una sola vez, las iteraciones solo ajustan detalles - Infraestructura y CI/CD
+
 - *Próximamente: API, Arquitectura, etc.*
 
 ---
